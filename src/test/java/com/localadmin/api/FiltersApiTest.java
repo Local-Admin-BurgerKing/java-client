@@ -13,9 +13,9 @@
 package com.localadmin.api;
 
 import com.localadmin.ApiException;
-import com.localadmin.model.Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems;
-import com.localadmin.model.Paths1filtersgetresponses200contentapplication1jsonschemaitemsoneOf0;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
+import com.localadmin.model.ErrorResponse;
+import com.localadmin.model.Filter;
+import com.localadmin.model.Filter1;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -42,7 +42,8 @@ public class FiltersApiTest {
      */
     @Test
     public void createFilterTest() throws ApiException {
-        api.createFilter();
+        Filter body = null;
+        api.createFilter(body);
 
         // TODO: test validations
     }
@@ -87,7 +88,7 @@ public class FiltersApiTest {
     @Test
     public void getFilterTest() throws ApiException {
         String name = null;
-        Paths1filtersgetresponses200contentapplication1jsonschemaitemsoneOf0 response = api.getFilter(name);
+        Filter1 response = api.getFilter(name);
 
         // TODO: test validations
     }
@@ -147,9 +148,9 @@ public class FiltersApiTest {
     @Test
     public void replaceFilterColumnsTest() throws ApiException {
         String name = null;
-        List<Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems> body = null;
+        List<String> body = null;
         Boolean _return = null;
-        List<Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems> response = api.replaceFilterColumns(name, body, _return);
+        List<String> response = api.replaceFilterColumns(name, body, _return);
 
         // TODO: test validations
     }

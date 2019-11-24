@@ -14,11 +14,13 @@ package com.localadmin.api;
 
 import com.localadmin.ApiException;
 import com.localadmin.model.DataEntry;
+import com.localadmin.model.ErrorResponse;
+import com.localadmin.model.Filter2;
 import com.localadmin.model.FilterWrapper;
+import com.localadmin.model.FilterWrapper1;
 import java.time.LocalDate;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
-import com.localadmin.model.Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems;
-import com.localadmin.model.Paths1tables17Brestaurant7D1reportsgetresponses200contentapplication1jsonschemaitemsoneOf0items;
+import com.localadmin.model.Report;
+import com.localadmin.model.Report1;
 import com.localadmin.model.ReportWithReference;
 import org.junit.Test;
 import org.junit.Ignore;
@@ -47,7 +49,8 @@ public class TablesApiTest {
     @Test
     public void addDailyReportTest() throws ApiException {
         Integer restaurant = null;
-        api.addDailyReport(restaurant);
+        Report body = null;
+        api.addDailyReport(restaurant, body);
 
         // TODO: test validations
     }
@@ -78,8 +81,9 @@ public class TablesApiTest {
     @Test
     public void getDateReportsTest() throws ApiException {
         LocalDate date = null;
+        Filter2 body = null;
         Boolean wholeData = null;
-        List<ReportWithReference> response = api.getDateReports(date, wholeData);
+        List<ReportWithReference> response = api.getDateReports(date, body, wholeData);
 
         // TODO: test validations
     }
@@ -96,7 +100,7 @@ public class TablesApiTest {
         Integer restaurant = null;
         LocalDate date = null;
         String column = null;
-        Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems response = api.getRestaurantDateColumn(restaurant, date, column);
+        DataEntry response = api.getRestaurantDateColumn(restaurant, date, column);
 
         // TODO: test validations
     }
@@ -112,7 +116,7 @@ public class TablesApiTest {
     public void getRestaurantDateReportTest() throws ApiException {
         Integer restaurant = null;
         LocalDate date = null;
-        Paths1tables17Brestaurant7D1reportsgetresponses200contentapplication1jsonschemaitemsoneOf0items response = api.getRestaurantDateReport(restaurant, date);
+        Report1 response = api.getRestaurantDateReport(restaurant, date);
 
         // TODO: test validations
     }
@@ -127,8 +131,9 @@ public class TablesApiTest {
     @Test
     public void getRestaurantReportsTest() throws ApiException {
         Integer restaurant = null;
+        FilterWrapper1 body = null;
         Boolean wholeData = null;
-        List<Object> response = api.getRestaurantReports(restaurant, wholeData);
+        List<Object> response = api.getRestaurantReports(restaurant, body, wholeData);
 
         // TODO: test validations
     }
@@ -160,7 +165,7 @@ public class TablesApiTest {
     public void replaceDailyReportTest() throws ApiException {
         Integer restaurant = null;
         LocalDate date = null;
-        List<Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems> body = null;
+        List<DataEntry> body = null;
         Boolean _return = null;
         List<DataEntry> response = api.replaceDailyReport(restaurant, date, body, _return);
 

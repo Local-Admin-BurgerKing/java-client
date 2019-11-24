@@ -13,7 +13,7 @@
 package com.localadmin.api;
 
 import com.localadmin.ApiException;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
+import com.localadmin.model.ErrorResponse;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -40,7 +40,8 @@ public class FormulasApiTest {
      */
     @Test
     public void addDailyformulaTest() throws ApiException {
-        api.addDailyformula();
+        Object body = null;
+        api.addDailyformula(body);
 
         // TODO: test validations
     }
@@ -193,7 +194,8 @@ public class FormulasApiTest {
     @Test
     public void replaceDailyformulaTest() throws ApiException {
         String name = null;
-        api.replaceDailyformula(name);
+        Object body = null;
+        api.replaceDailyformula(name, body);
 
         // TODO: test validations
     }

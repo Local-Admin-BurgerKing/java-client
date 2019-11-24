@@ -13,8 +13,8 @@
 package com.localadmin.api;
 
 import com.localadmin.ApiException;
-import com.localadmin.model.Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
+import com.localadmin.model.ErrorResponse;
+import com.localadmin.model.Permission;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -41,7 +41,7 @@ public class PermissionsApiTest {
      */
     @Test
     public void getAllPermissionsTest() throws ApiException {
-        List<Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems> response = api.getAllPermissions();
+        List<Permission> response = api.getAllPermissions();
 
         // TODO: test validations
     }
@@ -56,7 +56,7 @@ public class PermissionsApiTest {
     @Test
     public void getPermissionTest() throws ApiException {
         String name = null;
-        Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems response = api.getPermission(name);
+        Permission response = api.getPermission(name);
 
         // TODO: test validations
     }

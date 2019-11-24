@@ -13,7 +13,7 @@
 package com.localadmin.api;
 
 import com.localadmin.ApiException;
-import com.localadmin.model.Paths1authgetresponses401contentapplication1jsonschema;
+import com.localadmin.model.ErrorResponse;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -42,6 +42,21 @@ public class DataApiTest {
     public void addSalaryLevelTest() throws ApiException {
         String name = null;
         api.addSalaryLevel(name);
+
+        // TODO: test validations
+    }
+    /**
+     * GET salary levels
+     *
+     * lists all salary levels
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void getSalaryLevelsTest() throws ApiException {
+        Boolean wholeData = null;
+        List<Object> response = api.getSalaryLevels(wholeData);
 
         // TODO: test validations
     }

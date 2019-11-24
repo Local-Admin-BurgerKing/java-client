@@ -14,8 +14,7 @@ package com.localadmin.api;
 
 import com.localadmin.ApiException;
 import com.localadmin.model.Emailsettings;
-import com.localadmin.model.Paths1authgetresponses401contentapplication1jsonschema;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
+import com.localadmin.model.ErrorResponse;
 import org.junit.Test;
 import org.junit.Ignore;
 

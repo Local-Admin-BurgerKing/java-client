@@ -15,7 +15,6 @@ package com.localadmin.api;
 import com.localadmin.ApiException;
 import com.localadmin.model.Apikeywrapper;
 import com.localadmin.model.ErrorResponse;
-import com.localadmin.model.Paths1authgetresponses401contentapplication1jsonschema;
 import org.junit.Test;
 import org.junit.Ignore;
 

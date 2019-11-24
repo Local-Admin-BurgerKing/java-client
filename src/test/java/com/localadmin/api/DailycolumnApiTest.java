@@ -13,8 +13,7 @@
 package com.localadmin.api;
 
 import com.localadmin.ApiException;
-import com.localadmin.model.Paths1dailycolumnsgetresponses200contentapplication1jsonschemaitemsoneOf1;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
+import com.localadmin.model.ErrorResponse;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -41,7 +40,8 @@ public class DailycolumnApiTest {
      */
     @Test
     public void addDailycolumnTest() throws ApiException {
-        api.addDailycolumn();
+        Object body = null;
+        api.addDailycolumn(body);
 
         // TODO: test validations
     }
@@ -116,7 +116,7 @@ public class DailycolumnApiTest {
     @Test
     public void getDailycolumnTest() throws ApiException {
         String name = null;
-        Paths1dailycolumnsgetresponses200contentapplication1jsonschemaitemsoneOf1 response = api.getDailycolumn(name);
+        Object response = api.getDailycolumn(name);
 
         // TODO: test validations
     }
@@ -131,7 +131,8 @@ public class DailycolumnApiTest {
     @Test
     public void replaceDailycolumnTest() throws ApiException {
         String name = null;
-        api.replaceDailycolumn(name);
+        Object body = null;
+        api.replaceDailycolumn(name, body);
 
         // TODO: test validations
     }

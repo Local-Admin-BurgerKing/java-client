@@ -13,7 +13,8 @@
 package com.localadmin.api;
 
 import com.localadmin.ApiException;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
+import com.localadmin.model.ErrorResponse;
+import com.localadmin.model.Group;
 import com.localadmin.model.Permission;
 import org.junit.Test;
 import org.junit.Ignore;
@@ -57,7 +58,8 @@ public class UsergroupApiTest {
      */
     @Test
     public void createGroupTest() throws ApiException {
-        api.createGroup();
+        Group body = null;
+        api.createGroup(body);
 
         // TODO: test validations
     }

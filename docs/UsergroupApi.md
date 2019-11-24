@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 <a name="addGroupPermission"></a>
 # **addGroupPermission**
-> addGroupPermission(name, name2)
+> addGroupPermission(name, name)
 
 Add group permission
 
@@ -41,9 +41,9 @@ User_Auth.setApiKey("YOUR API KEY");
 
 UsergroupApi apiInstance = new UsergroupApi();
 String name = "name_example"; // String | Name of a group
-String name2 = "name_example"; // String | The name of new permission to add
+String name = "name_example"; // String | The name of new permission to add
 try {
-    apiInstance.addGroupPermission(name, name2);
+    apiInstance.addGroupPermission(name, name);
 } catch (ApiException e) {
     System.err.println("Exception when calling UsergroupApi#addGroupPermission");
     e.printStackTrace();
@@ -55,7 +55,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | **String**| Name of a group |
- **name2** | **String**| The name of new permission to add |
+ **name** | **String**| The name of new permission to add |
 
 ### Return type
 
@@ -446,7 +446,7 @@ null (empty response body)
 
 <a name="updateGroupName"></a>
 # **updateGroupName**
-> updateGroupName(name, name2)
+> updateGroupName(name, name)
 
 Rename group
 
@@ -471,9 +471,9 @@ User_Auth.setApiKey("YOUR API KEY");
 
 UsergroupApi apiInstance = new UsergroupApi();
 String name = "name_example"; // String | 
-String name2 = "name_example"; // String | New name of the group
+String name = "name_example"; // String | New name of the group
 try {
-    apiInstance.updateGroupName(name, name2);
+    apiInstance.updateGroupName(name, name);
 } catch (ApiException e) {
     System.err.println("Exception when calling UsergroupApi#updateGroupName");
     e.printStackTrace();
@@ -485,7 +485,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | **String**|  |
- **name2** | **String**| New name of the group |
+ **name** | **String**| New name of the group |
 
 ### Return type
 

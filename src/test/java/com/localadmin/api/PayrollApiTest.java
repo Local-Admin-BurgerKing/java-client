@@ -13,11 +13,10 @@
 package com.localadmin.api;
 
 import com.localadmin.ApiException;
+import com.localadmin.model.ErrorResponse;
 import java.time.LocalDate;
-import com.localadmin.model.Paths1authgetresponses401contentapplication1jsonschema;
-import com.localadmin.model.Paths1payroll17Brestaurant7D1changes17Bdate7Dgetresponses200contentapplication1jsonschemaitems;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
-import com.localadmin.model.Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0;
+import com.localadmin.model.SalaryChange;
+import com.localadmin.model.SalaryChange1;
 import com.localadmin.model.SalaryInformation;
 import com.localadmin.model.SalaryLevel;
 import com.localadmin.model.TimeFilter;
@@ -50,7 +49,8 @@ public class PayrollApiTest {
     public void addSalaryChangeTest() throws ApiException {
         String name = null;
         Integer restaurant = null;
-        api.addSalaryChange(name, restaurant);
+        SalaryChange1 body = null;
+        api.addSalaryChange(name, restaurant, body);
 
         // TODO: test validations
     }
@@ -161,7 +161,7 @@ public class PayrollApiTest {
     public void getPayrollTest() throws ApiException {
         String name = null;
         Integer restaurant = null;
-        List<Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0> response = api.getPayroll(name, restaurant);
+        List<SalaryChange> response = api.getPayroll(name, restaurant);
 
         // TODO: test validations
     }
@@ -209,7 +209,7 @@ public class PayrollApiTest {
     public void getRestaurantChanges_Test() throws ApiException {
         Integer restaurant = null;
         TimeFilter body = null;
-        List<Paths1payroll17Brestaurant7D1changes17Bdate7Dgetresponses200contentapplication1jsonschemaitems> response = api.getRestaurantChanges_(restaurant, body);
+        List<Object> response = api.getRestaurantChanges_(restaurant, body);
 
         // TODO: test validations
     }
@@ -227,7 +227,7 @@ public class PayrollApiTest {
         Integer restaurant = null;
         LocalDate date = null;
         Boolean actualUse = null;
-        Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0 response = api.getSalaryChange(name, restaurant, date, actualUse);
+        SalaryChange response = api.getSalaryChange(name, restaurant, date, actualUse);
 
         // TODO: test validations
     }

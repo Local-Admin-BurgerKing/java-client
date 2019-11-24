@@ -13,10 +13,9 @@
 package com.localadmin.api;
 
 import com.localadmin.ApiException;
+import com.localadmin.model.ErrorResponse;
 import com.localadmin.model.InlineResponse200;
 import com.localadmin.model.InlineResponse2001;
-import com.localadmin.model.Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -43,7 +42,7 @@ public class ColumnApiTest {
      */
     @Test
     public void getAllColumnsTest() throws ApiException {
-        List<Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems> response = api.getAllColumns();
+        List<String> response = api.getAllColumns();
 
         // TODO: test validations
     }

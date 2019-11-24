@@ -13,9 +13,10 @@
 package com.localadmin.api;
 
 import com.localadmin.ApiException;
-import com.localadmin.model.ErrorResponse1;
-import com.localadmin.model.Paths1restaurantsgetresponses200contentapplication1jsonschemaitemsoneOf1;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
+import com.localadmin.model.ErrorResponse;
+import com.localadmin.model.Restaurant;
+import com.localadmin.model.Restaurant1;
+import com.localadmin.model.Restaurant2;
 import com.localadmin.model.Restaurantoptional;
 import org.junit.Test;
 import org.junit.Ignore;
@@ -59,7 +60,8 @@ public class RestaurantApiTest {
      */
     @Test
     public void addRestaurantTest() throws ApiException {
-        api.addRestaurant();
+        Restaurant body = null;
+        api.addRestaurant(body);
 
         // TODO: test validations
     }
@@ -104,7 +106,7 @@ public class RestaurantApiTest {
     public void editRestaurantTest() throws ApiException {
         Integer number = null;
         Restaurantoptional body = null;
-        Paths1restaurantsgetresponses200contentapplication1jsonschemaitemsoneOf1 response = api.editRestaurant(number, body);
+        Restaurant2 response = api.editRestaurant(number, body);
 
         // TODO: test validations
     }
@@ -196,7 +198,8 @@ public class RestaurantApiTest {
     @Test
     public void replaceRestaurantTest() throws ApiException {
         Integer number = null;
-        api.replaceRestaurant(number);
+        Restaurant1 body = null;
+        api.replaceRestaurant(number, body);
 
         // TODO: test validations
     }

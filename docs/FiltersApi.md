@@ -334,7 +334,7 @@ null (empty response body)
 
 <a name="renameFilter"></a>
 # **renameFilter**
-> renameFilter(name, name2)
+> renameFilter(name, name)
 
 Rename filter
 
@@ -359,9 +359,9 @@ User_Auth.setApiKey("YOUR API KEY");
 
 FiltersApi apiInstance = new FiltersApi();
 String name = "name_example"; // String | Reference name of a valid filter
-String name2 = "name_example"; // String | The new name
+String name = "name_example"; // String | The new name
 try {
-    apiInstance.renameFilter(name, name2);
+    apiInstance.renameFilter(name, name);
 } catch (ApiException e) {
     System.err.println("Exception when calling FiltersApi#renameFilter");
     e.printStackTrace();
@@ -373,7 +373,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | **String**| Reference name of a valid filter |
- **name2** | **String**| The new name |
+ **name** | **String**| The new name |
 
 ### Return type
 

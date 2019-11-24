@@ -13,8 +13,10 @@
 package com.localadmin.api;
 
 import com.localadmin.ApiException;
-import com.localadmin.model.Paths1restaurantsgetresponses401contentapplication1jsonschema;
-import com.localadmin.model.Paths1usersgetresponses200contentapplication1jsonschemaitemsoneOf1;
+import com.localadmin.model.ErrorResponse;
+import com.localadmin.model.User;
+import com.localadmin.model.User1;
+import com.localadmin.model.User2;
 import com.localadmin.model.Useroptional;
 import org.junit.Test;
 import org.junit.Ignore;
@@ -42,7 +44,8 @@ public class UserApiTest {
      */
     @Test
     public void addUserTest() throws ApiException {
-        api.addUser();
+        User body = null;
+        api.addUser(body);
 
         // TODO: test validations
     }
@@ -135,7 +138,7 @@ public class UserApiTest {
     @Test
     public void getUserTest() throws ApiException {
         String mail = null;
-        Paths1usersgetresponses200contentapplication1jsonschemaitemsoneOf1 response = api.getUser(mail);
+        User1 response = api.getUser(mail);
 
         // TODO: test validations
     }
@@ -150,7 +153,8 @@ public class UserApiTest {
     @Test
     public void replaceUserTest() throws ApiException {
         String mail = null;
-        api.replaceUser(mail);
+        User2 body = null;
+        api.replaceUser(mail, body);
 
         // TODO: test validations
     }
