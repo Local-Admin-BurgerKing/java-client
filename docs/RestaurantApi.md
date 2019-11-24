@@ -27,11 +27,11 @@ Adds a new user to the restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -74,7 +74,7 @@ null (empty response body)
 
 <a name="addRestaurant"></a>
 # **addRestaurant**
-> addRestaurant(body)
+> addRestaurant()
 
 Add Restaurant
 
@@ -83,11 +83,11 @@ Adds a new restaurant to the Restaurant list
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -98,9 +98,8 @@ User_Auth.setApiKey("YOUR API KEY");
 //User_Auth.setApiKeyPrefix("Token");
 
 RestaurantApi apiInstance = new RestaurantApi();
-Restaurant body = new Restaurant(); // Restaurant | The restaurant to Add
 try {
-    apiInstance.addRestaurant(body);
+    apiInstance.addRestaurant();
 } catch (ApiException e) {
     System.err.println("Exception when calling RestaurantApi#addRestaurant");
     e.printStackTrace();
@@ -108,10 +107,7 @@ try {
 ```
 
 ### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**Restaurant**](Restaurant.md)| The restaurant to Add | [optional]
+This endpoint does not need any parameter.
 
 ### Return type
 
@@ -137,11 +133,11 @@ Deletes all saved information about all restaurants
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -187,11 +183,11 @@ Deletes an existing restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -232,7 +228,7 @@ null (empty response body)
 
 <a name="editRestaurant"></a>
 # **editRestaurant**
-> Restaurant2 editRestaurant(number, body)
+> Paths1restaurantsgetresponses200contentapplication1jsonschemaitemsoneOf1 editRestaurant(number, body)
 
 Edit Restaurant
 
@@ -241,11 +237,11 @@ Edit specific columns of a restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -259,7 +255,7 @@ RestaurantApi apiInstance = new RestaurantApi();
 Integer number = 56; // Integer | number of the restaurant
 Restaurantoptional body = new Restaurantoptional(); // Restaurantoptional | The columns that have to be added
 try {
-    Restaurant2 result = apiInstance.editRestaurant(number, body);
+    Paths1restaurantsgetresponses200contentapplication1jsonschemaitemsoneOf1 result = apiInstance.editRestaurant(number, body);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling RestaurantApi#editRestaurant");
@@ -276,7 +272,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Restaurant2**](Restaurant2.md)
+[**Paths1restaurantsgetresponses200contentapplication1jsonschemaitemsoneOf1**](Paths1restaurantsgetresponses200contentapplication1jsonschemaitemsoneOf1.md)
 
 ### Authorization
 
@@ -298,11 +294,11 @@ Get all users from a restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -353,11 +349,11 @@ Get all restaurants
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -408,11 +404,11 @@ Gets the restaurant by the sended ID
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -465,11 +461,11 @@ Remove all users from the restaurant so there are no employees anymore
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -519,11 +515,11 @@ Removes an user from the restaurant so its no employee there anymore
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -566,7 +562,7 @@ null (empty response body)
 
 <a name="replaceRestaurant"></a>
 # **replaceRestaurant**
-> replaceRestaurant(number, body)
+> replaceRestaurant(number)
 
 Replace Restaurant
 
@@ -575,11 +571,11 @@ Replaces an already existing restaurant by a new one
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.RestaurantApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.RestaurantApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -591,10 +587,8 @@ User_Auth.setApiKey("YOUR API KEY");
 
 RestaurantApi apiInstance = new RestaurantApi();
 Integer number = 56; // Integer | number of the restaurant
-Restaurant1 body = new Restaurant1(); // Restaurant1 | The restaurant to replace with.
-> The `number`-attribute gets ignored
 try {
-    apiInstance.replaceRestaurant(number, body);
+    apiInstance.replaceRestaurant(number);
 } catch (ApiException e) {
     System.err.println("Exception when calling RestaurantApi#replaceRestaurant");
     e.printStackTrace();
@@ -606,8 +600,6 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **number** | **Integer**| number of the restaurant |
- **body** | [**Restaurant1**](Restaurant1.md)| The restaurant to replace with.
-&gt; The &#x60;number&#x60;-attribute gets ignored | [optional]
 
 ### Return type
 

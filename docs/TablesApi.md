@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 <a name="addDailyReport"></a>
 # **addDailyReport**
-> addDailyReport(restaurant, body)
+> addDailyReport(restaurant)
 
 Add daily report
 
@@ -25,11 +25,11 @@ Add a new data-entry/report to the restaurants table
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.TablesApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.TablesApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -41,9 +41,8 @@ User_Auth.setApiKey("YOUR API KEY");
 
 TablesApi apiInstance = new TablesApi();
 Integer restaurant = 56; // Integer | ID of a restaurant
-Report body = new Report(); // Report | Representation of a data entry, consisting of a date and single column values
 try {
-    apiInstance.addDailyReport(restaurant, body);
+    apiInstance.addDailyReport(restaurant);
 } catch (ApiException e) {
     System.err.println("Exception when calling TablesApi#addDailyReport");
     e.printStackTrace();
@@ -55,7 +54,6 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **restaurant** | **Integer**| ID of a restaurant |
- **body** | [**Report**](Report.md)| Representation of a data entry, consisting of a date and single column values | [optional]
 
 ### Return type
 
@@ -81,11 +79,11 @@ Retrieve all entries from all restaurants
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.TablesApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.TablesApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -129,7 +127,7 @@ Name | Type | Description  | Notes
 
 <a name="getDateReports"></a>
 # **getDateReports**
-> List&lt;ReportWithReference&gt; getDateReports(date, body, wholeData)
+> List&lt;ReportWithReference&gt; getDateReports(date, wholeData)
 
 Get all daily reports
 
@@ -138,11 +136,11 @@ Retrieve all reports of a specific day from every restaurants
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.TablesApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.TablesApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -154,10 +152,9 @@ User_Auth.setApiKey("YOUR API KEY");
 
 TablesApi apiInstance = new TablesApi();
 LocalDate date = new LocalDate(); // LocalDate | Date in the format 12.12.2001
-Filter2 body = new Filter2(); // Filter2 | The filter can only be a column filter (time filter wouldnt make sense)
 Boolean wholeData = true; // Boolean | if true you will get all the data instead of only reference names
 try {
-    List<ReportWithReference> result = apiInstance.getDateReports(date, body, wholeData);
+    List<ReportWithReference> result = apiInstance.getDateReports(date, wholeData);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling TablesApi#getDateReports");
@@ -170,7 +167,6 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **date** | **LocalDate**| Date in the format 12.12.2001 |
- **body** | [**Filter2**](Filter2.md)| The filter can only be a column filter (time filter wouldnt make sense) | [optional]
  **wholeData** | **Boolean**| if true you will get all the data instead of only reference names | [optional]
 
 ### Return type
@@ -188,7 +184,7 @@ Name | Type | Description  | Notes
 
 <a name="getRestaurantDateColumn"></a>
 # **getRestaurantDateColumn**
-> DataEntry getRestaurantDateColumn(restaurant, date, column)
+> Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems getRestaurantDateColumn(restaurant, date, column)
 
 Get daily report column
 
@@ -197,11 +193,11 @@ Get the value for the specified column, on the specified day, in the specified r
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.TablesApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.TablesApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -216,7 +212,7 @@ Integer restaurant = 56; // Integer | ID of a restaurant
 LocalDate date = new LocalDate(); // LocalDate | Date in the format 12.12.2001
 String column = "column_example"; // String | Name of column, which exists in the given report
 try {
-    DataEntry result = apiInstance.getRestaurantDateColumn(restaurant, date, column);
+    Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems result = apiInstance.getRestaurantDateColumn(restaurant, date, column);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling TablesApi#getRestaurantDateColumn");
@@ -234,7 +230,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**DataEntry**](DataEntry.md)
+[**Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems**](Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems.md)
 
 ### Authorization
 
@@ -247,7 +243,7 @@ Name | Type | Description  | Notes
 
 <a name="getRestaurantDateReport"></a>
 # **getRestaurantDateReport**
-> Report1 getRestaurantDateReport(restaurant, date)
+> Paths1tables17Brestaurant7D1reportsgetresponses200contentapplication1jsonschemaitemsoneOf0items getRestaurantDateReport(restaurant, date)
 
 Get daily report
 
@@ -256,11 +252,11 @@ Get the report on the given day of the specified restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.TablesApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.TablesApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -274,7 +270,7 @@ TablesApi apiInstance = new TablesApi();
 Integer restaurant = 56; // Integer | ID of a restaurant
 LocalDate date = new LocalDate(); // LocalDate | Date in the format (12.12.2001)
 try {
-    Report1 result = apiInstance.getRestaurantDateReport(restaurant, date);
+    Paths1tables17Brestaurant7D1reportsgetresponses200contentapplication1jsonschemaitemsoneOf0items result = apiInstance.getRestaurantDateReport(restaurant, date);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling TablesApi#getRestaurantDateReport");
@@ -291,7 +287,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Report1**](Report1.md)
+[**Paths1tables17Brestaurant7D1reportsgetresponses200contentapplication1jsonschemaitemsoneOf0items**](Paths1tables17Brestaurant7D1reportsgetresponses200contentapplication1jsonschemaitemsoneOf0items.md)
 
 ### Authorization
 
@@ -304,7 +300,7 @@ Name | Type | Description  | Notes
 
 <a name="getRestaurantReports"></a>
 # **getRestaurantReports**
-> List&lt;Object&gt; getRestaurantReports(restaurant, body, wholeData)
+> List&lt;Object&gt; getRestaurantReports(restaurant, wholeData)
 
 Get restaurant&#x27;s reports
 
@@ -313,11 +309,11 @@ Get all entries from a specific restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.TablesApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.TablesApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -329,10 +325,9 @@ User_Auth.setApiKey("YOUR API KEY");
 
 TablesApi apiInstance = new TablesApi();
 Integer restaurant = 56; // Integer | ID of a restaurant
-FilterWrapper1 body = new FilterWrapper1(); // FilterWrapper1 | The filter can either be a column-filter or a time-filter
 Boolean wholeData = true; // Boolean | if true you will get all the data instead of only reference names
 try {
-    List<Object> result = apiInstance.getRestaurantReports(restaurant, body, wholeData);
+    List<Object> result = apiInstance.getRestaurantReports(restaurant, wholeData);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling TablesApi#getRestaurantReports");
@@ -345,7 +340,6 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **restaurant** | **Integer**| ID of a restaurant |
- **body** | [**FilterWrapper1**](FilterWrapper1.md)| The filter can either be a column-filter or a time-filter | [optional]
  **wholeData** | **Boolean**| if true you will get all the data instead of only reference names | [optional]
 
 ### Return type
@@ -372,11 +366,11 @@ Remove the data entry / report on the given day
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.TablesApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.TablesApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -428,11 +422,11 @@ Update the report on the given day, of the given restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.TablesApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.TablesApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -445,7 +439,7 @@ User_Auth.setApiKey("YOUR API KEY");
 TablesApi apiInstance = new TablesApi();
 Integer restaurant = 56; // Integer | ID of a restaurant
 LocalDate date = new LocalDate(); // LocalDate | Date in the format (12.12.2001)
-List<DataEntry> body = Arrays.asList(new DataEntry()); // List<DataEntry> | Represents a list of columns and associated values
+List<Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems> body = Arrays.asList(new Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems()); // List<Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems> | Represents a list of columns and associated values
 Boolean _return = true; // Boolean | If true, the changed report will be returned
 try {
     List<DataEntry> result = apiInstance.replaceDailyReport(restaurant, date, body, _return);
@@ -462,7 +456,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **restaurant** | **Integer**| ID of a restaurant |
  **date** | **LocalDate**| Date in the format (12.12.2001) |
- **body** | [**List&lt;DataEntry&gt;**](DataEntry.md)| Represents a list of columns and associated values | [optional]
+ **body** | [**List&lt;Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems&gt;**](Paths1tables17Brestaurant7D1report17Bdate7Dpatchresponses206contentapplication1jsonschemaitems.md)| Represents a list of columns and associated values | [optional]
  **_return** | **Boolean**| If true, the changed report will be returned | [optional]
 
 ### Return type
@@ -489,11 +483,11 @@ Update the value of the given column, on the given day, in a specfied restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.TablesApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.TablesApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 

@@ -1,8 +1,7 @@
-# swagger-java-client
+# java-client
 
 rest-api
 - API version: 1.1.0
-  - Build date: 2019-11-20T15:33:44.001Z[GMT]
 
 An api to fetch manipulate and enter data to the Local Admin service. All Responses can be done with JSON and XML where JSON is the default. You can change the response by setting the content-type header. The downside of our XML is that we do not provide XLS for the Responses
 
@@ -38,9 +37,9 @@ Add this dependency to your project's POM:
 
 ```xml
 <dependency>
-  <groupId>io.swagger</groupId>
-  <artifactId>swagger-java-client</artifactId>
-  <version>1.0.0</version>
+  <groupId>com.localadmin</groupId>
+  <artifactId>java-client</artifactId>
+  <version>1.0</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -50,7 +49,7 @@ Add this dependency to your project's POM:
 Add this dependency to your project's build file:
 
 ```groovy
-compile "io.swagger:swagger-java-client:1.0.0"
+compile "com.localadmin:java-client:1.0"
 ```
 
 ### Others
@@ -63,7 +62,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/swagger-java-client-1.0.0.jar`
+* `target/java-client-1.0.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -71,68 +70,10 @@ Then manually install the following JARs:
 Please follow the [installation](#installation) instruction and execute the following Java code:
 
 ```java
-import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.ColumnApi;
-
-import java.io.File;
-import java.util.*;
-
-public class ColumnApiExample {
-
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-        // Configure API key authorization: User_Auth
-        ApiKeyAuth User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
-        User_Auth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //User_Auth.setApiKeyPrefix("Token");
-
-        ColumnApi apiInstance = new ColumnApi();
-        Column body = new Column(); // Column | The column to add
-        try {
-            apiInstance.addColumn(body);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling ColumnApi#addColumn");
-            e.printStackTrace();
-        }
-    }
-}
-import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.ColumnApi;
-
-import java.io.File;
-import java.util.*;
-
-public class ColumnApiExample {
-
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-        // Configure API key authorization: User_Auth
-        ApiKeyAuth User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
-        User_Auth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //User_Auth.setApiKeyPrefix("Token");
-
-        ColumnApi apiInstance = new ColumnApi();
-        String name = "name_example"; // String | The name of the column one wants to get
-        try {
-            apiInstance.deleteColumn(name);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling ColumnApi#deleteColumn");
-            e.printStackTrace();
-        }
-    }
-}
-import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.ColumnApi;
+import com.localadmin.*;
+import com.localadmin.auth.*;
+import com.localadmin.model.*;
+import com.localadmin.api.ColumnApi;
 
 import java.io.File;
 import java.util.*;
@@ -150,66 +91,7 @@ public class ColumnApiExample {
 
         ColumnApi apiInstance = new ColumnApi();
         try {
-            apiInstance.deleteColumns();
-        } catch (ApiException e) {
-            System.err.println("Exception when calling ColumnApi#deleteColumns");
-            e.printStackTrace();
-        }
-    }
-}
-import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.ColumnApi;
-
-import java.io.File;
-import java.util.*;
-
-public class ColumnApiExample {
-
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-        // Configure API key authorization: User_Auth
-        ApiKeyAuth User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
-        User_Auth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //User_Auth.setApiKeyPrefix("Token");
-
-        ColumnApi apiInstance = new ColumnApi();
-        String name = "name_example"; // String | The name of the column one wants to get
-        Columnoptional body = new Columnoptional(); // Columnoptional | The columns that have to be added
-        try {
-            apiInstance.editColumn(name, body);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling ColumnApi#editColumn");
-            e.printStackTrace();
-        }
-    }
-}
-import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.ColumnApi;
-
-import java.io.File;
-import java.util.*;
-
-public class ColumnApiExample {
-
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-        // Configure API key authorization: User_Auth
-        ApiKeyAuth User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
-        User_Auth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //User_Auth.setApiKeyPrefix("Token");
-
-        ColumnApi apiInstance = new ColumnApi();
-        Boolean wholeData = true; // Boolean | if true you will get all the data instead of only reference names
-        try {
-            List<Object> result = apiInstance.getAllColumns(wholeData);
+            List<Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems> result = apiInstance.getAllColumns();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ColumnApi#getAllColumns");
@@ -217,10 +99,10 @@ public class ColumnApiExample {
         }
     }
 }
-import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.ColumnApi;
+import com.localadmin.*;
+import com.localadmin.auth.*;
+import com.localadmin.model.*;
+import com.localadmin.api.ColumnApi;
 
 import java.io.File;
 import java.util.*;
@@ -237,20 +119,20 @@ public class ColumnApiExample {
         //User_Auth.setApiKeyPrefix("Token");
 
         ColumnApi apiInstance = new ColumnApi();
-        String name = "name_example"; // String | The name of the column one wants to get
+        String name = "name_example"; // String | name of the column
         try {
-            Column1 result = apiInstance.getColumn(name);
+            InlineResponse200 result = apiInstance.getColumnType(name);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling ColumnApi#getColumn");
+            System.err.println("Exception when calling ColumnApi#getColumnType");
             e.printStackTrace();
         }
     }
 }
-import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.ColumnApi;
+import com.localadmin.*;
+import com.localadmin.auth.*;
+import com.localadmin.model.*;
+import com.localadmin.api.ColumnApi;
 
 import java.io.File;
 import java.util.*;
@@ -267,13 +149,12 @@ public class ColumnApiExample {
         //User_Auth.setApiKeyPrefix("Token");
 
         ColumnApi apiInstance = new ColumnApi();
-        String name = "name_example"; // String | The name of the column one wants to get
-        Column2 body = new Column2(); // Column2 | The column to replace with.
-> The nameattribute is ignored
+        String name = "name_example"; // String | Name of the column
         try {
-            apiInstance.replaceColumn(name, body);
+            InlineResponse2001 result = apiInstance.isColumnInUse(name);
+            System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling ColumnApi#replaceColumn");
+            System.err.println("Exception when calling ColumnApi#isColumnInUse");
             e.printStackTrace();
         }
     }
@@ -286,15 +167,17 @@ All URIs are relative to *http://localhost:8080/local-admin-api/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*ColumnApi* | [**addColumn**](docs/ColumnApi.md#addColumn) | **POST** /column | Add Column
-*ColumnApi* | [**deleteColumn**](docs/ColumnApi.md#deleteColumn) | **DELETE** /columns/{name} | Delete Column
-*ColumnApi* | [**deleteColumns**](docs/ColumnApi.md#deleteColumns) | **DELETE** /column | Delete All Columns
-*ColumnApi* | [**editColumn**](docs/ColumnApi.md#editColumn) | **PATCH** /columns/{name} | Edit Column
-*ColumnApi* | [**getAllColumns**](docs/ColumnApi.md#getAllColumns) | **GET** /column | Get All Columns
-*ColumnApi* | [**getColumn**](docs/ColumnApi.md#getColumn) | **GET** /columns/{name} | Get Column Data
-*ColumnApi* | [**replaceColumn**](docs/ColumnApi.md#replaceColumn) | **PUT** /columns/{name} | Replace Column
+*ColumnApi* | [**getAllColumns**](docs/ColumnApi.md#getAllColumns) | **GET** /columns | Get All Columns
+*ColumnApi* | [**getColumnType**](docs/ColumnApi.md#getColumnType) | **GET** /column/type/{name} | Get Typeof Column
+*ColumnApi* | [**isColumnInUse**](docs/ColumnApi.md#isColumnInUse) | **GET** /column/inuse/{name} | Is Column in Use
+*DailycolumnApi* | [**addDailycolumn**](docs/DailycolumnApi.md#addDailycolumn) | **POST** /dailycolumns | Add Dailycolumn
+*DailycolumnApi* | [**deleteAllDailycolumns**](docs/DailycolumnApi.md#deleteAllDailycolumns) | **DELETE** /dailycolumns | Delete All Dailycolumns
+*DailycolumnApi* | [**deleteDailycolumn**](docs/DailycolumnApi.md#deleteDailycolumn) | **DELETE** /dailycolumn/{name} | Delete Dailycolumn
+*DailycolumnApi* | [**editDailycolumn**](docs/DailycolumnApi.md#editDailycolumn) | **PATCH** /dailycolumn/{name} | Edit Dailycolumn
+*DailycolumnApi* | [**getAllDailycolumns**](docs/DailycolumnApi.md#getAllDailycolumns) | **GET** /dailycolumns | Get All Dailycolumns
+*DailycolumnApi* | [**getDailycolumn**](docs/DailycolumnApi.md#getDailycolumn) | **GET** /dailycolumn/{name} | Get Dailycolumn
+*DailycolumnApi* | [**replaceDailycolumn**](docs/DailycolumnApi.md#replaceDailycolumn) | **PUT** /dailycolumn/{name} | Replace Dailycolumn
 *DataApi* | [**addSalaryLevel**](docs/DataApi.md#addSalaryLevel) | **POST** /salary-levels | Add Salary Level
-*DataApi* | [**getSalaryLevels**](docs/DataApi.md#getSalaryLevels) | **GET** /salary-levels | GET salary levels
 *FiltersApi* | [**createFilter**](docs/FiltersApi.md#createFilter) | **POST** /filters | Create filter
 *FiltersApi* | [**deleteFilter**](docs/FiltersApi.md#deleteFilter) | **DELETE** /filter/{name} | Remove filter
 *FiltersApi* | [**getAllFilters**](docs/FiltersApi.md#getAllFilters) | **GET** /filters | Get all filters
@@ -303,17 +186,17 @@ Class | Method | HTTP request | Description
 *FiltersApi* | [**removeAllFilters**](docs/FiltersApi.md#removeAllFilters) | **DELETE** /filters | Remove all filters
 *FiltersApi* | [**renameFilter**](docs/FiltersApi.md#renameFilter) | **PATCH** /filter/{name} | Rename filter
 *FiltersApi* | [**replaceFilterColumns**](docs/FiltersApi.md#replaceFilterColumns) | **PATCH** /filter/{name}/columns | Replace filter columns
-*FormularsApi* | [**addDailyFormular**](docs/FormularsApi.md#addDailyFormular) | **POST** /daily-formulars | Add DailyFormular
-*FormularsApi* | [**addOther**](docs/FormularsApi.md#addOther) | **POST** /daily-formular/{name}/others | Add Other
-*FormularsApi* | [**deleteAllDailyFormulars**](docs/FormularsApi.md#deleteAllDailyFormulars) | **DELETE** /daily-formulars | Delete All DailyFormulars
-*FormularsApi* | [**deleteAllOthers**](docs/FormularsApi.md#deleteAllOthers) | **DELETE** /daily-formular/{name}/others | Delete All Others
-*FormularsApi* | [**deleteDailyFormular**](docs/FormularsApi.md#deleteDailyFormular) | **DELETE** /daily-formular/{name} | Delete DailyFormular
-*FormularsApi* | [**deleteOther**](docs/FormularsApi.md#deleteOther) | **DELETE** /daily-formular/{name}/other/{other} | Delete Other
-*FormularsApi* | [**editDailyFormular**](docs/FormularsApi.md#editDailyFormular) | **PATCH** /daily-formular/{name} | Edit DailyFormular
-*FormularsApi* | [**getAllDailyFormulars**](docs/FormularsApi.md#getAllDailyFormulars) | **GET** /daily-formulars | Get All DailyFormulars
-*FormularsApi* | [**getAllOthers**](docs/FormularsApi.md#getAllOthers) | **GET** /daily-formular/{name}/others | Get All Others
-*FormularsApi* | [**getDailyFormular**](docs/FormularsApi.md#getDailyFormular) | **GET** /daily-formular/{name} | Get DailyFormular
-*FormularsApi* | [**replaceDailyFormular**](docs/FormularsApi.md#replaceDailyFormular) | **PUT** /daily-formular/{name} | Replace DailyFormular
+*FormulasApi* | [**addDailyformula**](docs/FormulasApi.md#addDailyformula) | **POST** /dailyformulas | Add Dailyformula
+*FormulasApi* | [**addOther**](docs/FormulasApi.md#addOther) | **POST** /dailyformula/{name}/others | Add Other
+*FormulasApi* | [**deleteAllDailyformulas**](docs/FormulasApi.md#deleteAllDailyformulas) | **DELETE** /dailyformulas | Delete All Dailyformulas
+*FormulasApi* | [**deleteDailyformula**](docs/FormulasApi.md#deleteDailyformula) | **DELETE** /dailyformula/{name} | Delete Dailyformula
+*FormulasApi* | [**editDailyformula**](docs/FormulasApi.md#editDailyformula) | **PATCH** /dailyformula/{name} | Edit Dailyformula
+*FormulasApi* | [**getAllDailyformulas**](docs/FormulasApi.md#getAllDailyformulas) | **GET** /dailyformulas | Get All Dailyformulas
+*FormulasApi* | [**getAllOthers**](docs/FormulasApi.md#getAllOthers) | **GET** /dailyformula/{name}/others | Get All Others
+*FormulasApi* | [**getDailyformula**](docs/FormulasApi.md#getDailyformula) | **GET** /dailyformula/{name} | Get Dailyformula
+*FormulasApi* | [**removeAllOthers**](docs/FormulasApi.md#removeAllOthers) | **DELETE** /dailyformula/{name}/others | Delete All Others
+*FormulasApi* | [**removeOther**](docs/FormulasApi.md#removeOther) | **DELETE** /dailyformula/{name}/other/{other} | Delete Other
+*FormulasApi* | [**replaceDailyformula**](docs/FormulasApi.md#replaceDailyformula) | **PUT** /dailyformula/{name} | Replace Dailyformula
 *PayrollApi* | [**addSalaryChange**](docs/PayrollApi.md#addSalaryChange) | **POST** /salary-level/{name}/payroll/{restaurant}/changes | Add Salary Level Change
 *PayrollApi* | [**addSalaryLevel**](docs/PayrollApi.md#addSalaryLevel) | **POST** /salary-levels | Add Salary Level
 *PayrollApi* | [**deletePayroll**](docs/PayrollApi.md#deletePayroll) | **DELETE** /salary-levels | Delete Payroll
@@ -362,6 +245,14 @@ Class | Method | HTTP request | Description
 *TablesApi* | [**removeReport**](docs/TablesApi.md#removeReport) | **DELETE** /tables/{restaurant}/report/{date} | Remove daily report
 *TablesApi* | [**replaceDailyReport**](docs/TablesApi.md#replaceDailyReport) | **PATCH** /tables/{restaurant}/report/{date} | Replace daily report
 *TablesApi* | [**updateReportColumn**](docs/TablesApi.md#updateReportColumn) | **PATCH** /tables/{restaurant}/report/{date}/data/{column} | Edit daily report
+*UserApi* | [**addUser**](docs/UserApi.md#addUser) | **POST** /users | Add User
+*UserApi* | [**changePasswordByToken**](docs/UserApi.md#changePasswordByToken) | **PATCH** /user/resetpassword/{mail}/token | Change Password By Token
+*UserApi* | [**deleteAllUsers**](docs/UserApi.md#deleteAllUsers) | **DELETE** /users | Delete All Users
+*UserApi* | [**deleteUser**](docs/UserApi.md#deleteUser) | **DELETE** /user/{mail} | Delete User
+*UserApi* | [**editUser**](docs/UserApi.md#editUser) | **PATCH** /user/{mail} | Edit User
+*UserApi* | [**getAllUsers**](docs/UserApi.md#getAllUsers) | **GET** /users | Get All Users
+*UserApi* | [**getUser**](docs/UserApi.md#getUser) | **GET** /user/{mail} | Get User
+*UserApi* | [**replaceUser**](docs/UserApi.md#replaceUser) | **PUT** /user/{mail} | Replace User
 *UsergroupApi* | [**addGroupPermission**](docs/UsergroupApi.md#addGroupPermission) | **PUT** /group/{name}/permissions | Add group permission
 *UsergroupApi* | [**createGroup**](docs/UsergroupApi.md#createGroup) | **POST** /groups | Create group
 *UsergroupApi* | [**getAllGroups**](docs/UsergroupApi.md#getAllGroups) | **GET** /groups | Get all groups
@@ -376,35 +267,24 @@ Class | Method | HTTP request | Description
 ## Documentation for Models
 
  - [Apikeywrapper](docs/Apikeywrapper.md)
- - [Column](docs/Column.md)
- - [Column1](docs/Column1.md)
- - [Column2](docs/Column2.md)
- - [Columnoptional](docs/Columnoptional.md)
  - [DataEntry](docs/DataEntry.md)
  - [Emailsettings](docs/Emailsettings.md)
  - [ErrorResponse](docs/ErrorResponse.md)
+ - [ErrorResponse1](docs/ErrorResponse1.md)
  - [Filter](docs/Filter.md)
- - [Filter1](docs/Filter1.md)
- - [Filter2](docs/Filter2.md)
  - [FilterWrapper](docs/FilterWrapper.md)
- - [FilterWrapper1](docs/FilterWrapper1.md)
- - [Group](docs/Group.md)
+ - [InlineResponse200](docs/InlineResponse200.md)
+ - [InlineResponse2001](docs/InlineResponse2001.md)
  - [Payroll](docs/Payroll.md)
  - [Permission](docs/Permission.md)
- - [Report](docs/Report.md)
- - [Report1](docs/Report1.md)
  - [ReportWithReference](docs/ReportWithReference.md)
- - [Restaurant](docs/Restaurant.md)
- - [Restaurant1](docs/Restaurant1.md)
- - [Restaurant2](docs/Restaurant2.md)
  - [Restaurantoptional](docs/Restaurantoptional.md)
- - [SalaryChange](docs/SalaryChange.md)
- - [SalaryChange1](docs/SalaryChange1.md)
  - [SalaryInformation](docs/SalaryInformation.md)
  - [SalaryLevel](docs/SalaryLevel.md)
  - [TimeFilter](docs/TimeFilter.md)
  - [TimeFilter1](docs/TimeFilter1.md)
  - [TimeFilter2](docs/TimeFilter2.md)
+ - [Useroptional](docs/Useroptional.md)
 
 ## Documentation for Authorization
 

@@ -4,138 +4,26 @@ All URIs are relative to *http://localhost:8080/local-admin-api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**addColumn**](ColumnApi.md#addColumn) | **POST** /column | Add Column
-[**deleteColumn**](ColumnApi.md#deleteColumn) | **DELETE** /columns/{name} | Delete Column
-[**deleteColumns**](ColumnApi.md#deleteColumns) | **DELETE** /column | Delete All Columns
-[**editColumn**](ColumnApi.md#editColumn) | **PATCH** /columns/{name} | Edit Column
-[**getAllColumns**](ColumnApi.md#getAllColumns) | **GET** /column | Get All Columns
-[**getColumn**](ColumnApi.md#getColumn) | **GET** /columns/{name} | Get Column Data
-[**replaceColumn**](ColumnApi.md#replaceColumn) | **PUT** /columns/{name} | Replace Column
+[**getAllColumns**](ColumnApi.md#getAllColumns) | **GET** /columns | Get All Columns
+[**getColumnType**](ColumnApi.md#getColumnType) | **GET** /column/type/{name} | Get Typeof Column
+[**isColumnInUse**](ColumnApi.md#isColumnInUse) | **GET** /column/inuse/{name} | Is Column in Use
 
-<a name="addColumn"></a>
-# **addColumn**
-> addColumn(body)
+<a name="getAllColumns"></a>
+# **getAllColumns**
+> List&lt;Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems&gt; getAllColumns()
 
-Add Column
+Get All Columns
 
-Adds a new column to the column list
+Gets all columns (dailycolumn, dailyformula, salarylevel)
 
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.ColumnApi;
-
-ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-// Configure API key authorization: User_Auth
-ApiKeyAuth User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
-User_Auth.setApiKey("YOUR API KEY");
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//User_Auth.setApiKeyPrefix("Token");
-
-ColumnApi apiInstance = new ColumnApi();
-Column body = new Column(); // Column | The column to add
-try {
-    apiInstance.addColumn(body);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ColumnApi#addColumn");
-    e.printStackTrace();
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**Column**](Column.md)| The column to add | [optional]
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-[User_Auth](../README.md#User_Auth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-<a name="deleteColumn"></a>
-# **deleteColumn**
-> deleteColumn(name)
-
-Delete Column
-
-Deletes an existing column
-
-### Example
-```java
-// Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.ColumnApi;
-
-ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-// Configure API key authorization: User_Auth
-ApiKeyAuth User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
-User_Auth.setApiKey("YOUR API KEY");
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//User_Auth.setApiKeyPrefix("Token");
-
-ColumnApi apiInstance = new ColumnApi();
-String name = "name_example"; // String | The name of the column one wants to get
-try {
-    apiInstance.deleteColumn(name);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ColumnApi#deleteColumn");
-    e.printStackTrace();
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **name** | **String**| The name of the column one wants to get |
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-[User_Auth](../README.md#User_Auth)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-<a name="deleteColumns"></a>
-# **deleteColumns**
-> deleteColumns()
-
-Delete All Columns
-
-Deletes all saved information about the columns
-
-### Example
-```java
-// Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.ColumnApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.ColumnApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -147,9 +35,10 @@ User_Auth.setApiKey("YOUR API KEY");
 
 ColumnApi apiInstance = new ColumnApi();
 try {
-    apiInstance.deleteColumns();
+    List<Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems> result = apiInstance.getAllColumns();
+    System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling ColumnApi#deleteColumns");
+    System.err.println("Exception when calling ColumnApi#getAllColumns");
     e.printStackTrace();
 }
 ```
@@ -159,7 +48,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-null (empty response body)
+[**List&lt;Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems&gt;**](Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems.md)
 
 ### Authorization
 
@@ -170,22 +59,22 @@ null (empty response body)
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
-<a name="editColumn"></a>
-# **editColumn**
-> editColumn(name, body)
+<a name="getColumnType"></a>
+# **getColumnType**
+> InlineResponse200 getColumnType(name)
 
-Edit Column
+Get Typeof Column
 
-Edit specific values of a column
+Gets the type of the column
 
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.ColumnApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.ColumnApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -196,68 +85,12 @@ User_Auth.setApiKey("YOUR API KEY");
 //User_Auth.setApiKeyPrefix("Token");
 
 ColumnApi apiInstance = new ColumnApi();
-String name = "name_example"; // String | The name of the column one wants to get
-Columnoptional body = new Columnoptional(); // Columnoptional | The columns that have to be added
+String name = "name_example"; // String | name of the column
 try {
-    apiInstance.editColumn(name, body);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ColumnApi#editColumn");
-    e.printStackTrace();
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **name** | **String**| The name of the column one wants to get |
- **body** | [**Columnoptional**](Columnoptional.md)| The columns that have to be added | [optional]
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-[User_Auth](../README.md#User_Auth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-<a name="getAllColumns"></a>
-# **getAllColumns**
-> List&lt;Object&gt; getAllColumns(wholeData)
-
-Get All Columns
-
-Get all columns
-
-### Example
-```java
-// Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.ColumnApi;
-
-ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-// Configure API key authorization: User_Auth
-ApiKeyAuth User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
-User_Auth.setApiKey("YOUR API KEY");
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//User_Auth.setApiKeyPrefix("Token");
-
-ColumnApi apiInstance = new ColumnApi();
-Boolean wholeData = true; // Boolean | if true you will get all the data instead of only reference names
-try {
-    List<Object> result = apiInstance.getAllColumns(wholeData);
+    InlineResponse200 result = apiInstance.getColumnType(name);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling ColumnApi#getAllColumns");
+    System.err.println("Exception when calling ColumnApi#getColumnType");
     e.printStackTrace();
 }
 ```
@@ -266,11 +99,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **wholeData** | **Boolean**| if true you will get all the data instead of only reference names | [optional]
+ **name** | **String**| name of the column |
 
 ### Return type
 
-**List&lt;Object&gt;**
+[**InlineResponse200**](InlineResponse200.md)
 
 ### Authorization
 
@@ -281,22 +114,22 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
-<a name="getColumn"></a>
-# **getColumn**
-> Column1 getColumn(name)
+<a name="isColumnInUse"></a>
+# **isColumnInUse**
+> InlineResponse2001 isColumnInUse(name)
 
-Get Column Data
+Is Column in Use
 
-Gets the column by the sended name
+Tells if the column in use or not
 
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.ColumnApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.ColumnApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -307,12 +140,12 @@ User_Auth.setApiKey("YOUR API KEY");
 //User_Auth.setApiKeyPrefix("Token");
 
 ColumnApi apiInstance = new ColumnApi();
-String name = "name_example"; // String | The name of the column one wants to get
+String name = "name_example"; // String | Name of the column
 try {
-    Column1 result = apiInstance.getColumn(name);
+    InlineResponse2001 result = apiInstance.isColumnInUse(name);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling ColumnApi#getColumn");
+    System.err.println("Exception when calling ColumnApi#isColumnInUse");
     e.printStackTrace();
 }
 ```
@@ -321,11 +154,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **String**| The name of the column one wants to get |
+ **name** | **String**| Name of the column |
 
 ### Return type
 
-[**Column1**](Column1.md)
+[**InlineResponse2001**](InlineResponse2001.md)
 
 ### Authorization
 
@@ -334,63 +167,5 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: application/json
-
-<a name="replaceColumn"></a>
-# **replaceColumn**
-> replaceColumn(name, body)
-
-Replace Column
-
-Replaces an already existing column by a new one
-
-### Example
-```java
-// Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.ColumnApi;
-
-ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-// Configure API key authorization: User_Auth
-ApiKeyAuth User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
-User_Auth.setApiKey("YOUR API KEY");
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//User_Auth.setApiKeyPrefix("Token");
-
-ColumnApi apiInstance = new ColumnApi();
-String name = "name_example"; // String | The name of the column one wants to get
-Column2 body = new Column2(); // Column2 | The column to replace with.
-> The nameattribute is ignored
-try {
-    apiInstance.replaceColumn(name, body);
-} catch (ApiException e) {
-    System.err.println("Exception when calling ColumnApi#replaceColumn");
-    e.printStackTrace();
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **name** | **String**| The name of the column one wants to get |
- **body** | [**Column2**](Column2.md)| The column to replace with.
-&gt; The nameattribute is ignored | [optional]
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-[User_Auth](../README.md#User_Auth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
  - **Accept**: application/json
 

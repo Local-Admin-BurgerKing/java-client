@@ -22,11 +22,11 @@ Adds a reciver to the email list
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.SettingsApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.SettingsApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -76,11 +76,11 @@ Edit one email setting
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.SettingsApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.SettingsApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -130,11 +130,11 @@ Returns all email-settings   &gt; At the moment returns a array with one entry a
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.SettingsApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.SettingsApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -185,11 +185,11 @@ Returns the list of email addresses which should be mailed by the mail bot
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.SettingsApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.SettingsApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -236,8 +236,8 @@ Removes the reciver from the list
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiException;
-//import io.swagger.client.api.SettingsApi;
+//import com.localadmin.ApiException;
+//import com.localadmin.api.SettingsApi;
 
 
 SettingsApi apiInstance = new SettingsApi();
@@ -280,11 +280,11 @@ Remove all recivers from the list
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.SettingsApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.SettingsApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 

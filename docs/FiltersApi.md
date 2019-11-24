@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 <a name="createFilter"></a>
 # **createFilter**
-> createFilter(body)
+> createFilter()
 
 Create filter
 
@@ -24,11 +24,11 @@ Create new filter
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.FiltersApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.FiltersApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -39,9 +39,8 @@ User_Auth.setApiKey("YOUR API KEY");
 //User_Auth.setApiKeyPrefix("Token");
 
 FiltersApi apiInstance = new FiltersApi();
-Filter body = new Filter(); // Filter | Filter, consisting of an unique name and a list of columns/formulas.
 try {
-    apiInstance.createFilter(body);
+    apiInstance.createFilter();
 } catch (ApiException e) {
     System.err.println("Exception when calling FiltersApi#createFilter");
     e.printStackTrace();
@@ -49,10 +48,7 @@ try {
 ```
 
 ### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**Filter**](Filter.md)| Filter, consisting of an unique name and a list of columns/formulas. | [optional]
+This endpoint does not need any parameter.
 
 ### Return type
 
@@ -78,11 +74,11 @@ Delete the specified Filter
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.FiltersApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.FiltersApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -132,11 +128,11 @@ The list of all filters.
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.FiltersApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.FiltersApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -178,7 +174,7 @@ Name | Type | Description  | Notes
 
 <a name="getFilter"></a>
 # **getFilter**
-> Filter1 getFilter(name)
+> Paths1filtersgetresponses200contentapplication1jsonschemaitemsoneOf0 getFilter(name)
 
 Get Filter
 
@@ -187,11 +183,11 @@ Get the specified filter and its columes / formulas.
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.FiltersApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.FiltersApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -204,7 +200,7 @@ User_Auth.setApiKey("YOUR API KEY");
 FiltersApi apiInstance = new FiltersApi();
 String name = "name_example"; // String | Reference name of a valid filter
 try {
-    Filter1 result = apiInstance.getFilter(name);
+    Paths1filtersgetresponses200contentapplication1jsonschemaitemsoneOf0 result = apiInstance.getFilter(name);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling FiltersApi#getFilter");
@@ -220,7 +216,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Filter1**](Filter1.md)
+[**Paths1filtersgetresponses200contentapplication1jsonschemaitemsoneOf0**](Paths1filtersgetresponses200contentapplication1jsonschemaitemsoneOf0.md)
 
 ### Authorization
 
@@ -242,11 +238,11 @@ Get all the Columns/Formulas of a filter.
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.FiltersApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.FiltersApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -297,11 +293,11 @@ Remove all filters
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.FiltersApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.FiltersApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -347,11 +343,11 @@ Change the name of a filter
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.FiltersApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.FiltersApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -394,7 +390,7 @@ null (empty response body)
 
 <a name="replaceFilterColumns"></a>
 # **replaceFilterColumns**
-> List&lt;String&gt; replaceFilterColumns(name, body, _return)
+> List&lt;Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems&gt; replaceFilterColumns(name, body, _return)
 
 Replace filter columns
 
@@ -403,11 +399,11 @@ Replace the list of columns/formulas of the filter.
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.FiltersApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.FiltersApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -419,10 +415,10 @@ User_Auth.setApiKey("YOUR API KEY");
 
 FiltersApi apiInstance = new FiltersApi();
 String name = "name_example"; // String | Reference name of a valid filter
-List<String> body = Arrays.asList("body_example"); // List<String> | List of the new columns/Formulas
+List<Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems> body = Arrays.asList(new Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems()); // List<Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems> | List of the new columns/Formulas
 Boolean _return = true; // Boolean | If true the changed entry will be returned
 try {
-    List<String> result = apiInstance.replaceFilterColumns(name, body, _return);
+    List<Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems> result = apiInstance.replaceFilterColumns(name, body, _return);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling FiltersApi#replaceFilterColumns");
@@ -435,12 +431,12 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | **String**| Reference name of a valid filter |
- **body** | [**List&lt;String&gt;**](String.md)| List of the new columns/Formulas | [optional]
+ **body** | [**List&lt;Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems&gt;**](Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems.md)| List of the new columns/Formulas | [optional]
  **_return** | **Boolean**| If true the changed entry will be returned | [optional]
 
 ### Return type
 
-**List&lt;String&gt;**
+[**List&lt;Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems&gt;**](Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems.md)
 
 ### Authorization
 

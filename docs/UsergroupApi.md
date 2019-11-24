@@ -25,11 +25,11 @@ Add a specific permission to a given group
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.UsergroupApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.UsergroupApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -72,7 +72,7 @@ null (empty response body)
 
 <a name="createGroup"></a>
 # **createGroup**
-> createGroup(body)
+> createGroup()
 
 Create group
 
@@ -81,11 +81,11 @@ Create a new user group
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.UsergroupApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.UsergroupApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -96,9 +96,8 @@ User_Auth.setApiKey("YOUR API KEY");
 //User_Auth.setApiKeyPrefix("Token");
 
 UsergroupApi apiInstance = new UsergroupApi();
-Group body = new Group(); // Group | Name and list of permission, specified for the group
 try {
-    apiInstance.createGroup(body);
+    apiInstance.createGroup();
 } catch (ApiException e) {
     System.err.println("Exception when calling UsergroupApi#createGroup");
     e.printStackTrace();
@@ -106,10 +105,7 @@ try {
 ```
 
 ### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**Group**](Group.md)| Name and list of permission, specified for the group | [optional]
+This endpoint does not need any parameter.
 
 ### Return type
 
@@ -135,11 +131,11 @@ The list of usergroups.
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.UsergroupApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.UsergroupApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -190,11 +186,11 @@ Get informations about the permissions of a user group.
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.UsergroupApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.UsergroupApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -245,11 +241,11 @@ Remove all available groups.
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.UsergroupApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.UsergroupApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -295,11 +291,11 @@ Remove all permission from a group
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.UsergroupApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.UsergroupApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -349,11 +345,11 @@ Delete the specified group
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.UsergroupApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.UsergroupApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -403,11 +399,11 @@ Remove a specific permission from a group
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.UsergroupApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.UsergroupApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -459,11 +455,11 @@ Rename a specified group.
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.UsergroupApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.UsergroupApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 

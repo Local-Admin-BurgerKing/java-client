@@ -27,7 +27,7 @@ Method | HTTP request | Description
 
 <a name="addSalaryChange"></a>
 # **addSalaryChange**
-> addSalaryChange(name, restaurant, body)
+> addSalaryChange(name, restaurant)
 
 Add Salary Level Change
 
@@ -36,11 +36,11 @@ Records a salary level Change
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -53,9 +53,8 @@ User_Auth.setApiKey("YOUR API KEY");
 PayrollApi apiInstance = new PayrollApi();
 String name = "name_example"; // String | Name of the salary level
 Integer restaurant = 56; // Integer | The ID of the restaurants
-SalaryChange1 body = new SalaryChange1(); // SalaryChange1 | The change to save
 try {
-    apiInstance.addSalaryChange(name, restaurant, body);
+    apiInstance.addSalaryChange(name, restaurant);
 } catch (ApiException e) {
     System.err.println("Exception when calling PayrollApi#addSalaryChange");
     e.printStackTrace();
@@ -68,7 +67,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | **String**| Name of the salary level |
  **restaurant** | **Integer**| The ID of the restaurants |
- **body** | [**SalaryChange1**](SalaryChange1.md)| The change to save | [optional]
 
 ### Return type
 
@@ -94,11 +92,11 @@ Adds a new Salary level
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -148,11 +146,11 @@ Deletes the whole payroll
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -198,11 +196,11 @@ Delete all changes for this restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -252,11 +250,11 @@ Edit the change value
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -312,11 +310,11 @@ The changes for all restaurants on this date
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -371,11 +369,11 @@ get the latest column
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -419,7 +417,7 @@ Name | Type | Description  | Notes
 
 <a name="getPayroll"></a>
 # **getPayroll**
-> List&lt;SalaryChange&gt; getPayroll(name, restaurant)
+> List&lt;Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0&gt; getPayroll(name, restaurant)
 
 Get Payroll
 
@@ -428,11 +426,11 @@ Returns all salary level changes at this salary level and resaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -446,7 +444,7 @@ PayrollApi apiInstance = new PayrollApi();
 String name = "name_example"; // String | Name of the salary level
 Integer restaurant = 56; // Integer | The ID of the restaurants
 try {
-    List<SalaryChange> result = apiInstance.getPayroll(name, restaurant);
+    List<Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0> result = apiInstance.getPayroll(name, restaurant);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PayrollApi#getPayroll");
@@ -463,7 +461,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**List&lt;SalaryChange&gt;**](SalaryChange.md)
+[**List&lt;Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0&gt;**](Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0.md)
 
 ### Authorization
 
@@ -485,11 +483,11 @@ Get some usefull information about the payroll of this restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -542,11 +540,11 @@ All salary changes at a certain date for a restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -590,7 +588,7 @@ Name | Type | Description  | Notes
 
 <a name="getRestaurantChanges_"></a>
 # **getRestaurantChanges_**
-> List&lt;Object&gt; getRestaurantChanges_(restaurant, body)
+> List&lt;Paths1payroll17Brestaurant7D1changes17Bdate7Dgetresponses200contentapplication1jsonschemaitems&gt; getRestaurantChanges_(restaurant, body)
 
 Get Changes For Restaurant
 
@@ -599,11 +597,11 @@ Get all changes for the restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -617,7 +615,7 @@ PayrollApi apiInstance = new PayrollApi();
 Integer restaurant = 56; // Integer | The id of the restaurants
 TimeFilter body = new TimeFilter(); // TimeFilter | A filter to only obtain changes at a certain time frame
 try {
-    List<Object> result = apiInstance.getRestaurantChanges_(restaurant, body);
+    List<Paths1payroll17Brestaurant7D1changes17Bdate7Dgetresponses200contentapplication1jsonschemaitems> result = apiInstance.getRestaurantChanges_(restaurant, body);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PayrollApi#getRestaurantChanges_");
@@ -634,7 +632,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**List&lt;Object&gt;**
+[**List&lt;Paths1payroll17Brestaurant7D1changes17Bdate7Dgetresponses200contentapplication1jsonschemaitems&gt;**](Paths1payroll17Brestaurant7D1changes17Bdate7Dgetresponses200contentapplication1jsonschemaitems.md)
 
 ### Authorization
 
@@ -647,7 +645,7 @@ Name | Type | Description  | Notes
 
 <a name="getSalaryChange"></a>
 # **getSalaryChange**
-> SalaryChange getSalaryChange(name, restaurant, date, actualUse)
+> Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0 getSalaryChange(name, restaurant, date, actualUse)
 
 Get Salary Level Change
 
@@ -656,11 +654,11 @@ Get the salary change of a restaurant on a certain date
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -676,7 +674,7 @@ Integer restaurant = 56; // Integer | The Id of the restaurant
 LocalDate date = new LocalDate(); // LocalDate | The date of the change
 Boolean actualUse = true; // Boolean | If *true* it returns the column used to calculate with at this day.  ### Example  15.4 -> 2300  12.6 -> 2400  if *false* you can only request 15.4 and 12.6  if *true* you can request every date after 15.4 and you will get 2300 for every date after 15.4 and 2400 for every date after 12.6 
 try {
-    SalaryChange result = apiInstance.getSalaryChange(name, restaurant, date, actualUse);
+    Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0 result = apiInstance.getSalaryChange(name, restaurant, date, actualUse);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PayrollApi#getSalaryChange");
@@ -695,7 +693,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SalaryChange**](SalaryChange.md)
+[**Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0**](Paths1salaryLevel17Bname7D1payroll17Brestaurant7D1change1latestgetresponses200contentapplication1jsonschemaallOf0.md)
 
 ### Authorization
 
@@ -717,11 +715,11 @@ Returns a specific salary level  &gt; the &#x60;whole_data&#x60; flag is missing
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -772,11 +770,11 @@ All changes of the salary level **across all restaurants!**
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -831,11 +829,11 @@ lists all salary levels
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -886,11 +884,11 @@ Removes the change
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -944,11 +942,11 @@ Deletes all changes for this restaurant
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -1000,11 +998,11 @@ Removes a salary level and all of its changes
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -1054,11 +1052,11 @@ Edit Salary level name  Also changes all references.
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -1110,11 +1108,11 @@ Removes all changes (*from all restaurants*) from the salary level
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PayrollApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PayrollApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 

@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 <a name="getAllPermissions"></a>
 # **getAllPermissions**
-> List&lt;Permission&gt; getAllPermissions()
+> List&lt;Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems&gt; getAllPermissions()
 
 Get all permissions
 
@@ -18,11 +18,11 @@ Get all available permissions
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PermissionsApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PermissionsApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -34,7 +34,7 @@ User_Auth.setApiKey("YOUR API KEY");
 
 PermissionsApi apiInstance = new PermissionsApi();
 try {
-    List<Permission> result = apiInstance.getAllPermissions();
+    List<Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems> result = apiInstance.getAllPermissions();
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PermissionsApi#getAllPermissions");
@@ -47,7 +47,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**List&lt;Permission&gt;**](Permission.md)
+[**List&lt;Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems&gt;**](Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems.md)
 
 ### Authorization
 
@@ -60,7 +60,7 @@ This endpoint does not need any parameter.
 
 <a name="getPermission"></a>
 # **getPermission**
-> Permission getPermission(name)
+> Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems getPermission(name)
 
 Get permission
 
@@ -69,11 +69,11 @@ Get information about a specific permission (name and description)
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
-//import io.swagger.client.api.PermissionsApi;
+//import com.localadmin.ApiClient;
+//import com.localadmin.ApiException;
+//import com.localadmin.Configuration;
+//import com.localadmin.auth.*;
+//import com.localadmin.api.PermissionsApi;
 
 ApiClient defaultClient = Configuration.getDefaultApiClient();
 
@@ -86,7 +86,7 @@ User_Auth.setApiKey("YOUR API KEY");
 PermissionsApi apiInstance = new PermissionsApi();
 String name = "name_example"; // String | Name of a valid permission
 try {
-    Permission result = apiInstance.getPermission(name);
+    Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems result = apiInstance.getPermission(name);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PermissionsApi#getPermission");
@@ -102,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Permission**](Permission.md)
+[**Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems**](Paths1group17Bname7D1permissionsgetresponses200contentapplication1jsonschemaitems.md)
 
 ### Authorization
 

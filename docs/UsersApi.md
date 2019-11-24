@@ -17,8 +17,8 @@ Authenticates an User and returns his API key
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiException;
-//import io.swagger.client.api.UsersApi;
+//import com.localadmin.ApiException;
+//import com.localadmin.api.UsersApi;
 
 
 UsersApi apiInstance = new UsersApi();
