@@ -27,8 +27,8 @@ import java.io.IOException;
 
 
 import com.localadmin.model.ErrorResponse;
-import com.localadmin.model.InlineResponse200;
-import com.localadmin.model.InlineResponse2001;
+import com.localadmin.model.ColumnType;
+import com.localadmin.model.ColumnUse;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -244,8 +244,8 @@ public class ColumnApi {
      * @return InlineResponse200
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public InlineResponse200 getColumnType(String name) throws ApiException {
-        ApiResponse<InlineResponse200> resp = getColumnTypeWithHttpInfo(name);
+    public ColumnType getColumnType(String name) throws ApiException {
+        ApiResponse<ColumnType> resp = getColumnTypeWithHttpInfo(name);
         return resp.getData();
     }
 
@@ -256,9 +256,9 @@ public class ColumnApi {
      * @return ApiResponse&lt;InlineResponse200&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<InlineResponse200> getColumnTypeWithHttpInfo(String name) throws ApiException {
+    public ApiResponse<ColumnType> getColumnTypeWithHttpInfo(String name) throws ApiException {
         com.squareup.okhttp.Call call = getColumnTypeValidateBeforeCall(name, null, null);
-        Type localVarReturnType = new TypeToken<InlineResponse200>(){}.getType();
+        Type localVarReturnType = new TypeToken<ColumnType>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
@@ -270,7 +270,7 @@ public class ColumnApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call getColumnTypeAsync(String name, final ApiCallback<InlineResponse200> callback) throws ApiException {
+    public com.squareup.okhttp.Call getColumnTypeAsync(String name, final ApiCallback<ColumnType> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -292,7 +292,7 @@ public class ColumnApi {
         }
 
         com.squareup.okhttp.Call call = getColumnTypeValidateBeforeCall(name, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<InlineResponse200>(){}.getType();
+        Type localVarReturnType = new TypeToken<ColumnType>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
@@ -369,8 +369,8 @@ public class ColumnApi {
      * @return InlineResponse2001
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public InlineResponse2001 isColumnInUse(String name) throws ApiException {
-        ApiResponse<InlineResponse2001> resp = isColumnInUseWithHttpInfo(name);
+    public ColumnUse isColumnInUse(String name) throws ApiException {
+        ApiResponse<ColumnUse> resp = isColumnInUseWithHttpInfo(name);
         return resp.getData();
     }
 
@@ -381,9 +381,9 @@ public class ColumnApi {
      * @return ApiResponse&lt;InlineResponse2001&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<InlineResponse2001> isColumnInUseWithHttpInfo(String name) throws ApiException {
+    public ApiResponse<ColumnUse> isColumnInUseWithHttpInfo(String name) throws ApiException {
         com.squareup.okhttp.Call call = isColumnInUseValidateBeforeCall(name, null, null);
-        Type localVarReturnType = new TypeToken<InlineResponse2001>(){}.getType();
+        Type localVarReturnType = new TypeToken<ColumnUse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
@@ -395,7 +395,7 @@ public class ColumnApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call isColumnInUseAsync(String name, final ApiCallback<InlineResponse2001> callback) throws ApiException {
+    public com.squareup.okhttp.Call isColumnInUseAsync(String name, final ApiCallback<ColumnUse> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -417,7 +417,7 @@ public class ColumnApi {
         }
 
         com.squareup.okhttp.Call call = isColumnInUseValidateBeforeCall(name, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<InlineResponse2001>(){}.getType();
+        Type localVarReturnType = new TypeToken<ColumnUse>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
