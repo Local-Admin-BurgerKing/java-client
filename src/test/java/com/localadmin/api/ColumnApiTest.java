@@ -42,7 +42,6 @@ import java.util.Map;
 /**
  * API tests for ColumnApi
  */
-@Ignore
 public class ColumnApiTest {
 
 	private final ColumnApi api = new ColumnApi();
@@ -52,7 +51,7 @@ public class ColumnApiTest {
 	private final RestaurantApi restaurantApi = new RestaurantApi();
 	private ApiKeyAuth User_Auth;
 	private String key;
-	private boolean resetRestaurantTableBefore = false; // should it clear the table for each Test so if one fails the
+	private boolean resetColumnTableBefore = false; // should it clear the table for each Test so if one fails the
 														// others does not fail
 
 	@Before
@@ -71,7 +70,7 @@ public class ColumnApiTest {
 		User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
 		User_Auth.setApiKey(key);
 
-		if (resetRestaurantTableBefore) {
+		if (resetColumnTableBefore) {
 			try {
 				dailycolumApi.deleteAllDailycolumns();
 				formulaApi.deleteAllDailyformulas();
