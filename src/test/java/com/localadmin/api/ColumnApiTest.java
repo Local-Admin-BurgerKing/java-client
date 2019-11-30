@@ -12,13 +12,28 @@
 
 package com.localadmin.api;
 
+import com.localadmin.ApiClient;
 import com.localadmin.ApiException;
+import com.localadmin.Configuration;
+import com.localadmin.auth.ApiKeyAuth;
+import com.localadmin.model.Apikeywrapper;
+import com.localadmin.model.ColumnType;
+import com.localadmin.model.ColumnUse;
 import com.localadmin.model.ErrorResponse;
 import com.localadmin.model.InlineResponse200;
 import com.localadmin.model.InlineResponse2001;
+import com.localadmin.model.Restaurant;
+import com.localadmin.model.SalaryChange;
+import com.localadmin.model.SalaryChange1;
+
 import org.junit.Test;
+import org.junit.Before;
 import org.junit.Ignore;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,50 +45,177 @@ import java.util.Map;
 @Ignore
 public class ColumnApiTest {
 
-    private final ColumnApi api = new ColumnApi();
+	private final ColumnApi api = new ColumnApi();
+	private final DailycolumnApi dailycolumApi = new DailycolumnApi();
+	private final FormulasApi formulaApi = new FormulasApi();
+	private final PayrollApi payrollApi = new PayrollApi();
+	private final RestaurantApi restaurantApi = new RestaurantApi();
+	private ApiKeyAuth User_Auth;
+	private String key;
+	private boolean resetRestaurantTableBefore = false; // should it clear the table for each Test so if one fails the
+														// others does not fail
 
-    /**
-     * Get All Columns
-     *
-     * Gets all columns (dailycolumn, dailyformula, salarylevel)
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getAllColumnsTest() throws ApiException {
-        List<String> response = api.getAllColumns();
+	@Before
+	public void setup() {
+		ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-        // TODO: test validations
-    }
-    /**
-     * Get Typeof Column
-     *
-     * Gets the type of the column
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getColumnTypeTest() throws ApiException {
-        String name = null;
-        InlineResponse200 response = api.getColumnType(name);
+		UsersApi usersApi = new UsersApi();
+		try {
+			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
+			key = wrapper.getKey();
+		} catch (ApiException e) {
+			fail("Login failed from Admin");
+		}
 
-        // TODO: test validations
-    }
-    /**
-     * Is Column in Use
-     *
-     * Tells if the column in use or not
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void isColumnInUseTest() throws ApiException {
-        String name = null;
-        InlineResponse2001 response = api.isColumnInUse(name);
+		// Configure API key authorization: User_Auth
+		User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
+		User_Auth.setApiKey(key);
 
-        // TODO: test validations
-    }
+		if (resetRestaurantTableBefore) {
+			try {
+				dailycolumApi.deleteAllDailycolumns();
+				formulaApi.deleteAllDailyformulas();
+			} catch (ApiException e) {
+				fail("Fail when reseting column table! " + e.getCode());
+			}
+		}
+	}
+
+	/**
+	 * Get All Columns, TypeOf Column, IsInUse Column
+	 *
+	 * Tests all 3 operations of Column
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void ColumnGetTypeUseTest() throws ApiException {
+		Restaurant restaurant1 = new Restaurant();
+		restaurant1.setNumber(0);
+		restaurant1.setLocation("Hietzinger Kai 173, 1130 Wien");
+		restaurant1.setName("San Giovanni");
+
+		Dailycolumn dailycolumn1 = new Dailycolumn();
+		dailycolumn1.setName("dailyColumn1");
+		dailycolumn1.setDescription("A column");
+		dailycolumn1.setHide(false);
+
+		DailyFormulas dailyformulas1 = new DailyFormulas();
+		dailyformulas1.setName("dailyFormula1");
+		dailyformulas1.setPercent(true);
+		dailyformulas1.setValue1("1");
+		dailyformulas1.setValue1("5");
+
+		// Add column from type DailyColumn which should not work
+		// value
+		try {
+			dailycolumApi.addDailycolumn(dailycolumn1);
+			fail("Was able to add DailyColumn even tough its not setup with all values yet!");
+		} catch (ApiException e) {
+		}
+
+		// Add column from type DailyFormula which should not work
+		// value
+		try {
+			formulaApi.addDailyformula(dailyformulas1);
+			fail("Was able to add SalaryLevel even tough its not setup with all values yet!");
+		} catch (ApiException e) {
+		}
+
+		dailyformulas1.setOperator(Dailyoperators.ADD);
+		restaurant1.setSollvalue(0.525f);
+
+		// Add column from type DailyColumn
+		try {
+			dailycolumApi.addDailycolumn(dailycolumn1);
+		} catch (ApiException e) {
+			fail("Error when adding DailyColumn!");
+		}
+
+		// Add column from type DailyFormula
+		try {
+			formulaApi.addDailyformula(dailyformulas1);
+		} catch (ApiException e) {
+			fail("Error when adding DailyFormula!");
+		}
+
+		// Add column from type SalaryLevel
+		try {
+			payrollApi.addSalaryLevel("LevelXYZ");
+		} catch (ApiException e) {
+			fail("Error when adding SalaryChange!");
+		}
+
+		// Get all columns
+		try {
+			List<String> columnNames = api.getAllColumns();
+			assertEquals("There should be 3 columns!", 2, columnNames.size());
+			assertEquals("Name of Column at 0 is wrong!", dailycolumn1.getName(), columnNames.get(0));
+			assertEquals("Name of Column at 1 is wrong!", dailyformulas1.getName(), columnNames.get(1));
+			assertEquals("Name of Column at 2 is wrong!", "LevelXYZ", columnNames.get(2));
+		} catch (ApiException e) {
+			fail("Error when getting Columns!");
+		}
+
+		// Type Of the columns
+		try {
+			ColumnType type = api.getColumnType(dailycolumn1.getName());
+			assertEquals("Type of column is not correct", ColumnType.TypeEnum.DAILYCOLUMN, type);
+		} catch (ApiException e) {
+			fail("Error when getting type of the DailyColumn!" + e.getCode());
+		}
+		try {
+			ColumnType type = api.getColumnType(dailyformulas1.getName());
+			assertEquals("Type of column is not correct", ColumnType.TypeEnum.DAILYFORMULA, type);
+		} catch (ApiException e) {
+			fail("Error when getting type of the DailyFormula!" + e.getCode());
+		}
+		try {
+			ColumnType type = api.getColumnType("LevelXYZ");
+			assertEquals("Type of column is not correct", ColumnType.TypeEnum.SALARYLEVEL, type);
+		} catch (ApiException e) {
+			fail("Error when getting type of the SalaryLevel!" + e.getCode());
+		}
+
+		// Columns in use
+		try {
+			ColumnUse use = api.isColumnInUse(dailycolumn1.getName());
+			assertEquals("Column useage is not correct", false, use.isInUse());
+		} catch (ApiException e) {
+			fail("Error when getting usage of the DailyColumn!");
+		}
+		try {
+			ColumnUse use = api.isColumnInUse(dailyformulas1.getName());
+			assertEquals("Column useage is not correct", false, use.isInUse());
+		} catch (ApiException e) {
+			fail("Error when getting usage of the DailyFormulas!");
+		}
+		try {
+			ColumnUse use = api.isColumnInUse("LevelXYZ");
+			assertEquals("Column useage is not correct", false, use.isInUse());
+		} catch (ApiException e) {
+			fail("Error when getting usage of the SalaryLevel!");
+		}
+
+		// Delete restaurant
+		try {
+			restaurantApi.deleteRestaurant(restaurant1.getNumber());
+		} catch (ApiException e) {
+			fail("Error when deleting Restaurant!");
+		}
+
+		// Delete columns
+		try {
+			dailycolumApi.deleteAllDailycolumns();
+		} catch (ApiException e) {
+			fail("Error when deleting all DailyColumns!");
+		}
+		try {
+			formulaApi.deleteAllDailyformulas();
+		} catch (ApiException e) {
+			fail("Error when deleting all DailyFormulas!");
+		}
+
+	}
 }
