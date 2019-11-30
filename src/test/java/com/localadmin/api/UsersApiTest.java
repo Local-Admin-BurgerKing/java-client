@@ -12,11 +12,17 @@
 
 package com.localadmin.api;
 
+import com.localadmin.ApiClient;
 import com.localadmin.ApiException;
+import com.localadmin.Configuration;
+import com.localadmin.auth.ApiKeyAuth;
 import com.localadmin.model.Apikeywrapper;
 import com.localadmin.model.ErrorResponse;
 import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Assert.*;
+
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +32,7 @@ import java.util.Map;
 /**
  * API tests for UsersApi
  */
-@Ignore
+
 public class UsersApiTest {
 
     private final UsersApi api = new UsersApi();
@@ -34,17 +40,49 @@ public class UsersApiTest {
     /**
      * Authentication
      *
-     * Authenticates an User and returns his API key
+     * Authenticates an User with correct data
      *
      * @throws ApiException
      *          if the Api call fails
      */
     @Test
-    public void authenticateTest() throws ApiException {
-        String name = null;
-        String password = null;
-        Apikeywrapper response = api.authenticate(name, password);
+    public void authenticateCorrectTest() throws ApiException {
+    	ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-        // TODO: test validations
+		String key = "";
+		try {
+			Apikeywrapper wrapper = api.authenticate("admin@kingrestaurants.at", "12345678");
+			 key = wrapper.getKey();
+		} catch (ApiException e) {
+			fail("Login failed from Admin");
+		}
+
+		ApiKeyAuth User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
+		User_Auth.setApiKey(key);
+    }
+    
+    /**
+     * Authentication
+     *
+     * Authenticates an User with wrong data
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void authenticateIncorrectTest() throws ApiException {
+    	ApiClient defaultClient = Configuration.getDefaultApiClient();
+    	
+		try {
+			Apikeywrapper wrapper = api.authenticate("admin@kingrestaurants.at", "asdasd");
+			fail("Login worked even though it was a wrong password");
+		} catch (ApiException e) {
+		}
+		
+		try {
+			Apikeywrapper wrapper = api.authenticate("aldar@kingrestaurants.at", "12345678");
+			fail("Login worked even though it was a wrong admin account");
+		} catch (ApiException e) {
+		}
     }
 }

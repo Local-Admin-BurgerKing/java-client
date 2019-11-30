@@ -12,12 +12,23 @@
 
 package com.localadmin.api;
 
+import com.google.gson.internal.LinkedTreeMap;
+import com.localadmin.ApiClient;
 import com.localadmin.ApiException;
+import com.localadmin.Configuration;
+import com.localadmin.auth.ApiKeyAuth;
+import com.localadmin.model.Apikeywrapper;
 import com.localadmin.model.ErrorResponse;
 import com.localadmin.model.Group;
 import com.localadmin.model.Permission;
+import com.localadmin.model.User;
+
 import org.junit.Test;
+import org.junit.Before;
 import org.junit.Ignore;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,146 +38,315 @@ import java.util.Map;
 /**
  * API tests for UsergroupApi
  */
-@Ignore
+
 public class UsergroupApiTest {
 
-    private final UsergroupApi api = new UsergroupApi();
+	private final UsergroupApi api = new UsergroupApi();
+	private final UserApi userApi = new UserApi();
+	private final PermissionsApi permissionsApi = new PermissionsApi();
+	private ApiKeyAuth User_Auth;
+	private String key;
+	private boolean resetGroupTableBefore = false; // should it clear the table for each Test so if one fails the
+													// others does not fail
 
-    /**
-     * Add group permission
-     *
-     * Add a specific permission to a given group
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void addGroupPermissionTest() throws ApiException {
-        String name = null;
-        String name2 = null;
-        api.addGroupPermission(name, name2);
+	@Before
+	public void setup() {
+		ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-        // TODO: test validations
-    }
-    /**
-     * Create group
-     *
-     * Create a new user group
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void createGroupTest() throws ApiException {
-        Group body = null;
-        api.createGroup(body);
+		UsersApi usersApi = new UsersApi();
+		try {
+			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
+			key = wrapper.getKey();
+		} catch (ApiException e) {
+			fail("Login failed from Admin");
+		}
 
-        // TODO: test validations
-    }
-    /**
-     * Get all groups
-     *
-     * The list of usergroups.
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getAllGroupsTest() throws ApiException {
-        Boolean wholeData = null;
-        List<Object> response = api.getAllGroups(wholeData);
+		// Configure API key authorization: User_Auth
+		User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
+		User_Auth.setApiKey(key);
 
-        // TODO: test validations
-    }
-    /**
-     * Get group permissions
-     *
-     * Get informations about the permissions of a user group.
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getGroupPermissionsTest() throws ApiException {
-        String name = null;
-        List<Permission> response = api.getGroupPermissions(name);
+		if (resetGroupTableBefore) {
+			try {
+				List<Object> groups = api.getAllGroups(false);
+				for (int i = 0; i < groups.size(); i++) {
+					if (!groups.get(i).equals("ROOT"))
+						api.removeGroup(groups.get(i).toString());
+				}
+			} catch (ApiException e) {
+				fail("Fail when reseting group table!");
+			}
+		}
 
-        // TODO: test validations
-    }
-    /**
-     * Remove all groups
-     *
-     * Remove all available groups.
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void removeAllGroupsTest() throws ApiException {
-        api.removeAllGroups();
+	}
 
-        // TODO: test validations
-    }
-    /**
-     * Remove group&#x27;s permissions
-     *
-     * Remove all permission from a group
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void removeAllPermissionsTest() throws ApiException {
-        String name = null;
-        api.removeAllPermissions(name);
+	/**
+	 * Create Group Get Group Edit Group Delete Group
+	 *
+	 * Tests 4 operations from Group
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void groupCreateEditGetDeleteTest() throws ApiException {
+		List<Permission> permissions = new ArrayList<Permission>();
 
-        // TODO: test validations
-    }
-    /**
-     * Remove group
-     *
-     * Delete the specified group
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void removeGroupTest() throws ApiException {
-        String name = null;
-        api.removeGroup(name);
+		Group group = new Group();
+		group.setName("Admin");
+		group.setPermissions(permissionsApi.getAllPermissions());
 
-        // TODO: test validations
-    }
-    /**
-     * Remove specific group-permission
-     *
-     * Remove a specific permission from a group
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void removeGroupPermissionTest() throws ApiException {
-        String name = null;
-        String perm = null;
-        api.removeGroupPermission(name, perm);
+		// Create group
+		try {
+			api.createGroup(group);
+		} catch (ApiException e) {
+			fail("Error when creating group: " + e.getCode());
+		}
 
-        // TODO: test validations
-    }
-    /**
-     * Rename group
-     *
-     * Rename a specified group.
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void updateGroupNameTest() throws ApiException {
-        String name = null;
-        String name2 = null;
-        api.updateGroupName(name, name2);
+		// Did it realy get added ?
+		try {
+			List<Object> groupNames = api.getAllGroups(false);
+			if (!groupNames.contains("Admin")) {
+				fail("Group does seem to not have been added");
+			}
+		} catch (ApiException e) {
+			fail("Error when getting groups: " + e.getCode());
+		}
 
-        // TODO: test validations
-    }
+		// Edit group name
+		try {
+			api.updateGroupName(group.getName(), "Supporter");
+		} catch (ApiException e) {
+			fail("Error when updating group name: " + e.getCode());
+		}
+
+		// Test if group has been updated
+		try {
+			List<Object> groupNames = api.getAllGroups(false);
+			if (!groupNames.contains("Supporter")) {
+				fail("Group name does seem to not have been updated");
+			}
+		} catch (ApiException e) {
+			fail("Error when getting groups: " + e.getCode());
+		}
+
+		// Test delete
+		try {
+			api.removeGroup("Supporter");
+		} catch (ApiException e) {
+			fail("Error when deleting group: " + e.getCode());
+		}
+	}
+
+	/**
+	 * Add / Remove / Get group permission
+	 *
+	 * Tests the permission methods
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void groupAddRemoveGetPermissionTest() throws ApiException {
+		// Wrong
+		List<Permission> permissions = new ArrayList<Permission>();
+		String permissionName = permissionsApi.getAllPermissions().get(0).getName();
+		Group group = new Group();
+		group.setName("Personal");
+		group.setPermissions(permissions);
+
+		/*
+		 * Korret: List<Object> permissionsObjectList =
+		 * permissionsApi.getAllPermissions(false); List<String> permissions =
+		 * permissionsObjectList.stream().map(object -> Objects.toString(object,
+		 * null)).collect(Collectors.toList()); Group group = new Group();
+		 * group.setName("Personal"); group.setPermissions(permissions);
+		 * 
+		 */
+
+		try {
+			api.createGroup(group);
+		} catch (ApiException e) {
+			fail("Error when creating group: " + e.getCode());
+		}
+
+		// Add group again. Should throw error
+		try {
+			api.createGroup(group);
+			fail("Group got added again which should not be!");
+		} catch (ApiException e) {
+			assertEquals("Error should be 409 if same group gets added 2 times", 409, e.getCode());
+		}
+
+		// Add permission to the group
+		try {
+			api.addGroupPermission(group.getName(), permissionName);
+		} catch (ApiException e) {
+			fail("Error when adding permission: " + e.getCode());
+		}
+
+		// Add permission to the group again and test if it gives an error that they are
+		// already in the group
+		try {
+			api.addGroupPermission(group.getName(), permissionName);
+			fail("Added permission again even tough it was already inside");
+		} catch (ApiException e) {
+			assertEquals("Error should be 409 because there was already the same permission in this group!" + 409,
+					e.getCode());
+		}
+
+		// Tests if group has got the permission
+		try {
+			List<Permission> permissionsFromGroup = api.getGroupPermissions(group.getName());
+			for (int i = 0; i < permissionsFromGroup.size(); i++) {
+				if (permissionsFromGroup.get(i).getName().equals(permissionName)) {
+					break;
+				} else if (i + 1 == permissionsFromGroup.size()) {
+					fail("Permission did not get added to group");
+				}
+			}
+		} catch (ApiException e) {
+			fail("Error when getting permissions: " + e.getCode());
+		}
+
+		// Deletes permission from group
+		try {
+			api.removeGroupPermission(group.getName(), permissionName);
+		} catch (ApiException e) {
+			fail("Error when removeing permission: " + e.getCode());
+		}
+	}
+
+	/**
+	 * Get all groups
+	 *
+	 * The list of usergroups.
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void groupsGetAllTest() throws ApiException {
+		// Create 2 groups
+		List<Permission> permissions = new ArrayList<Permission>();
+
+		Group group1 = new Group();
+		group1.setName("Putzkraft");
+		group1.setPermissions(new ArrayList<Permission>());
+
+		Group group2 = new Group();
+		group2.setName("Finanzmanager");
+		group2.setPermissions(permissions);
+
+		// Add users
+		try {
+			api.createGroup(group1);
+			api.createGroup(group2);
+		} catch (ApiException e) {
+			fail("Error when creating Groups!" + e.getCode());
+		}
+
+		// Get groups
+		try {
+			List<Object> groups = api.getAllGroups(true);
+			assertEquals("There should be 3 groups, but there are: " + groups.size(), 3, groups.size());
+			assertEquals("Group at 0 should be ROOT", "ROOT", ((Group) groups.get(0)).getName());
+			assertEquals("Group at 1 should be " + group1.getName(), group1.getName(),
+					((Group) groups.get(1)).getName());
+			assertEquals("Group at 2 should be " + group2.getName(), group2.getName(),
+					((Group) groups.get(2)).getName());
+		} catch (ApiException e) {
+			fail("Error when getting groups with wholedata!");
+		}
+		try {
+			List<Object> groups = api.getAllGroups(true);
+			assertEquals("There should be 3 groups, but there are: " + groups.size(), 3, groups.size());
+			assertEquals("Group at 0 should be ROOT", "ROOT", groups.get(0));
+			assertEquals("Group at 1 should be " + group1.getName(), group1.getName(), groups.get(1));
+			assertEquals("Group at 2 should be " + group2.getName(), group2.getName(), groups.get(2));
+		} catch (ApiException e) {
+			fail("Error when getting groups without wholedata!");
+		}
+
+		api.removeGroup(group1.getName());
+		api.removeGroup(group2.getName());
+	}
+
+	/**
+	 * Remove all groups
+	 *
+	 * Remove all available groups. (Can not work cause admin uses ROOT)
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void groupsRemoveAllTest() throws ApiException {
+
+		try {
+			api.removeAllGroups();
+			fail("Groups got removed even though ROOT is used by admin");
+		} catch (ApiException e) {
+		}
+
+	}
+
+	/**
+	 * Remove Root
+	 *
+	 * Trys to remove ROOT (Which cant be done when admin is useing it)
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void groupsRemoveRootTest() throws ApiException {
+		try {
+			api.removeGroup("ROOT");
+			fail("Group ROOT got removed but was used");
+		} catch (ApiException e) {
+			assertEquals("Errorcode should be 409 which means that the group is in use!", 409, e.getCode());
+		}
+
+	}
+
+	/**
+	 * Remove groups permissions
+	 *
+	 * Remove all permission from a group
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void removeAllPermissionsTest() throws ApiException {
+		Group group1 = new Group();
+		group1.setName("Hausmeister");
+		group1.setPermissions(permissionsApi.getAllPermissions());
+
+		try {
+			api.createGroup(group1);
+		} catch (ApiException e) {
+			fail("Error when creating Group!" + e.getCode());
+		}
+
+		// Remove permission
+		try {
+			api.removeAllPermissions(group1.getName());
+		} catch (ApiException e) {
+			fail("Error when removeing permissions from group" + e.getCode());
+		}
+
+		// Test if permission got removed
+		try {
+			List<Permission> permissionsFromGroup = api.getGroupPermissions(group1.getName());
+			assertEquals("There should be no permissions anymore but there are " + permissionsFromGroup.size(), 0,
+					permissionsFromGroup.size());
+		} catch (ApiException e) {
+			fail("Error when getting permissions: " + e.getCode());
+		}
+
+		api.removeGroup(group1.getName());
+	}
+
+	// TODO: Test deleteAll
 }
