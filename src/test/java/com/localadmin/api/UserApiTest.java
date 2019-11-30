@@ -121,7 +121,8 @@ public class UserApiTest {
 			assertNotEquals("Mail has got changed which should not happen!", gettedUser.getEmail(), user1.getEmail());
 			assertEquals("Name did not get changed!", gettedUser.getName(), user1.getName());
 			assertEquals("Password did not get changed!", gettedUser.getPassword(), user1.getPassword());
-			assertEquals("Group got changed even though we did not tell to!", gettedUser.getGroup(), user1.getGroup());
+			assertNotEquals("Group got changed even though it did not get told to!", gettedUser.getGroup(),
+					user1.getGroup());
 		} catch (ApiException e) {
 			fail("Error when getting user!");
 		}
@@ -131,7 +132,7 @@ public class UserApiTest {
 			api.addUserWithHttpInfo(user1);
 			fail("User was already in database but got put again!");
 		} catch (ApiException e) {
-			assertEquals("User already in Database", e.getCode(), 409);
+			assertEquals("Error-Code is wrong!", 409,  e.getCode());
 		}
 
 		// Edit user but with wrong password
@@ -177,18 +178,18 @@ public class UserApiTest {
 		user.setName("Nils Brugger");
 		user.setPassword("!$§&%&R/)(§&Obfjg");
 		user.setGroup("ROOT");
-		
+
 		api.addUser(user);
-		
+
 		String token = "gfbsdvbvgfef";
-		
-		//Change with wrong token token
+
+		// Change with wrong token token
 		try {
 			api.changePasswordByToken("nbrugger@student.tgm.ac.at", token, "AberIchBinEinPasswort!%");
 			fail("Something went wrong cause it changed Password even though it was a wrong token!");
 		} catch (ApiException e) {
 		}
-		
+
 		api.deleteUser(user.getEmail());
 	}
 
@@ -328,7 +329,7 @@ public class UserApiTest {
 				fail("Some error which should not be here: " + e.getCode());
 		}
 
-		// api.deleteUser("Herbert1973@gmail.com");
+		api.deleteUser("Herbert1973@gmail.com");
 	}
 
 	/**
@@ -342,28 +343,28 @@ public class UserApiTest {
 		try {
 			api.deleteUser("elon.musk@gmail.com");
 			fail("There should be a 404 error when a non exisiting user gets deleted!");
-		} catch(ApiException e) { 
+		} catch (ApiException e) {
 			assertEquals("Error-Code should be 404 (delete)", 404, e.getCode());
 		}
-		
+
 		try {
 			api.getUser("elon.musk@gmail.com");
 			fail("There should be a 404 error when a non exisiting user gets getted!");
-		} catch(ApiException e) { 
+		} catch (ApiException e) {
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
-		
+
 		try {
 			api.editUser("elon.musk@gmail.com", null, null);
 			fail("There should be a 404 error when a non exisiting user gets edited!");
-		} catch(ApiException e) { 
+		} catch (ApiException e) {
 			assertEquals("Error-Code should be 404 (edit)", 404, e.getCode());
 		}
-		
+
 		try {
 			api.replaceUser("elon.musk@gmail.com", null);
 			fail("There should be a 404 error when a non exisiting user gets replaced!");
-		} catch(ApiException e) {
+		} catch (ApiException e) {
 			assertEquals("Error-Code should be 404 (replace)", 404, e.getCode());
 		}
 	}
