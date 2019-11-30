@@ -27,7 +27,7 @@ import java.io.Serializable;
  */
 
 
-public class InlineResponse200 implements Serializable{
+public class ColumnType implements Serializable{
   private static final long serialVersionUID = 1L;
   /**
    * Gets or Sets type
@@ -74,7 +74,7 @@ public class InlineResponse200 implements Serializable{
   }  @SerializedName("type")
   private TypeEnum type = null;
 
-  public InlineResponse200 type(TypeEnum type) {
+  public ColumnType type(TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -101,7 +101,7 @@ public class InlineResponse200 implements Serializable{
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    InlineResponse200 inlineResponse200 = (InlineResponse200) o;
+    ColumnType inlineResponse200 = (ColumnType) o;
     return Objects.equals(this.type, inlineResponse200.type);
   }
 

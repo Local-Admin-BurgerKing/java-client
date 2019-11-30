@@ -27,12 +27,12 @@ import java.io.Serializable;
  */
 
 
-public class InlineResponse2001 implements Serializable{
+public class ColumnUse implements Serializable{
   private static final long serialVersionUID = 1L;
   @SerializedName("inUse")
   private Boolean inUse = null;
 
-  public InlineResponse2001 inUse(Boolean inUse) {
+  public ColumnUse inUse(Boolean inUse) {
     this.inUse = inUse;
     return this;
   }
@@ -59,7 +59,7 @@ public class InlineResponse2001 implements Serializable{
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    InlineResponse2001 inlineResponse2001 = (InlineResponse2001) o;
+    ColumnUse inlineResponse2001 = (ColumnUse) o;
     return Objects.equals(this.inUse, inlineResponse2001.inUse);
   }
 
