@@ -48,7 +48,6 @@ public class ColumnApiTest {
 	private final DailycolumnApi dailycolumApi = new DailycolumnApi();
 	private final FormulasApi formulaApi = new FormulasApi();
 	private final PayrollApi payrollApi = new PayrollApi();
-	private final RestaurantApi restaurantApi = new RestaurantApi();
 	private ApiKeyAuth User_Auth;
 	private String key;
 	private boolean resetColumnTableBefore = false; // should it clear the table for each Test so if one fails the
@@ -90,14 +89,9 @@ public class ColumnApiTest {
 	 */
 	@Test
 	public void ColumnGetTypeUseTest() throws ApiException {
-		Restaurant restaurant1 = new Restaurant();
-		restaurant1.setNumber(0);
-		restaurant1.setLocation("Hietzinger Kai 173, 1130 Wien");
-		restaurant1.setName("San Giovanni");
 
 		Dailycolumn dailycolumn1 = new Dailycolumn();
 		dailycolumn1.setName("dailyColumn1");
-		dailycolumn1.setDescription("A column");
 		dailycolumn1.setHide(false);
 
 		DailyFormulas dailyformulas1 = new DailyFormulas();
@@ -107,7 +101,6 @@ public class ColumnApiTest {
 		dailyformulas1.setValue1("5");
 
 		// Add column from type DailyColumn which should not work
-		// value
 		try {
 			dailycolumApi.addDailycolumn(dailycolumn1);
 			fail("Was able to add DailyColumn even tough its not setup with all values yet!");
@@ -115,7 +108,6 @@ public class ColumnApiTest {
 		}
 
 		// Add column from type DailyFormula which should not work
-		// value
 		try {
 			formulaApi.addDailyformula(dailyformulas1);
 			fail("Was able to add SalaryLevel even tough its not setup with all values yet!");
@@ -123,7 +115,7 @@ public class ColumnApiTest {
 		}
 
 		dailyformulas1.setOperator(Dailyoperators.ADD);
-		restaurant1.setSollvalue(0.525f);
+		dailycolumn1.setDescription("A column");
 
 		// Add column from type DailyColumn
 		try {
@@ -195,13 +187,6 @@ public class ColumnApiTest {
 			assertEquals("Column useage is not correct", false, use.isInUse());
 		} catch (ApiException e) {
 			fail("Error when getting usage of the SalaryLevel!");
-		}
-
-		// Delete restaurant
-		try {
-			restaurantApi.deleteRestaurant(restaurant1.getNumber());
-		} catch (ApiException e) {
-			fail("Error when deleting Restaurant!");
 		}
 
 		// Delete columns
