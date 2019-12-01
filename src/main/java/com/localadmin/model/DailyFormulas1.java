@@ -1,14 +1,24 @@
 package com.localadmin.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DailyFormulas1 {
+public class DailyFormulas1 implements Serializable {
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	private String value1;
 	private String value2;
 	private Dailyoperators operator;
 	private Boolean percent;
 	private String name;
+	private String description;
 	private ArrayList<String> others;
 
 	public String getValue1() {

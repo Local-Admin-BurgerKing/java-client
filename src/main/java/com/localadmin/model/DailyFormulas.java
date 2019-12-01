@@ -1,12 +1,15 @@
 package com.localadmin.model;
 
-public class DailyFormulas {
+import java.io.Serializable;
+
+public class DailyFormulas implements Serializable {
 
 	private String value1;
 	private String value2;
 	private Dailyoperators operator;
 	private Boolean percent;
 	private String name;
+	private String description;
 
 	public String getValue1() {
 		return value1;
@@ -14,6 +17,14 @@ public class DailyFormulas {
 
 	public void setValue1(String value1) {
 		this.value1 = value1;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getValue2() {
