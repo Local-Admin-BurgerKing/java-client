@@ -91,15 +91,13 @@ public class FormulasApiTest {
 		formula2.setName("formula2");
 		formula2.setOperator(Dailyoperators.MULTIPLY);
 		formula2.setPercent(false);
-		formula1.setDescription("Another Description");
+		formula2.setDescription("Another Description");
 
 		// Add DailyFormula which should not work
 		try {
 			api.addDailyformula(formula1);
 			fail("Was able to add Dailyformula even tough its not setup with all values yet!");
-		} catch (ApiException e) {
-			System.out.println(e.getCode());
-		}
+		} catch (ApiException e) { }
 
 		formula1.setValue1("42");
 		formula1.setValue2("69");
@@ -206,7 +204,7 @@ public class FormulasApiTest {
 		try {
 			List<Object> dailyformulas = api.getAllDailyformulas(true);
 			assertEquals("Wrong amount of Dailyformulas in database!", 2, dailyformulas.size());
-
+			
 			assertEquals("Wrong Dailyformula at 0!", formula1.getName(),
 					((DailyFormulas) dailyformulas.get(0)).getName());
 			assertEquals("Wrong Dailyformula Value1 at 0!", formula1.getValue1(),
