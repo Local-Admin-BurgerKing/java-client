@@ -202,9 +202,28 @@ public class RestaurantApiTest {
 
 		try {
 			api.addEmployee(69, "admin@kingrestaurants.at");
-			fail("There should be a 404 error when a employe gets added to a non existing restaurant!");
+			fail("There should be a 404 error when a employee gets added to a non existing restaurant!");
 		} catch (ApiException e) {
 			assertEquals("Error-Code should be 404 (addEmployee)", 404, e.getCode());
+		}
+
+		try {
+			api.removeEmployee(69, "admin@kingrestaurants.at");
+			fail("There should be a 404 error when a employee gets removed to a non existing restaurant!");
+		} catch (ApiException e) {
+			assertEquals("Error-Code should be 404 (removeEmployee)", 404, e.getCode());
+		}
+		Restaurant restaurant1 = new Restaurant();
+		restaurant1.setNumber(69);
+		restaurant1.setLocation("Straße PLZ Haus Ort Planet");
+		restaurant1.setName("Merkurs Küche");
+		restaurant1.setSollvalue(0.345f);
+
+		try {
+			api.removeEmployee(69, "admin@kingrestaurants.at");
+			fail("There should be a 404 error when a employee that does not exist gets removed!");
+		} catch (ApiException e) {
+			assertEquals("Error-Code should be 404 (removeEmployee)", 404, e.getCode());
 		}
 		
 		
