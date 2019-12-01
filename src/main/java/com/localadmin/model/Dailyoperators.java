@@ -1,4 +1,4 @@
-package com.localadmin.api;
+package com.localadmin.model;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.localadmin.api;
+package com.localadmin.model;
 
 public class DailyFormulas {
 
