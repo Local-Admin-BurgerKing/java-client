@@ -19,6 +19,9 @@ import com.localadmin.auth.ApiKeyAuth;
 import com.localadmin.model.Apikeywrapper;
 import com.localadmin.model.ColumnType;
 import com.localadmin.model.ColumnUse;
+import com.localadmin.model.DailyFormulas;
+import com.localadmin.model.Dailycolumn;
+import com.localadmin.model.Dailyoperators;
 import com.localadmin.model.ErrorResponse;
 import com.localadmin.model.InlineResponse200;
 import com.localadmin.model.InlineResponse2001;
@@ -45,13 +48,13 @@ import java.util.Map;
 public class ColumnApiTest {
 
 	private final ColumnApi api = new ColumnApi();
-	private final DailycolumnApi dailycolumApi = new DailycolumnApi();
+	private final DailycolumnApi dailycolumnApi = new DailycolumnApi();
 	private final FormulasApi formulaApi = new FormulasApi();
 	private final PayrollApi payrollApi = new PayrollApi();
 	private ApiKeyAuth User_Auth;
 	private String key;
 	private boolean resetColumnTableBefore = false; // should it clear the table for each Test so if one fails the
-														// others does not fail
+													// others does not fail
 
 	@Before
 	public void setup() {
@@ -71,7 +74,7 @@ public class ColumnApiTest {
 
 		if (resetColumnTableBefore) {
 			try {
-				dailycolumApi.deleteAllDailycolumns();
+				dailycolumnApi.deleteAllDailycolumns();
 				formulaApi.deleteAllDailyformulas();
 			} catch (ApiException e) {
 				fail("Fail when reseting column table! " + e.getCode());
@@ -89,7 +92,6 @@ public class ColumnApiTest {
 	 */
 	@Test
 	public void ColumnGetTypeUseTest() throws ApiException {
-
 		Dailycolumn dailycolumn1 = new Dailycolumn();
 		dailycolumn1.setName("dailyColumn1");
 		dailycolumn1.setHide(false);
@@ -98,11 +100,12 @@ public class ColumnApiTest {
 		dailyformulas1.setName("dailyFormula1");
 		dailyformulas1.setPercent(true);
 		dailyformulas1.setValue1("1");
-		dailyformulas1.setValue1("5");
+		dailyformulas1.setValue2("5");
+		dailyformulas1.setDescription("A formula");
 
 		// Add column from type DailyColumn which should not work
 		try {
-			dailycolumApi.addDailycolumn(dailycolumn1);
+			dailycolumnApi.addDailycolumn(dailycolumn1);
 			fail("Was able to add DailyColumn even tough its not setup with all values yet!");
 		} catch (ApiException e) {
 		}
@@ -119,7 +122,7 @@ public class ColumnApiTest {
 
 		// Add column from type DailyColumn
 		try {
-			dailycolumApi.addDailycolumn(dailycolumn1);
+			dailycolumnApi.addDailycolumn(dailycolumn1);
 		} catch (ApiException e) {
 			fail("Error when adding DailyColumn!");
 		}
@@ -135,7 +138,7 @@ public class ColumnApiTest {
 		try {
 			payrollApi.addSalaryLevel("LevelXYZ");
 		} catch (ApiException e) {
-			fail("Error when adding SalaryChange!");
+			fail("Error when adding SalaryLevel!");
 		}
 
 		// Get all columns
@@ -191,7 +194,7 @@ public class ColumnApiTest {
 
 		// Delete columns
 		try {
-			dailycolumApi.deleteAllDailycolumns();
+			dailycolumnApi.deleteAllDailycolumns();
 		} catch (ApiException e) {
 			fail("Error when deleting all DailyColumns!");
 		}
@@ -201,5 +204,112 @@ public class ColumnApiTest {
 			fail("Error when deleting all DailyFormulas!");
 		}
 
+	}
+
+	/**
+	 * Tetst if all methods that should return a 404 Error, returns one
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void columnNotFoundTest() throws ApiException {
+		try {
+			api.getColumnType("I am not even existing");
+			fail("There should be a 404 error when the type of a non existing column gets requested!");
+		} catch (ApiException e) {
+			assertEquals("Error-Code should be 404 (getType)", 404, e.getCode());
+		}
+		try {
+			api.isColumnInUse("I am not even existing");
+			fail("There should be a 404 error when the usage of a non existing column gets requested!");
+		} catch (ApiException e) {
+			assertEquals("Error-Code should be 404 (isInUse)", 404, e.getCode());
+		}
+	}
+
+	/**
+	 * Tetst if all methods return 370 cause of a wrong type
+	 *
+	 * @throws ApiException
+	 *             if the Api call fails
+	 */
+	@Test
+	public void typeIncompatibleTest() throws ApiException {
+		Dailycolumn dailycolumn1 = new Dailycolumn();
+		dailycolumn1.setName("dailycolumn");
+		dailycolumn1.setHide(false);
+		dailycolumn1.setDescription("A column");
+
+		DailyFormulas dailyformulas1 = new DailyFormulas();
+		dailyformulas1.setName("dailyformula");
+		dailyformulas1.setPercent(true);
+		dailyformulas1.setValue1("1");
+		dailyformulas1.setValue2("5");
+		dailyformulas1.setOperator(Dailyoperators.ADD);
+		dailyformulas1.setDescription("A formula");
+
+		// Add column from type DailyColumn
+		try {
+			dailycolumnApi.addDailycolumn(dailycolumn1);
+		} catch (ApiException e) {
+			fail("Error when adding DailyColumn!");
+		}
+
+		// Add column from type DailyFormula
+		try {
+			formulaApi.addDailyformula(dailyformulas1);
+		} catch (ApiException e) {
+			fail("Error when adding DailyFormula!");
+		}
+
+		// Add column from type SalaryLevel
+		try {
+			payrollApi.addSalaryLevel("salarylevel");
+		} catch (ApiException e) {
+			fail("Error when adding SalaryLevel!");
+		}
+
+		// Type issues in dailycolumn
+		try {
+			dailycolumnApi.getDailycolumn(dailyformulas1.getName());
+			fail("There should be a 307 error because it is a incompatible type!");
+		} catch (ApiException e) {
+			assertEquals("Error-Code is wrong!", 307, e.getCode());
+		}
+		try {
+			dailycolumnApi.getDailycolumn("salarylevel");
+			fail("There should be a 307 error because it is a incompatible type!");
+		} catch (ApiException e) {
+			assertEquals("Error-Code is wrong!", 307, e.getCode());
+		}
+
+		// Type issues in dailyformula
+		try {
+			formulaApi.getDailyformula("salarylevel", false);
+			fail("There should be a 307 error because it is a incompatible type!");
+		} catch (ApiException e) {
+			assertEquals("Error-Code is wrong!", 307, e.getCode());
+		}
+		try {
+			formulaApi.getDailyformula(dailycolumn1.getName(), false);
+			fail("There should be a 307 error because it is a incompatible type!");
+		} catch (ApiException e) {
+			assertEquals("Error-Code is wrong!", 307, e.getCode());
+		}
+
+		// Type issues in salarylevel
+		try {
+			payrollApi.getSalaryLevel(dailyformulas1.getName());
+			fail("There should be a 307 error because it is a incompatible type!");
+		} catch (ApiException e) {
+			assertEquals("Error-Code is wrong!", 307, e.getCode());
+		}
+		try {
+			payrollApi.getSalaryLevel(dailycolumn1.getName());
+			fail("There should be a 307 error because it is a incompatible type!");
+		} catch (ApiException e) {
+			assertEquals("Error-Code is wrong!", 307, e.getCode());
+		}
 	}
 }
