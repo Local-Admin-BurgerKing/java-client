@@ -203,6 +203,11 @@ public class ColumnApiTest {
 		} catch (ApiException e) {
 			fail("Error when deleting all DailyFormulas!");
 		}
+		try {
+			payrollApi.removeSalaryLevel("LevelXYZ");
+		} catch (ApiException e) {
+			fail("Error when deleting all DailyFormulas!");
+		}
 
 	}
 
