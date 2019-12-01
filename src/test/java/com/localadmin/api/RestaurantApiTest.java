@@ -156,9 +156,7 @@ public class RestaurantApiTest {
 	}
 
 	/**
-	 * Delete Restaurant
-	 *
-	 * Deletes an existing restaurant
+	 * Tetst if all methods that should return a 404 Error, returns one
 	 *
 	 * @throws ApiException
 	 *             if the Api call fails
@@ -212,6 +210,7 @@ public class RestaurantApiTest {
 			fail("There should be a 404 error when a employee gets removed to a non existing restaurant!");
 		} catch (ApiException e) {
 			assertEquals("Error-Code should be 404 (removeEmployee)", 404, e.getCode());
+			assertEquals("Our Error-Code should be 541 (removeEmployee)", 541, e.getResponseBody());
 		}
 		Restaurant restaurant1 = new Restaurant();
 		restaurant1.setNumber(69);
@@ -224,8 +223,8 @@ public class RestaurantApiTest {
 			fail("There should be a 404 error when a employee that does not exist gets removed!");
 		} catch (ApiException e) {
 			assertEquals("Error-Code should be 404 (removeEmployee)", 404, e.getCode());
+			assertEquals("Our Error-Code should be 542 (removeEmployee)", 542, e.getResponseBody());
 		}
-		
 		
 	}
 
@@ -394,6 +393,5 @@ public class RestaurantApiTest {
 		} catch (ApiException e) {
 			fail("Error when getting Restaurants with wholedata!");
 		}
-
 	}
 }
