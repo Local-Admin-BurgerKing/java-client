@@ -12,25 +12,47 @@
 
 package com.localadmin.api;
 
-import com.localadmin.ApiException;
-import com.localadmin.model.ErrorResponse;
-import com.localadmin.model.Permission;
-import org.junit.Test;
-import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.localadmin.ApiClient;
+import com.localadmin.ApiException;
+import com.localadmin.Configuration;
+import com.localadmin.auth.ApiKeyAuth;
+import com.localadmin.model.Apikeywrapper;
+import com.localadmin.model.Permission;
 
 /**
  * API tests for PermissionsApi
  */
-@Ignore
 public class PermissionsApiTest {
 
     private final PermissionsApi api = new PermissionsApi();
+    private ApiKeyAuth User_Auth;
+    private String key;
+    
+    @Before
+    public void setup() {
+    	ApiClient defaultClient = Configuration.getDefaultApiClient();
 
+		UsersApi usersApi = new UsersApi();
+		try {
+			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
+			key = wrapper.getKey();
+		} catch (ApiException e) {
+			fail("Login failed from Admin");
+		}
+
+		// Configure API key authorization: User_Auth
+		User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
+		User_Auth.setApiKey(key);
+    }
     /**
      * Get all permissions
      *
@@ -42,22 +64,17 @@ public class PermissionsApiTest {
     @Test
     public void getAllPermissionsTest() throws ApiException {
         List<Permission> response = api.getAllPermissions();
-
-        // TODO: test validations
-    }
-    /**
-     * Get permission
-     *
-     * Get information about a specific permission (name and description)
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getPermissionTest() throws ApiException {
-        String name = null;
-        Permission response = api.getPermission(name);
-
-        // TODO: test validations
+        
+        assertNotEquals("Permission List empty", response.size(), 0);
+        
+        try {
+        	for(Permission perm : response) {
+            	Permission ret = api.getPermission(perm.getName());
+            	assertEquals("Permission name not matching.", ret.getName(), perm.getName());
+            	assertEquals("Permission description not matching.", ret.getDescription(), perm.getDescription());
+            }
+        }catch(ApiException e) {
+        	fail("Could not get specific permission: " + e.getCode());
+        }
     }
 }
