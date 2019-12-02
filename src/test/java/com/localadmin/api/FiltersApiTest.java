@@ -12,17 +12,24 @@
 
 package com.localadmin.api;
 
-import com.localadmin.ApiException;
-import com.localadmin.model.ErrorResponse;
-import com.localadmin.model.Filter;
-import com.localadmin.model.Filter1;
-import org.junit.Test;
-import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import com.localadmin.ApiClient;
+import com.localadmin.ApiException;
+import com.localadmin.Configuration;
+import com.localadmin.auth.ApiKeyAuth;
+import com.localadmin.model.Apikeywrapper;
+import com.localadmin.model.Filter;
+import com.localadmin.model.Filter1;
 
 /**
  * API tests for FiltersApi
@@ -31,9 +38,37 @@ import java.util.Map;
 public class FiltersApiTest {
 
     private final FiltersApi api = new FiltersApi();
+    private ApiKeyAuth User_Auth;
+    private String key;
+    private boolean resetFiltersTableBefore = false;
+    
+    @Before
+    public void setup() {
+    	ApiClient defaultClient = Configuration.getDefaultApiClient();
 
+		UsersApi usersApi = new UsersApi();
+		try {
+			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
+			key = wrapper.getKey();
+		} catch (ApiException e) {
+			fail("Login failed from Admin");
+		}
+
+		// Configure API key authorization: User_Auth
+		User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
+		User_Auth.setApiKey(key);
+
+		if (resetFiltersTableBefore) {
+			try {
+				api.removeAllFilters();
+			} catch (ApiException e) {
+				fail("Fail when reseting filter table! " + e.getCode());
+			}
+		}
+    }
+    
     /**
-     * Create filter
+     * Create filter, Get filter, Get all filters, Remove filter, Remove all filters
      *
      * Create new filter
      *
@@ -41,85 +76,164 @@ public class FiltersApiTest {
      *          if the Api call fails
      */
     @Test
-    public void createFilterTest() throws ApiException {
-        Filter body = null;
-        api.createFilter(body);
-
-        // TODO: test validations
+    public void createDeleteGetFilterTest() throws ApiException {
+        Filter body = new Filter();
+        
+        //Test normal, valid, filter creation
+        body.setName("Filter1");
+        List<String> whitelist = new ArrayList<>();
+        whitelist.add("Spalte1");
+        whitelist.add("Spalte2");
+        body.setWhitelist(whitelist);
+        
+        try {
+        	api.createFilter(body);
+        }catch(ApiException e) {
+        	fail("Error while creating filter: " + e.getCode());
+        }
+        
+        try {
+            Filter1 filter = api.getFilter(body.getName());
+            assertEquals("Filter name not matching.", filter.getName(), body.getName());
+            //es gibt kein assertIterableEquals oder so
+            assertEquals("Filter Column-whitelist length not matching.",filter.getWhitelist().size(), body.getWhitelist().size());
+        }catch(ApiException e) {
+        	fail("Filter was not added / could not be get: " + e.getCode());
+        }
+        
+        //Test unvalid filter creation
+        Filter body2 = new Filter();
+        List<String> list = new ArrayList<>();
+        list.add("Spalte1");
+        body.setWhitelist(list);
+        try {
+        	api.createFilter(body2);
+        	fail("Error, could create filter with missing/empty name.");
+        }catch(ApiException e) {}
+        
+        try {
+        	api.createFilter(body2);
+        	fail("Error, could create identical filter again.");
+        }catch(ApiException e) {
+        	assertEquals("Error-code wrong!", 409, e.getCode());
+        }
+        
+        // Test get all filters (wholeData null)
+        try {
+        	List<Object> filters = api.getAllFilters(null);
+        	assertNotEquals("Filter list empty.", 0, filters.size());
+        	
+        	String filters_0 = (String) filters.get(0);
+        	assertEquals("Filter name not matching.", body.getName(), filters_0);
+        }catch(ApiException e) {
+        	fail("Error while getting all filters (wholedata null): " + e.getCode());
+        }
+        // Test get all filters (wholeDate true)
+        try {
+        	List<Object> filters = api.getAllFilters(true);
+        	assertNotEquals("Filter list empty.", 0, filters.size());
+        	
+        	Filter1 filters_0 = (Filter1) filters.get(0);
+        	assertEquals("Filter name not matching.", body.getName(), filters_0.getName());
+        	assertEquals("Filter Column-whitelist length not matching.", body.getWhitelist().size(), filters_0.getWhitelist().size());
+        }catch(ApiException e) {
+        	fail("Error while getting all filters (wholedata true):" + e.getCode());
+        }
+        // Test get specific filter
+        try {
+        	Filter1 filter = api.getFilter(body.getName());
+        	assertEquals("Filter name not matching.", body.getName(), filter.getName());
+        	assertEquals("Filter Column-whitelist length not matching.", body.getWhitelist().size(), filter.getWhitelist().size());
+        }catch(ApiException e) {
+        	fail("Error while getting all filters (wholedata true): " + e.getCode());
+        }
+        // Test get specific filter columns
+        try {
+        	List<String> wl = api.getFilterColumns(body.getName());
+        	assertEquals("Filter Column-whitelist length not matching.", wl.size(), 2);
+        }catch(ApiException e) {
+        	fail("Error while getting a specifc filter columns: " + e.getCode());
+        }
+        
+        //Test filter removal
+        try {
+        	api.deleteFilter(body.getName());
+        }catch(ApiException e) {
+        	fail("Error while removing filter: " + e.getCode());
+        }
+        
+        try {
+        	api.getFilter(body.getName());
+        	fail("Filter was not removed and can still be get.");
+        }catch(ApiException e) {
+        	assertEquals("Error-code wrong.", 404, e.getCode());
+        }
+        // Test empty list
+        try {
+        	List<Object> filters = api.getAllFilters(false);
+        	assertEquals("Filter list should be empty.", filters.size(), 0);
+        }catch(ApiException e) {
+        	assertEquals("Response-code wrong.", 204, e.getCode());
+        }
     }
-    /**
-     * Remove filter
-     *
-     * Delete the specified Filter
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
+    
     @Test
-    public void deleteFilterTest() throws ApiException {
-        String name = null;
-        api.deleteFilter(name);
-
-        // TODO: test validations
+    public void filterNotFound() throws ApiException {
+    	Filter filter = new Filter();
+    	filter.setName("Filter1");
+    	List<String> whitelist = new ArrayList<>();
+    	whitelist.add("Spalte1");
+    	whitelist.add("Spalte2");
+    	filter.setWhitelist(whitelist);
+    	
+    	try {
+    		api.getFilter(filter.getName());
+    		fail("Filter should not be found.");
+    	}catch(ApiException e) {
+    		assertEquals("Error-code wrong.", 404, e.getCode());
+    	}
+    	
+    	try {
+    		api.getFilterColumns(filter.getName());
+    		fail("Filter columns should not be found.");
+    	}catch(ApiException e) {
+    		assertEquals("Error-code wrong.", 404, e.getCode());
+    	}
     }
-    /**
-     * Get all filters
-     *
-     * The list of all filters.
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
     @Test
-    public void getAllFiltersTest() throws ApiException {
-        Boolean wholeData = null;
-        List<Object> response = api.getAllFilters(wholeData);
-
-        // TODO: test validations
-    }
-    /**
-     * Get Filter
-     *
-     * Get the specified filter and its columes / formulas.
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getFilterTest() throws ApiException {
-        String name = null;
-        Filter1 response = api.getFilter(name);
-
-        // TODO: test validations
-    }
-    /**
-     * Get filter columns
-     *
-     * Get all the Columns/Formulas of a filter.
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void getFilterColumnsTest() throws ApiException {
-        String name = null;
-        List<String> response = api.getFilterColumns(name);
-
-        // TODO: test validations
-    }
-    /**
-     * Remove all filters
-     *
-     * Remove all filters
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void removeAllFiltersTest() throws ApiException {
-        api.removeAllFilters();
-
-        // TODO: test validations
+    public void removeAllFiltersTest() {
+    	Filter filter1 = new Filter();
+    	Filter filter2 = new Filter();
+    
+    	filter1.setName("Filter1");
+    	filter2.setName("Filter2");
+    
+    	filter1.setWhitelist(new ArrayList<>());
+    	filter2.setWhitelist(new ArrayList<>());
+    
+    	try {
+    		api.createFilter(filter1);
+    		api.createFilter(filter2);
+    	
+    		api.getFilter(filter1.getName());
+    		api.getFilter(filter2.getName());
+    	}catch(ApiException e) {
+    		fail("Error while creating/getting test-dependent filter: " + e.getCode());
+    	}
+    	
+    	try {
+    		api.removeAllFilters();
+    	}catch(ApiException e) {
+    		fail("Error while removing all filters: " + e.getCode());
+    	}
+    	
+    	try {
+    		Filter1 ret1 = api.getFilter(filter1.getName());
+    		Filter1 ret2 = api.getFilter(filter2.getName());
+    		fail("Error, filter should be already removed.");
+    	}catch(ApiException e) {
+    		assertEquals("Error-code wrong.", 404, e.getCode());
+    	}
     }
     /**
      * Rename filter
@@ -131,11 +245,36 @@ public class FiltersApiTest {
      */
     @Test
     public void renameFilterTest() throws ApiException {
-        String name = null;
-        String name2 = null;
-        api.renameFilter(name, name2);
-
-        // TODO: test validations
+        Filter filter = new Filter();
+        String filter2 = "Filter2";
+        filter.setName("Filter1");
+        filter.setWhitelist(new ArrayList<>());
+        
+        try {
+        	api.createFilter(filter);
+        }catch(ApiException e) {
+        	fail("Error while creating test-dependent filter: " + e.getCode());
+        }
+        
+        try {
+            api.renameFilter(filter.getName(), filter2);
+        }catch(ApiException e) {
+        	fail("Error while renaming filter: " + e.getCode());
+        }
+        
+        try {
+        	Filter1 ret = api.getFilter(filter2);
+        	assertEquals("Filter name not matching.", ret.getName(), filter2);
+        }catch(ApiException e) {
+        	fail("Error while getting renamed filter: " + e.getCode());
+        }
+        
+        try {
+        	Filter1 ret = api.getFilter(filter.getName());
+        	fail("Filter should not be found, because it got renamed.");
+        }catch(ApiException e) {
+        	assertEquals("Error-code wrong", e.getCode(), 404);
+        }
     }
     /**
      * Replace filter columns
@@ -147,11 +286,37 @@ public class FiltersApiTest {
      */
     @Test
     public void replaceFilterColumnsTest() throws ApiException {
-        String name = null;
-        List<String> body = null;
-        Boolean _return = null;
-        List<String> response = api.replaceFilterColumns(name, body, _return);
-
-        // TODO: test validations
+    	Filter filter = new Filter();
+    	filter.setName("Filter1");
+    
+    	List<String> wl1 = new ArrayList<>();
+    	List<String> wl2 = new ArrayList<>();
+    
+    	wl1.add("Spalte1");
+    	wl1.add("Spalte2");
+    	filter.setWhitelist(wl1);
+    	
+    	wl2.add("Spalte3");
+    	wl2.add("Spalte4");
+    	
+    	try {
+    		api.createFilter(filter);
+    	}catch(ApiException e) {
+    		fail("Error while creating test-dependent filter.");
+    	}
+    	
+    	try {
+    		api.replaceFilterColumns(filter.getName(), wl2, false);
+    		List<String> ret_wl = api.getFilterColumns(filter.getName());
+    		
+    		assertEquals("Filter column whitelist length not matching.", ret_wl.size(), filter.getWhitelist().size());
+    		for(String curr_col : ret_wl) {
+    			if(!wl2.contains(curr_col)) {
+    				fail("Filter whitelist column not updated.");
+    			}
+    		}
+    	}catch(ApiException e) {
+    		fail("Error while replacing/getting filter columns: " + e.getCode());
+    	}
     }
 }
