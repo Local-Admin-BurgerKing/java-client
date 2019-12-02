@@ -97,7 +97,8 @@ public class FormulasApiTest {
 		try {
 			api.addDailyformula(formula1);
 			fail("Was able to add Dailyformula even tough its not setup with all values yet!");
-		} catch (ApiException e) { }
+		} catch (ApiException e) {
+		}
 
 		formula1.setValue1("42");
 		formula1.setValue2("69");
@@ -204,7 +205,7 @@ public class FormulasApiTest {
 		try {
 			List<Object> dailyformulas = api.getAllDailyformulas(true);
 			assertEquals("Wrong amount of Dailyformulas in database!", 2, dailyformulas.size());
-			
+
 			assertEquals("Wrong Dailyformula at 0!", formula1.getName(),
 					((DailyFormulas) dailyformulas.get(0)).getName());
 			assertEquals("Wrong Dailyformula Value1 at 0!", formula1.getValue1(),
@@ -452,20 +453,20 @@ public class FormulasApiTest {
 		} catch (ApiException e) {
 			fail("Error when adding Dailyformulas!");
 		}
-		
+
 		try {
 			api.addOther(formula2.getName(), formula1.getName());
 		} catch (ApiException e) {
 			fail("Error when adding Other!");
 		}
-		
+
 		try {
 			DailyFormulas1 wholeDataFormula = (DailyFormulas1) api.getDailyformula(formula1.getName(), true);
 			assertEquals("There should be 0 others!", 0, wholeDataFormula.getOthers().size());
 		} catch (ApiException e) {
 			fail("Error when getting!");
 		}
-		
+
 		try {
 			DailyFormulas1 wholeDataFormula = (DailyFormulas1) api.getDailyformula(formula2.getName(), true);
 			assertEquals("There should be 1 other!", 1, wholeDataFormula.getOthers().size());
