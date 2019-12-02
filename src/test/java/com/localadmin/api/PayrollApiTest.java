@@ -80,7 +80,7 @@ public class PayrollApiTest {
 		restaurant2 = new Restaurant();
 		restaurant2.setNumber(1);
 		restaurant2.setLocation("Wo Anders");
-		restaurant2.setName("Gestern feritten heute mit Fritten!");
+		restaurant2.setName("Gestern geritten heute mit Fritten!");
 		restaurant2.setSollvalue(0.10f);
 
 		try {
