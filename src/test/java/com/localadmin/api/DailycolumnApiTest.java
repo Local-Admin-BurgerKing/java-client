@@ -54,6 +54,7 @@ public class DailycolumnApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -65,6 +66,7 @@ public class DailycolumnApiTest {
 			try {
 				api.deleteAllDailycolumns();
 			} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 				fail("Fail when reseting dailycolumn table! " + e.getCode());
 			}
 		}
@@ -93,6 +95,7 @@ public class DailycolumnApiTest {
 			api.addDailycolumn(dailycolumn1);
 			fail("Was able to add Dailycolumn even tough its not setup with all values yet!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			System.out.println(e.getCode());
 		}
 
@@ -102,6 +105,7 @@ public class DailycolumnApiTest {
 		try {
 			api.addDailycolumn(dailycolumn1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding Dailycolumn!");
 		}
 
@@ -110,6 +114,7 @@ public class DailycolumnApiTest {
 			api.addDailycolumn(dailycolumn1);
 			fail("It should not be possible to add the same Column again!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 409, e.getCode());
 		}
 
@@ -118,6 +123,7 @@ public class DailycolumnApiTest {
 			Dailycolumn dailycolumn = (Dailycolumn) api.getDailycolumn(dailycolumn1.getName());
 			assertEquals("Column seems to not have been added!", dailycolumn1.getName(), dailycolumn.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting Dailycolumn!");
 		}
 
@@ -125,6 +131,7 @@ public class DailycolumnApiTest {
 		try {
 			api.editDailycolumn(dailycolumn1.getName(), dailycolumn2);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when edit Dailycolumn!");
 		}
 
@@ -138,6 +145,7 @@ public class DailycolumnApiTest {
 			assertNotEquals("Updated even though we did not send anything!", dailycolumn2.isHide(),
 					dailycolumn.isHide());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting Dailycolumn!");
 		}
 
@@ -145,6 +153,7 @@ public class DailycolumnApiTest {
 		try {
 			api.deleteDailycolumn(dailycolumn1.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting Dailycolumns!");
 		}
 
@@ -175,6 +184,7 @@ public class DailycolumnApiTest {
 			api.addDailycolumn(dailycolumn1);
 			api.addDailycolumn(dailycolumn2);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding Dailycolumn!");
 		}
 
@@ -185,6 +195,7 @@ public class DailycolumnApiTest {
 			assertEquals("Wrong Dailycolumn at 0!", dailycolumn1.getName(), dailycolumns.get(0));
 			assertEquals("Wrong Dailycolumn at 1!", dailycolumn2.getName(), dailycolumns.get(1));
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting all Dailycolumns without wholedata! " + e.getCode());
 		}
 		try {
@@ -205,6 +216,7 @@ public class DailycolumnApiTest {
 			assertEquals("Wrong Dailycolumn hide at 1!", dailycolumn2.isHide(),
 					((Dailycolumn) dailycolumns.get(1)).isHide());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting all Dailycolumns with wholedata! " + e.getCode());
 		}
 
@@ -212,6 +224,7 @@ public class DailycolumnApiTest {
 		try {
 			api.deleteAllDailycolumns();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting all Dailycolumns! " + e.getCode());
 		}
 
@@ -220,6 +233,7 @@ public class DailycolumnApiTest {
 			List<Object> dailycolumns = api.getAllDailycolumns(false);
 			assertEquals("There are still columns inside the database", 0, dailycolumns.size());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting all Dailycolumns without wholedata! " + e.getCode());
 		}
 
@@ -248,6 +262,7 @@ public class DailycolumnApiTest {
 		try {
 			api.addDailycolumn(toReplace);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding Dailycolumn");
 		}
 
@@ -256,6 +271,7 @@ public class DailycolumnApiTest {
 			api.replaceDailycolumn(toReplace.getName(), replaceWith);
 			fail("Replacing should not be possible!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
 
 		replaceWith.setHide(false);
@@ -264,6 +280,7 @@ public class DailycolumnApiTest {
 		try {
 			api.replaceDailycolumn(toReplace.getName(), replaceWith);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when replacing Dailycolumn");
 		}
 
@@ -276,6 +293,7 @@ public class DailycolumnApiTest {
 					dailycolumn.getDescription());
 			assertEquals("Hide did not get replaced or replaced wrong", replaceWith.isHide(), dailycolumn.isHide());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting dailycolumn (maybe replace failure)");
 		}
 		
@@ -283,6 +301,7 @@ public class DailycolumnApiTest {
 		try {
 			api.deleteDailycolumn(replaceWith.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting Dailycolumn");
 		}
 	}
@@ -299,24 +318,28 @@ public class DailycolumnApiTest {
 			api.getDailycolumn("Why are we still here, I mean ... I am not");
 			fail("There should be a 404 error when a non existing dailycolumn gets requested!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 		try {
 			api.deleteDailycolumn("Nowhere");
 			fail("There should be a 404 error when a non existing dailycolumn gets deleted!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (delete)", 404, e.getCode());
 		}
 		try {
 			api.replaceDailycolumn("Nowhere", null);
 			fail("There should be a 404 error when a non existing dailycolumn gets replaced!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (replace)", 404, e.getCode());
 		}
 		try {
 			api.editDailycolumn("Nowhere", null);
 			fail("There should be a 404 error when a non existing dailycolumn gets edited!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (edit)", 404, e.getCode());
 		}
 	}

@@ -54,6 +54,7 @@ public class UsersApiTest {
 			Apikeywrapper wrapper = api.authenticate("admin@kingrestaurants.at", "12345678");
 			 key = wrapper.getKey();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -77,12 +78,14 @@ public class UsersApiTest {
 			Apikeywrapper wrapper = api.authenticate("admin@kingrestaurants.at", "asdasd");
 			fail("Login worked even though it was a wrong password");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
 		
 		try {
 			Apikeywrapper wrapper = api.authenticate("aldar@kingrestaurants.at", "12345678");
 			fail("Login worked even though it was a wrong admin account");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
     }
 }

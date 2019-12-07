@@ -58,6 +58,7 @@ public class UsergroupApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -73,6 +74,7 @@ public class UsergroupApiTest {
 						api.removeGroup(groups.get(i).toString());
 				}
 			} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 				fail("Fail when reseting group table!");
 			}
 		}
@@ -99,6 +101,7 @@ public class UsergroupApiTest {
 		try {
 			api.createGroup(group);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when creating group: " + e.getCode());
 		}
 
@@ -109,6 +112,7 @@ public class UsergroupApiTest {
 				fail("Group does seem to not have been added");
 			}
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting groups: " + e.getCode());
 		}
 
@@ -116,6 +120,7 @@ public class UsergroupApiTest {
 		try {
 			api.updateGroupName(group.getName(), "Supporter");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when updating group name: " + e.getCode());
 		}
 
@@ -126,6 +131,7 @@ public class UsergroupApiTest {
 				fail("Group name does seem to not have been updated");
 			}
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting groups: " + e.getCode());
 		}
 
@@ -133,6 +139,7 @@ public class UsergroupApiTest {
 		try {
 			api.removeGroup("Supporter");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting group: " + e.getCode());
 		}
 	}
@@ -166,6 +173,7 @@ public class UsergroupApiTest {
 		try {
 			api.createGroup(group);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when creating group: " + e.getCode());
 		}
 
@@ -174,6 +182,7 @@ public class UsergroupApiTest {
 			api.createGroup(group);
 			fail("Group got added again which should not be!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error should be 409 if same group gets added 2 times", 409, e.getCode());
 		}
 
@@ -181,6 +190,7 @@ public class UsergroupApiTest {
 		try {
 			api.addGroupPermission(group.getName(), permissionName);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding permission: " + e.getCode());
 		}
 
@@ -190,6 +200,7 @@ public class UsergroupApiTest {
 			api.addGroupPermission(group.getName(), permissionName);
 			fail("Added permission again even tough it was already inside");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error should be 409 because there was already the same permission in this group!" + 409,
 					e.getCode());
 		}
@@ -205,6 +216,7 @@ public class UsergroupApiTest {
 				}
 			}
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting permissions: " + e.getCode());
 		}
 
@@ -212,6 +224,7 @@ public class UsergroupApiTest {
 		try {
 			api.removeGroupPermission(group.getName(), permissionName);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removeing permission: " + e.getCode());
 		}
 	}
@@ -242,6 +255,7 @@ public class UsergroupApiTest {
 			api.createGroup(group1);
 			api.createGroup(group2);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when creating Groups!" + e.getCode());
 		}
 
@@ -255,6 +269,7 @@ public class UsergroupApiTest {
 			assertEquals("Group at 2 should be " + group2.getName(), group2.getName(),
 					((Group) groups.get(2)).getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting groups with wholedata!");
 		}
 		try {
@@ -264,6 +279,7 @@ public class UsergroupApiTest {
 			assertEquals("Group at 1 should be " + group1.getName(), group1.getName(), groups.get(1));
 			assertEquals("Group at 2 should be " + group2.getName(), group2.getName(), groups.get(2));
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting groups without wholedata!");
 		}
 
@@ -286,6 +302,7 @@ public class UsergroupApiTest {
 			api.removeAllGroups();
 			fail("Groups got removed even though ROOT is used by admin");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
 
 	}
@@ -304,6 +321,7 @@ public class UsergroupApiTest {
 			api.removeGroup("ROOT");
 			fail("Group ROOT got removed but was used");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Errorcode should be 409 which means that the group is in use!", 409, e.getCode());
 		}
 
@@ -326,6 +344,7 @@ public class UsergroupApiTest {
 		try {
 			api.createGroup(group1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when creating Group!" + e.getCode());
 		}
 
@@ -333,6 +352,7 @@ public class UsergroupApiTest {
 		try {
 			api.removeAllPermissions(group1.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removeing permissions from group" + e.getCode());
 		}
 
@@ -342,6 +362,7 @@ public class UsergroupApiTest {
 			assertEquals("There should be no permissions anymore but there are " + permissionsFromGroup.size(), 0,
 					permissionsFromGroup.size());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting permissions: " + e.getCode());
 		}
 

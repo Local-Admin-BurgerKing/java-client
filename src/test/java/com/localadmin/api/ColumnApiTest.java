@@ -23,8 +23,6 @@ import com.localadmin.model.DailyFormulas;
 import com.localadmin.model.Dailycolumn;
 import com.localadmin.model.Dailyoperators;
 import com.localadmin.model.ErrorResponse;
-import com.localadmin.model.InlineResponse200;
-import com.localadmin.model.InlineResponse2001;
 import com.localadmin.model.Restaurant;
 import com.localadmin.model.SalaryChange;
 import com.localadmin.model.SalaryChange1;
@@ -65,6 +63,7 @@ public class ColumnApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -77,6 +76,7 @@ public class ColumnApiTest {
 				dailycolumnApi.deleteAllDailycolumns();
 				formulaApi.deleteAllDailyformulas();
 			} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 				fail("Fail when reseting column table! " + e.getCode());
 			}
 		}
@@ -108,6 +108,7 @@ public class ColumnApiTest {
 			dailycolumnApi.addDailycolumn(dailycolumn1);
 			fail("Was able to add DailyColumn even tough its not setup with all values yet!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
 
 		// Add column from type DailyFormula which should not work
@@ -115,6 +116,7 @@ public class ColumnApiTest {
 			formulaApi.addDailyformula(dailyformulas1);
 			fail("Was able to add SalaryLevel even tough its not setup with all values yet!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
 
 		dailyformulas1.setOperator(Dailyoperators.ADD);
@@ -124,6 +126,7 @@ public class ColumnApiTest {
 		try {
 			dailycolumnApi.addDailycolumn(dailycolumn1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding DailyColumn!");
 		}
 
@@ -131,6 +134,7 @@ public class ColumnApiTest {
 		try {
 			formulaApi.addDailyformula(dailyformulas1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding DailyFormula!");
 		}
 
@@ -138,6 +142,7 @@ public class ColumnApiTest {
 		try {
 			payrollApi.addSalaryLevel("LevelXYZ");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryLevel!");
 		}
 
@@ -149,6 +154,7 @@ public class ColumnApiTest {
 			assertEquals("Name of Column at 1 is wrong!", dailyformulas1.getName(), columnNames.get(1));
 			assertEquals("Name of Column at 2 is wrong!", "LevelXYZ", columnNames.get(2));
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting Columns!");
 		}
 
@@ -157,18 +163,21 @@ public class ColumnApiTest {
 			ColumnType type = api.getColumnType(dailycolumn1.getName());
 			assertEquals("Type of column is not correct", ColumnType.TypeEnum.DAILYCOLUMN, type);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting type of the DailyColumn!" + e.getCode());
 		}
 		try {
 			ColumnType type = api.getColumnType(dailyformulas1.getName());
 			assertEquals("Type of column is not correct", ColumnType.TypeEnum.DAILYFORMULA, type);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting type of the DailyFormula!" + e.getCode());
 		}
 		try {
 			ColumnType type = api.getColumnType("LevelXYZ");
 			assertEquals("Type of column is not correct", ColumnType.TypeEnum.SALARYLEVEL, type);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting type of the SalaryLevel!" + e.getCode());
 		}
 
@@ -177,18 +186,21 @@ public class ColumnApiTest {
 			ColumnUse use = api.isColumnInUse(dailycolumn1.getName());
 			assertEquals("Column useage is not correct", false, use.isInUse());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting usage of the DailyColumn!");
 		}
 		try {
 			ColumnUse use = api.isColumnInUse(dailyformulas1.getName());
 			assertEquals("Column useage is not correct", false, use.isInUse());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting usage of the DailyFormulas!");
 		}
 		try {
 			ColumnUse use = api.isColumnInUse("LevelXYZ");
 			assertEquals("Column useage is not correct", false, use.isInUse());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting usage of the SalaryLevel!");
 		}
 
@@ -196,16 +208,19 @@ public class ColumnApiTest {
 		try {
 			dailycolumnApi.deleteAllDailycolumns();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting all DailyColumns!");
 		}
 		try {
 			formulaApi.deleteAllDailyformulas();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting all DailyFormulas!");
 		}
 		try {
 			payrollApi.removeSalaryLevel("LevelXYZ");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting all DailyFormulas!");
 		}
 
@@ -223,12 +238,14 @@ public class ColumnApiTest {
 			api.getColumnType("I am not even existing");
 			fail("There should be a 404 error when the type of a non existing column gets requested!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (getType)", 404, e.getCode());
 		}
 		try {
 			api.isColumnInUse("I am not even existing");
 			fail("There should be a 404 error when the usage of a non existing column gets requested!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (isInUse)", 404, e.getCode());
 		}
 	}
@@ -258,6 +275,7 @@ public class ColumnApiTest {
 		try {
 			dailycolumnApi.addDailycolumn(dailycolumn1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding DailyColumn!");
 		}
 
@@ -265,6 +283,7 @@ public class ColumnApiTest {
 		try {
 			formulaApi.addDailyformula(dailyformulas1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding DailyFormula!");
 		}
 
@@ -272,6 +291,7 @@ public class ColumnApiTest {
 		try {
 			payrollApi.addSalaryLevel("salarylevel");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryLevel!");
 		}
 
@@ -280,12 +300,14 @@ public class ColumnApiTest {
 			dailycolumnApi.getDailycolumn(dailyformulas1.getName());
 			fail("There should be a 307 error because it is a incompatible type!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 307, e.getCode());
 		}
 		try {
 			dailycolumnApi.getDailycolumn("salarylevel");
 			fail("There should be a 307 error because it is a incompatible type!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 307, e.getCode());
 		}
 
@@ -294,12 +316,14 @@ public class ColumnApiTest {
 			formulaApi.getDailyformula("salarylevel", false);
 			fail("There should be a 307 error because it is a incompatible type!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 307, e.getCode());
 		}
 		try {
 			formulaApi.getDailyformula(dailycolumn1.getName(), false);
 			fail("There should be a 307 error because it is a incompatible type!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 307, e.getCode());
 		}
 
@@ -308,12 +332,14 @@ public class ColumnApiTest {
 			payrollApi.getSalaryLevel(dailyformulas1.getName());
 			fail("There should be a 307 error because it is a incompatible type!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 307, e.getCode());
 		}
 		try {
 			payrollApi.getSalaryLevel(dailycolumn1.getName());
 			fail("There should be a 307 error because it is a incompatible type!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 307, e.getCode());
 		}
 	}

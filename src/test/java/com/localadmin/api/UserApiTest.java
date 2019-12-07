@@ -62,6 +62,8 @@ public class UserApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
+    System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -77,6 +79,8 @@ public class UserApiTest {
 						api.deleteUser(users.get(i).toString());
 				}
 			} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
+    System.err.println(e.getResponseBody());
 				fail("Fail when reseting user table!");
 			}
 		}
@@ -103,6 +107,8 @@ public class UserApiTest {
 		try {
 			api.addUserWithHttpInfo(user1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
+    System.err.println(e.getResponseBody());
 			fail("Error when adding User!");
 		}
 
@@ -114,6 +120,8 @@ public class UserApiTest {
 		try {
 			api.editUser(user1.getEmail(), edits1, "1234");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
+    System.err.println(e.getResponseBody());
 			fail("Error when edit user! " + e.getCode() + e.getMessage());
 		}
 		try {
@@ -124,6 +132,8 @@ public class UserApiTest {
 			assertNotEquals("Group got changed even though it did not get told to!", gettedUser.getGroup(),
 					user1.getGroup());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
+    System.err.println(e.getResponseBody());
 			fail("Error when getting user!");
 		}
 
@@ -132,6 +142,8 @@ public class UserApiTest {
 			api.addUserWithHttpInfo(user1);
 			fail("User was already in database but got put again!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 409,  e.getCode());
 		}
 
@@ -142,6 +154,7 @@ public class UserApiTest {
 			api.editUser(user1.getEmail(), edits2, "1234"); // Delivered wrong password so it should not change the
 															// password
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when edit user! " + e.getCode() + e.getMessage());
 		}
 		try {
@@ -152,6 +165,7 @@ public class UserApiTest {
 					gettedUser.getPassword());
 			assertEquals("Group has got changed which should not happen!", user1.getGroup(), gettedUser.getGroup());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting user!");
 		}
 
@@ -159,6 +173,7 @@ public class UserApiTest {
 		try {
 			api.deleteUser(user1.getEmail());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting User!");
 		}
 	}
@@ -188,6 +203,7 @@ public class UserApiTest {
 			api.changePasswordByToken("nbrugger@student.tgm.ac.at", token, "AberIchBinEinPasswort!%");
 			fail("Something went wrong cause it changed Password even though it was a wrong token!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
 
 		api.deleteUser(user.getEmail());
@@ -206,6 +222,7 @@ public class UserApiTest {
 		try {
 			api.deleteAllUsers();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Something did not work when deleting all users! " + e.getCode());
 		}
 		User user1 = new User();
@@ -216,6 +233,7 @@ public class UserApiTest {
 		try {
 			api.addUser(user1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Was not able to add Admin!");
 		}
 	}
@@ -248,6 +266,7 @@ public class UserApiTest {
 			api.addUserWithHttpInfo(user1);
 			api.addUserWithHttpInfo(user2);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding User!");
 		}
 
@@ -262,6 +281,7 @@ public class UserApiTest {
 			assertEquals("User at 2 should be " + user2.getEmail(), user2.getEmail(),
 					((LinkedTreeMap<?, ?>) users.get(2)).get("email"));
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting Users with wholedata!");
 		}
 		try {
@@ -271,6 +291,7 @@ public class UserApiTest {
 			assertEquals("User at 1 should be " + user1.getEmail(), user1.getEmail(), users.get(1));
 			assertEquals("User at 2 should be " + user2.getEmail(), user2.getEmail(), users.get(2));
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting Users without wholedata!");
 		}
 
@@ -307,6 +328,7 @@ public class UserApiTest {
 			api.replaceUser("sexysusi@gmx.at", replaceWith);
 			fail("Replace worked even though no Group was set");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			// All good
 		}
 
@@ -316,6 +338,7 @@ public class UserApiTest {
 		try {
 			api.replaceUser("sexysusi@gmx.at", replaceWith);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Replace did not work!");
 		}
 
@@ -323,6 +346,7 @@ public class UserApiTest {
 		try {
 			api.getUser(replaceWith.getEmail());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			if (e.getCode() == 404)
 				fail("Replace did not work!");
 			else
@@ -344,6 +368,7 @@ public class UserApiTest {
 			api.deleteUser("elon.musk@gmail.com");
 			fail("There should be a 404 error when a non exisiting user gets deleted!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (delete)", 404, e.getCode());
 		}
 
@@ -351,6 +376,7 @@ public class UserApiTest {
 			api.getUser("elon.musk@gmail.com");
 			fail("There should be a 404 error when a non exisiting user gets getted!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 
@@ -358,6 +384,7 @@ public class UserApiTest {
 			api.editUser("elon.musk@gmail.com", null, null);
 			fail("There should be a 404 error when a non exisiting user gets edited!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (edit)", 404, e.getCode());
 		}
 
@@ -365,6 +392,7 @@ public class UserApiTest {
 			api.replaceUser("elon.musk@gmail.com", null);
 			fail("There should be a 404 error when a non exisiting user gets replaced!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (replace)", 404, e.getCode());
 		}
 	}

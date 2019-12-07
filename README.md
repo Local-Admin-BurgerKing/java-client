@@ -94,6 +94,7 @@ public class ColumnApiExample {
             List<Paths1filter17Bname7D1columnsgetresponses200contentapplication1jsonschemaitems> result = apiInstance.getAllColumns();
             System.out.println(result);
         } catch (ApiException e) {
+    System.err.println(e.getResponseBody());
             System.err.println("Exception when calling ColumnApi#getAllColumns");
             e.printStackTrace();
         }
@@ -124,6 +125,7 @@ public class ColumnApiExample {
             InlineResponse200 result = apiInstance.getColumnType(name);
             System.out.println(result);
         } catch (ApiException e) {
+    System.err.println(e.getResponseBody());
             System.err.println("Exception when calling ColumnApi#getColumnType");
             e.printStackTrace();
         }
@@ -154,6 +156,7 @@ public class ColumnApiExample {
             InlineResponse2001 result = apiInstance.isColumnInUse(name);
             System.out.println(result);
         } catch (ApiException e) {
+    System.err.println(e.getResponseBody());
             System.err.println("Exception when calling ColumnApi#isColumnInUse");
             e.printStackTrace();
         }

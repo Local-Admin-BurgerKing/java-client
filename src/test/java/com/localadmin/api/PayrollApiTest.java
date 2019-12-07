@@ -35,6 +35,9 @@ import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +53,7 @@ public class PayrollApiTest {
 	private final RestaurantApi restaurantApi = new RestaurantApi();
 	private ApiKeyAuth User_Auth;
 	private String key;
-	private boolean resetPayrollTableBefore = false; // should it clear the table for each Test so if one fails the
+	private boolean resetPayrollTableBefore = true; // should it clear the table for each Test so if one fails the
 														// others does not fail
 	private Restaurant restaurant1;
 	private Restaurant restaurant2;
@@ -64,6 +67,7 @@ public class PayrollApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -87,10 +91,19 @@ public class PayrollApiTest {
 			restaurantApi.addRestaurant(restaurant1);
 			restaurantApi.addRestaurant(restaurant2);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Fail when adding Restaurants!");
 		}
 
 		if (resetPayrollTableBefore) {
+			try {
+				api.deletePayroll();
+				restaurantApi.deleteAllRestaurants();
+			} catch (ApiException e) {
+				e.printStackTrace();
+				fail(e.getResponseBody());
+			}
+			/*
 			try {
 				List<Object> restaurantIDs = restaurantApi.getAllRestaurants(false);
 				for (Object id : restaurantIDs) {
@@ -102,8 +115,10 @@ public class PayrollApiTest {
 					api.removeSalaryLevel((String) salaryName);
 				}
 			} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 				fail("Fail when reseting formula table! " + e.getCode());
 			}
+			 */
 		}
 	}
 
@@ -112,6 +127,7 @@ public class PayrollApiTest {
 		try {
 			restaurantApi.deleteAllRestaurants();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Fail when deleting Restaurant!" + e.getCode());
 		}
 	}
@@ -142,6 +158,7 @@ public class PayrollApiTest {
 			api.addSalaryLevel(salaryLevel1.getName());
 			api.addSalaryLevel(salaryLevel2.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryLevel");
 		}
 
@@ -150,6 +167,7 @@ public class PayrollApiTest {
 			api.addSalaryLevel(salaryLevel1.getName());
 			fail("SalaryLevel got added again!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong", 409, e.getCode());
 		}
 
@@ -159,6 +177,7 @@ public class PayrollApiTest {
 			assertEquals("SalaryLevel name is not correct!", salaryLevel1.getName(), salaryLevel.getName());
 			assertEquals("SalaryLevel payroll is not correct!", 0, salaryLevel.getPayrolls());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryLevel");
 		}
 
@@ -171,6 +190,7 @@ public class PayrollApiTest {
 			assertEquals("SalaryLevel name is not correct!", salaryLevel2.getName(),
 					((SalaryLevel) salaryLevel.get(1)).getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryLevel");
 		}
 
@@ -186,6 +206,7 @@ public class PayrollApiTest {
 			api.addSalaryChange(salaryLevel1.getName(), 0, salaryChange1);
 			fail("Should not work cause of missing value!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
 
 		salaryChange1.setValue(3);
@@ -198,6 +219,7 @@ public class PayrollApiTest {
 			api.addSalaryChange(salaryLevel2.getName(), 0, salaryChange1);
 			api.addSalaryChange(salaryLevel2.getName(), 0, salaryChange2);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryChange!");
 		}
 
@@ -206,6 +228,7 @@ public class PayrollApiTest {
 			api.addSalaryChange(salaryLevel1.getName(), 0, salaryChange1);
 			fail("Should not work because it is already in!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
 
 		// Get SalaryLevels (wholedata true)
@@ -230,6 +253,7 @@ public class PayrollApiTest {
 					((Payroll) ((SalaryLevel) salaryLevel.get(0)).getPayrolls().get(0)).getChanges().size());
 
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryLevel");
 		}
 
@@ -239,6 +263,7 @@ public class PayrollApiTest {
 			assertEquals("Wrong Date in SalaryChange!", salaryChange1.getDate(), salaryChange.getDate());
 			assertEquals("Wrong Value in SalaryChange!", salaryChange1.getValue(), salaryChange.getValue());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryChange!");
 		}
 
@@ -246,6 +271,7 @@ public class PayrollApiTest {
 		try {
 			api.removeChange(salaryLevel1.getName(), 0, salaryChange1.getDate());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting salaryChange1 from restaurant 0 in salarayLevel1 !");
 		}
 
@@ -253,6 +279,7 @@ public class PayrollApiTest {
 		try {
 			api.removePayroll(salaryLevel2.getName(), 0);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting all SalaryChanges from restaurant 0 in salarayLevel2 !");
 		}
 
@@ -261,6 +288,7 @@ public class PayrollApiTest {
 		try {
 			api.deleteRestaurantChanges(0);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting all SalaryChanges from restaurant 0 !");
 		}
 
@@ -268,6 +296,7 @@ public class PayrollApiTest {
 		try {
 			api.removePayroll(salaryLevel1.getName(), 0);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removeing Payroll from restaurant 0 !");
 		}
 
@@ -275,6 +304,7 @@ public class PayrollApiTest {
 		try {
 			api.removeSalaryLevel(salaryLevel1.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removing SalaryLevel");
 		}
 	}
@@ -300,6 +330,7 @@ public class PayrollApiTest {
 		try {
 			api.addSalaryLevel(salaryLevel1.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryLevel");
 		}
 
@@ -312,12 +343,14 @@ public class PayrollApiTest {
 			api.addSalaryChange(salaryLevel1.getName(), 0, salaryChange1);
 			fail("Should not work cause of missing value!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
 
 		// Edit Change Value
 		try {
 			api.editChange(salaryLevel1.getName(), 0, salaryChange1.getDate(), 4);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when editting change!");
 		}
 
@@ -325,6 +358,7 @@ public class PayrollApiTest {
 		try {
 			api.editChange(salaryLevel1.getName(), 0, salaryChange1.getDate(), 4);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when editting change!");
 		}
 
@@ -333,6 +367,7 @@ public class PayrollApiTest {
 			SalaryChange salaryChange = api.getSalaryChange(salaryLevel1.getName(), 0, salaryChange1.getDate(), false);
 			assertEquals("SalaryChange has not the correct value!", 4, salaryChange.getValue().intValue());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when editting change!");
 		}
 
@@ -340,6 +375,7 @@ public class PayrollApiTest {
 		try {
 			api.deleteRestaurantChanges(0);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removeing Payroll from restaurant 0 !");
 		}
 
@@ -347,6 +383,7 @@ public class PayrollApiTest {
 		try {
 			api.removeSalaryLevel(salaryLevel1.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removing SalaryLevel");
 		}
 
@@ -367,17 +404,20 @@ public class PayrollApiTest {
 		try {
 			api.addSalaryLevel(salaryLevel1.getName());
 		} catch (ApiException e) {
+			System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryLevel");
 		}
 
 		SalaryChange1 salaryChange1 = new SalaryChange1();
-		salaryChange1.setDate(LocalDate.ofYearDay(2019, 353));
-		salaryChange1.setValue(-6);
+		salaryChange1.setDate(LocalDate.ofYearDay(2019, 300));
+		salaryChange1.setValue(200);
 
 		// Add SalaryChange
 		try {
 			api.addSalaryChange(salaryLevel1.getName(), 0, salaryChange1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryChange");
 		}
 
@@ -387,6 +427,7 @@ public class PayrollApiTest {
 			List<List<Object>> response = api.getChangesByLevelAndDate(salaryLevel1.getName(), salaryChange1.getDate(),
 					true);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryChanges by Level and Date!");
 		}
 
@@ -395,14 +436,16 @@ public class PayrollApiTest {
 			SalaryChange latestChange = (SalaryChange) api.getLatestChange(salaryLevel1.getName(), 0);
 			assertEquals("Latest change is not correct!", salaryChange1.toString(), latestChange.toString());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryChanges by Level and Date!");
 		}
 
 		// Get SalaryChanges at Date from restaurant
 		try {
-			List<Object> salaryChanges = api.getRestaurantChangesAtDate(0, salaryChange1.getDate());
+			List<Object> salaryChanges = api.getRestaurantChangesAtDate(null, salaryChange1.getDate());
 			assertEquals("There is not the expected amount of SalaryChanges", 1, salaryChanges.size());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryChanges at Date!");
 		}
 
@@ -424,6 +467,7 @@ public class PayrollApiTest {
 			assertEquals("There is not the expected amount of SalaryChanges in this restaurant", 0,
 					salaryChanges.size());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryChanges between a time!");
 		}
 
@@ -433,6 +477,7 @@ public class PayrollApiTest {
 			assertEquals("There is not the expected amount of SalaryChanges in this SalaryLevel", 1,
 					salaryInfo.getEntryCount().intValue());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryChanges by Level and Date!");
 		}
 
@@ -449,6 +494,7 @@ public class PayrollApiTest {
 			assertEquals("There is not the expected amount of SalaryChanges in this SalaryLevel", 1,
 					salaryChanges.size());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryChanges by Level and Date!");
 		}
 
@@ -456,6 +502,7 @@ public class PayrollApiTest {
 		try {
 			api.deleteRestaurantChanges(0);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removeing Payroll from restaurant 0 !");
 		}
 
@@ -463,6 +510,7 @@ public class PayrollApiTest {
 		try {
 			api.removeSalaryLevel(salaryLevel1.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removing SalaryLevel");
 		}
 	}
@@ -476,6 +524,7 @@ public class PayrollApiTest {
 		try {
 			api.addSalaryLevel(salaryLevel1.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryLevel");
 		}
 
@@ -483,6 +532,7 @@ public class PayrollApiTest {
 		try {
 			api.renameSalaryLevel(salaryLevel1.getName(), "salaryLevelReset");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when renaming SalaryLevel");
 		}
 
@@ -494,6 +544,7 @@ public class PayrollApiTest {
 		try {
 			api.addSalaryChange(salaryLevel1.getName(), 0, salaryChange1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryChange");
 		}
 
@@ -501,6 +552,7 @@ public class PayrollApiTest {
 		try {
 			api.resetSalaryLevel(salaryLevel1.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when resetting SalaryLevel");
 		}
 
@@ -511,6 +563,7 @@ public class PayrollApiTest {
 				fail("Did not get reseted because Payroll is still inside with size of "
 						+ salaryLevel.getPayrolls().size());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting SalaryLevel");
 		}
 
@@ -518,6 +571,7 @@ public class PayrollApiTest {
 		try {
 			api.deleteRestaurantChanges(0);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removeing Payroll from restaurant 0 !");
 		}
 
@@ -525,6 +579,7 @@ public class PayrollApiTest {
 		try {
 			api.removeSalaryLevel(salaryLevel1.getName());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removing SalaryLevel");
 		}
 	}
@@ -547,6 +602,7 @@ public class PayrollApiTest {
 		try {
 			api.addSalaryLevel("ExistingSalary");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryLevel");
 		}
 
@@ -558,6 +614,7 @@ public class PayrollApiTest {
 		try {
 			api.addSalaryChange("ExistingSalary", 0, salaryChange1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding SalaryChange");
 		}
 		
@@ -567,6 +624,7 @@ public class PayrollApiTest {
 			api.getChangesByLevelAndDate("NonExistingSalary", LocalDate.now(), true);
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -575,6 +633,7 @@ public class PayrollApiTest {
 			api.getChangesByLevelAndDate("NonExistingSalary", LocalDate.now(), false);
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -583,6 +642,7 @@ public class PayrollApiTest {
 			api.getLatestChange("NonExistingSalary", 0);
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -591,6 +651,7 @@ public class PayrollApiTest {
 			api.getLatestChange("ExistingSalary", 5);
 			fail("There should be a 404 error when the Restaurant does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -599,6 +660,7 @@ public class PayrollApiTest {
 			api.getPayroll("NonExistingSalary", 0);
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -607,6 +669,7 @@ public class PayrollApiTest {
 			api.getPayroll("ExistingSalary", 5);
 			fail("There should be a 404 error when the Restaurant does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -615,6 +678,7 @@ public class PayrollApiTest {
 			api.getPayrollInformation("NonExistingSalary", 0);
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -623,6 +687,7 @@ public class PayrollApiTest {
 			api.getPayrollInformation("ExistingSalary", 5);
 			fail("There should be a 404 error when the Restaurant does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -631,6 +696,7 @@ public class PayrollApiTest {
 			api.getRestaurantChanges_(5, timeFilter1);
 			fail("There should be a 404 error when the Restaurant does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -639,6 +705,7 @@ public class PayrollApiTest {
 			api.getRestaurantChanges_(0, null);
 			fail("There should be an error when the Filter is null!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			System.out.println(e.getCode());
 		}
 		
@@ -646,6 +713,7 @@ public class PayrollApiTest {
 			api.getSalaryChange("NonExistingSalary", 0, nonExistingDate, false);
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -654,6 +722,7 @@ public class PayrollApiTest {
 			api.getSalaryChange("ExistingSalary", 5, nonExistingDate, false);
 			fail("There should be a 404 error when the Restaurant does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -662,6 +731,7 @@ public class PayrollApiTest {
 			api.getSalaryChange("ExistingSalary", 0, nonExistingDate, false);
 			fail("There should be a 404 error when there is no SalaryChange on the specified Date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 442 (get)", 442, e.getResponseBody());
 		}
@@ -670,6 +740,7 @@ public class PayrollApiTest {
 			api.getSalaryChange("NonExistingSalary", 0, nonExistingDate, true);
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -678,6 +749,7 @@ public class PayrollApiTest {
 			api.getSalaryChange("ExistingSalary", 5, nonExistingDate, true);
 			fail("There should be a 404 error when there is no SalaryChange on the specified Date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -686,6 +758,7 @@ public class PayrollApiTest {
 			api.getSalaryChange("ExistingSalary", 0, nonExistingDate, true);
 			fail("There should be a 404 error when there is no SalaryChange on the specified Date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 442 (get)", 442, e.getResponseBody());
 		}
@@ -694,6 +767,7 @@ public class PayrollApiTest {
 			api.getSalaryLevel("NonExistingSalary");
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -702,6 +776,7 @@ public class PayrollApiTest {
 			api.addSalaryChange("NonExistingSalary", 0, null);
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -710,6 +785,7 @@ public class PayrollApiTest {
 			api.addSalaryChange("ExistingSalary", 5, null);
 			fail("There should be a 404 error when the Restaurant does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -718,6 +794,7 @@ public class PayrollApiTest {
 			api.removeChange("NonExistingSalary", 0, salaryChange1.getDate());
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -726,6 +803,7 @@ public class PayrollApiTest {
 			api.removeChange("ExistingSalary", 5, salaryChange1.getDate());
 			fail("There should be a 404 error when the Restaurant does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -734,6 +812,7 @@ public class PayrollApiTest {
 			api.removeChange("NonExistingSalary", 0, nonExistingDate);
 			fail("There should be a 404 error when there is no SalaryChange on the specified Date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 442 (get)", 442, e.getResponseBody());
 		}
@@ -742,6 +821,7 @@ public class PayrollApiTest {
 			api.removePayroll("NonExistingSalary", 0);
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -750,6 +830,7 @@ public class PayrollApiTest {
 			api.removePayroll("ExistingSalary", 5);
 			fail("There should be a 404 error when the Restaurant does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -757,6 +838,7 @@ public class PayrollApiTest {
 			api.removeSalaryLevel("NonExistingSalary");
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -765,6 +847,7 @@ public class PayrollApiTest {
 			api.editChange("NonExistingSalary", 0, salaryChange1.getDate(), 31);
 			fail("There should be a 404 error when the SalaryLevel does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340 (get)", 340, e.getResponseBody());
 		}
@@ -773,6 +856,7 @@ public class PayrollApiTest {
 			api.editChange("ExistingSalary", 5, salaryChange1.getDate(), 31);
 			fail("There should be a 404 error when the Restaurant does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -781,6 +865,7 @@ public class PayrollApiTest {
 			api.editChange("ExistingSalary", 0, nonExistingDate, 31);
 			fail("There should be a 404 error when there is no SalaryChange on the specified Date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 442 (get)", 442, e.getResponseBody());
 		}
@@ -789,6 +874,7 @@ public class PayrollApiTest {
 			api.deleteRestaurantChanges(5);
 			fail("There should be a 404 error when the Restaurant does not exist!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (get)", 541, e.getResponseBody());
 		}
@@ -798,6 +884,7 @@ public class PayrollApiTest {
 			api.deleteRestaurantChanges(0);
 			api.deleteRestaurantChanges(1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removing Payroll from restaurant 0 and 1!");
 		}
 
@@ -805,7 +892,9 @@ public class PayrollApiTest {
 		try {
 			api.removeSalaryLevel("ExistingSalary");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removing SalaryLevel");
 		}
 	}
+
 }

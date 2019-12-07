@@ -67,6 +67,7 @@ public class TablesApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -90,6 +91,7 @@ public class TablesApiTest {
 			restaurantApi.addRestaurant(restaurant1);
 			restaurantApi.addRestaurant(restaurant2);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Fail when adding Restaurants!");
 		}
 
@@ -109,6 +111,7 @@ public class TablesApiTest {
 					}
 				}
 			} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 				fail("Fail when reseting table table! " + e.getCode());
 			}
 		}
@@ -119,6 +122,7 @@ public class TablesApiTest {
 		try {
 			restaurantApi.deleteAllRestaurants();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Fail when deleting Restaurant!" + e.getCode());
 		}
 	}
@@ -142,6 +146,7 @@ public class TablesApiTest {
 			api.addDailyReport(0, report1);
 			fail("Was able to add Report again even though it was in already!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 		}
 
 		report1.setComment("A comment");
@@ -150,6 +155,7 @@ public class TablesApiTest {
 		try {
 			api.addDailyReport(0, report1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding DailyReport");
 		}
 
@@ -158,6 +164,7 @@ public class TablesApiTest {
 			api.addDailyReport(0, report1);
 			fail("Was able to add Report again even though it was in already!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 409, e.getCode());
 		}
 
@@ -168,6 +175,7 @@ public class TablesApiTest {
 			assertEquals("Report Data is wrong!", report1.getData(), report.getData());
 			assertEquals("Report Comment is wrong!", report1.getComment(), report.getComment());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting DailyReport!");
 		}
 
@@ -178,6 +186,7 @@ public class TablesApiTest {
 			List<DataEntry> entrysGetted = api.replaceDailyReport(0, report1.getDate(), entrysToAdd, true);
 			assertEquals("The entry list does not have the correct size!", 1, entrysGetted.size());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when editing DailyReport!");
 		}
 
@@ -185,6 +194,7 @@ public class TablesApiTest {
 		try {
 			api.removeReport(0, report1.getDate());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removing DailyReport!");
 		}
 	}
@@ -219,6 +229,7 @@ public class TablesApiTest {
 			api.addDailyReport(0, report1);
 			api.addDailyReport(1, report2);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding Reports!");
 		}
 
@@ -253,6 +264,7 @@ public class TablesApiTest {
 			assertEquals("Reports Data is wrong at 1", report2.getData(), ((Report) reports.get(1)).getData());
 			assertEquals("Reports Comment is wrong at 1", report2.getComment(), ((Report) reports.get(1)).getComment());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting all Reports! (Could be that the filter is not correctly handled too) with wholedata");
 		}
 
@@ -263,6 +275,7 @@ public class TablesApiTest {
 			assertEquals("Reports Date is wrong at 0", report1.getDate(), ((Report) reports.get(0)).getDate());
 			assertEquals("Reports Date is wrong at 1", report2.getDate(), ((Report) reports.get(1)).getDate());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting all Reports! (Could be that the filter is not correctly handled too) with wholedata");
 		}
 
@@ -275,6 +288,7 @@ public class TablesApiTest {
 			assertEquals("Reports Data is wrong at 0", report1.getData(), (LocalDate) reports.get(0));
 			assertEquals("Reports Comment is wrong at 0", report1.getComment(), ((Report) reports.get(0)).getComment());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting all Reports! (Could be that the filter is not correctly handled too)  with wholedata");
 		}
 
@@ -287,6 +301,7 @@ public class TablesApiTest {
 			assertEquals("Reports Data is wrong at 0", report1.getData(), ((Report) reports.get(0)).getData());
 			assertEquals("Reports Comment is wrong at 0", report1.getComment(), ((Report) reports.get(0)).getComment());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting all Reports from one Restaurant! (Could be that the filter is not correctly handled too)");
 		}
 
@@ -295,6 +310,7 @@ public class TablesApiTest {
 			List<Object> reports = api.getRestaurantReports(0, filter4, false);
 			assertEquals("The size is not correct!", 0, reports.size());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting all Reports from one Restaurant! (Could be that the filter is not correctly handled too)");
 		}
 
@@ -308,6 +324,7 @@ public class TablesApiTest {
 			List<ReportWithReference> reports = api.getDateReports(report1.getDate(), filter5, true);
 			assertEquals("The size is not correct!", 0, reports.size());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting all Reports from one Restaurant! (Could be that the filter is not correctly handled too)");
 		}
 
@@ -316,6 +333,7 @@ public class TablesApiTest {
 			List<ReportWithReference> reports = api.getDateReports(report1.getDate(), filter5, false);
 			assertEquals("The size is not correct!", 0, reports.size());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting all Reports from one Restaurant! (Could be that the filter is not correctly handled too)");
 		}
 
@@ -325,6 +343,7 @@ public class TablesApiTest {
 			assertEquals("DataEntry name is wrong", entry1.getColumn(), entry.getColumn());
 			assertEquals("DataEntry value is wrong", entry1.getValue(), entry.getValue());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting DataEntry");
 		}
 
@@ -333,6 +352,7 @@ public class TablesApiTest {
 			api.removeReport(0, report1.getDate());
 			api.removeReport(1, report2.getDate());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removing DailyReport!");
 		}
 	}
@@ -361,6 +381,7 @@ public class TablesApiTest {
 		try {
 			api.addDailyReport(0, report1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding Report!");
 		}
 
@@ -368,6 +389,7 @@ public class TablesApiTest {
 		try {
 			api.updateReportColumn(0, report1.getDate(), "Column1", 2);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when updating Column in Report!");
 		}
 
@@ -377,6 +399,7 @@ public class TablesApiTest {
 			assertEquals("DataEntry name is wrong", entry1.getColumn(), entry.getColumn());
 			assertEquals("DataEntry value did not get updated", 2, entry.getValue().intValue());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting DataEntry");
 		}
 
@@ -384,6 +407,7 @@ public class TablesApiTest {
 		try {
 			api.removeReport(0, report1.getDate());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when removing DailyReport!");
 		}
 
@@ -417,12 +441,14 @@ public class TablesApiTest {
 		try {
 			api.addDailyReport(0, report1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding Report!");
 		}
 		try {
 			api.addDailyReport(14, null);
 			fail("There should be a 404 error when Report gets added to a non existing Restaurant!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541", 541, e.getCode());
 		}
@@ -431,6 +457,7 @@ public class TablesApiTest {
 			api.getAllReports(null, false);
 			fail("There should be an error when no filter gets deliverd!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			System.out.println(e.getCode());
 		}
 		
@@ -438,6 +465,7 @@ public class TablesApiTest {
 			api.getDateReports(LocalDate.MIN, null, false);
 			fail("There should be a 404 error when there is no Report on the specified date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 240", 240, e.getCode());
 		}
@@ -445,6 +473,7 @@ public class TablesApiTest {
 			api.getDateReports(report1.getDate(), null, false);
 			fail("There should be an error when no filter gets deliverd!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			System.out.println(e.getCode());
 		}
 		
@@ -452,6 +481,7 @@ public class TablesApiTest {
 			api.getRestaurantDateColumn(14, report1.getDate(), "Column1");
 			fail("There should be a 404 error when Report is getted from a non existing Restaurant!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541", 541, e.getCode());
 		}
@@ -459,6 +489,7 @@ public class TablesApiTest {
 			api.getRestaurantDateColumn(0, LocalDate.MIN, "Column1");
 			fail("There should be a 404 error when there is no Report on the specified date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 240", 240, e.getCode());
 		}
@@ -466,6 +497,7 @@ public class TablesApiTest {
 			api.getRestaurantDateColumn(0, report1.getDate(), "Column2");
 			fail("There should be a 404 error when there is not a DataEntry with the specified name in the Report on the specified date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340", 340, e.getCode());
 		}
@@ -474,6 +506,7 @@ public class TablesApiTest {
 			api.getRestaurantDateReport(13, report1.getDate());
 			fail("There should be a 404 error when Report is getted from a non existing Restaurant!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541", 541, e.getCode());
 		}
@@ -481,6 +514,7 @@ public class TablesApiTest {
 			api.getRestaurantDateReport(0, LocalDate.MIN);
 			fail("There should be a 404 error when there is no Report on the specified date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 240", 240, e.getCode());
 		}
@@ -489,6 +523,7 @@ public class TablesApiTest {
 			api.getRestaurantReports(10, filter1, true);
 			fail("There should be a 404 error when Report is getted from a non existing Restaurant!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541", 541, e.getCode());
 		}
@@ -496,6 +531,7 @@ public class TablesApiTest {
 			api.getRestaurantReports(0, null, true);
 			fail("There should be an error when no filter gets deliverd!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			System.out.println(e.getCode());
 		}
 		
@@ -503,6 +539,7 @@ public class TablesApiTest {
 			api.removeReport(10, report1.getDate());
 			fail("There should be a 404 error when Report gets removed from a non existing Restaurant!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541", 541, e.getCode());
 		}
@@ -510,6 +547,7 @@ public class TablesApiTest {
 			api.removeReport(0, LocalDate.MIN);
 			fail("There should be a 404 error when there is no Report on the specified date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 240", 240, e.getCode());
 		}
@@ -518,6 +556,7 @@ public class TablesApiTest {
 			api.replaceDailyReport(10, report1.getDate(), new ArrayList<DataEntry>(), false);
 			fail("There should be a 404 error when Report gets added to a non existing Restaurant!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541", 541, e.getCode());
 		}
@@ -525,6 +564,7 @@ public class TablesApiTest {
 			api.replaceDailyReport(0, LocalDate.MIN, new ArrayList<DataEntry>(), false);
 			fail("There should be a 404 error when there is no Report on the specified date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 240", 240, e.getCode());
 		}
@@ -532,6 +572,7 @@ public class TablesApiTest {
 			api.replaceDailyReport(0, report1.getDate(), null, false);
 			fail("There should be an error when no Entrys gets deliverd!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			System.out.println(e.getCode());
 		}
 		
@@ -539,6 +580,7 @@ public class TablesApiTest {
 			api.updateReportColumn(10, report1.getDate(), entry1.getColumn(), 5);
 			fail("There should be a 404 error when Report gets added to a non existing Restaurant!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541", 541, e.getCode());
 		}
@@ -546,6 +588,7 @@ public class TablesApiTest {
 			api.updateReportColumn(0, LocalDate.MIN, entry1.getColumn(), 5);
 			fail("There should be a 404 error when there is no Report on the specified date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 240", 240, e.getCode());
 		}
@@ -553,6 +596,7 @@ public class TablesApiTest {
 			api.updateReportColumn(0, report1.getDate(), "Column2", 5);	
 			fail("There should be a 404 error when there is no DataEntry with the specified name in the Report on the specified date!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340", 340, e.getCode());
 		}
@@ -560,6 +604,7 @@ public class TablesApiTest {
 			api.updateReportColumn(0, report1.getDate(), entry1.getColumn(), null);
 			fail("There should be an error when no Value gets deliverd!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			System.out.println(e.getCode());
 		}
 		

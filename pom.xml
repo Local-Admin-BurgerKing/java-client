@@ -9,11 +9,6 @@
 	<version>1.0</version>
 	<url>https://github.com/swagger-api/swagger-codegen</url>
 	<description>A JAVA access to the Local Admin Rest API</description>
-	<scm>
-		<connection>scm:git:git@github.com:swagger-api/swagger-codegen.git</connection>
-		<developerConnection>scm:git:git@github.com:swagger-api/swagger-codegen.git</developerConnection>
-		<url>https://github.com/swagger-api/swagger-codegen</url>
-	</scm>
 	<prerequisites>
 		<maven>2.2.0</maven>
 	</prerequisites>
@@ -36,6 +31,7 @@
 	</developers>
 
 	<build>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

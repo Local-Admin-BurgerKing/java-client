@@ -51,6 +51,7 @@ public class FiltersApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -62,6 +63,7 @@ public class FiltersApiTest {
 			try {
 				api.removeAllFilters();
 			} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 				fail("Fail when reseting filter table! " + e.getCode());
 			}
 		}

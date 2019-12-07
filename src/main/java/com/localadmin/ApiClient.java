@@ -878,6 +878,7 @@ public class ApiClient {
                 try {
                     result = (T) handleResponse(response, returnType);
                 } catch (ApiException e) {
+    System.err.println(e.getResponseBody());
                     callback.onFailure(e, response.code(), response.headers().toMultimap());
                     return;
                 }

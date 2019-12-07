@@ -62,6 +62,7 @@ public class RestaurantApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -73,6 +74,7 @@ public class RestaurantApiTest {
 			try {
 				api.deleteAllRestaurants();
 			} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 				fail("Fail when reseting restaurant table! " + e.getCode());
 			}
 		}
@@ -99,6 +101,7 @@ public class RestaurantApiTest {
 		try {
 			api.addRestaurant(restaurant1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding Restaurant!");
 		}
 
@@ -109,6 +112,7 @@ public class RestaurantApiTest {
 		try {
 			api.editRestaurant(0, edits1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when edit restaurant! " + e.getCode() + e.getMessage());
 		}
 		try {
@@ -118,6 +122,7 @@ public class RestaurantApiTest {
 			assertEquals("Sollvalue did not get got changed even though it has been told to!",
 					gettedRestaurant.getSollvalue(), restaurant1.getSollvalue());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting user!");
 		}
 
@@ -126,6 +131,7 @@ public class RestaurantApiTest {
 			api.addRestaurant(restaurant1);
 			fail("Restaurant was already in database but has been put again!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 409, e.getCode());
 		}
 
@@ -133,6 +139,7 @@ public class RestaurantApiTest {
 		try {
 			api.deleteRestaurant(restaurant1.getNumber());
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when deleting Restaurant!" + e.getCode());
 		}
 
@@ -151,6 +158,7 @@ public class RestaurantApiTest {
 		try {
 			api.deleteAllRestaurants();
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Something did not work when deleting all restaurants! " + e.getCode());
 		}
 	}
@@ -167,6 +175,7 @@ public class RestaurantApiTest {
 			api.deleteRestaurant(10);
 			fail("There should be a 404 error when a non exisiting restaurant gets deleted!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (delete)", 404, e.getCode());
 		}
 
@@ -174,6 +183,7 @@ public class RestaurantApiTest {
 			api.getRestaurant(10, false);
 			fail("There should be a 404 error when a non exisiting restaurant gets getted without wholedata!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 
@@ -181,6 +191,7 @@ public class RestaurantApiTest {
 			api.getRestaurant(10, true);
 			fail("There should be a 404 error when a non exisiting restaurant gets getted with wholedata!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 
@@ -188,6 +199,7 @@ public class RestaurantApiTest {
 			api.editRestaurant(10, null);
 			fail("There should be a 404 error when a non exisiting restaurant gets edited!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (edit)", 404, e.getCode());
 		}
 
@@ -195,6 +207,7 @@ public class RestaurantApiTest {
 			api.replaceRestaurant(10, null);
 			fail("There should be a 404 error when a non exisiting restaurant gets replaced!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (replace)", 404, e.getCode());
 		}
 
@@ -202,6 +215,7 @@ public class RestaurantApiTest {
 			api.addEmployee(69, "admin@kingrestaurants.at");
 			fail("There should be a 404 error when a employee gets added to a non existing restaurant!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (addEmployee)", 404, e.getCode());
 		}
 
@@ -209,6 +223,7 @@ public class RestaurantApiTest {
 			api.removeEmployee(69, "admin@kingrestaurants.at");
 			fail("There should be a 404 error when a employee gets removed to a non existing restaurant!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (removeEmployee)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 541 (removeEmployee)", 541, e.getResponseBody());
 		}
@@ -222,6 +237,7 @@ public class RestaurantApiTest {
 			api.removeEmployee(69, "admin@kingrestaurants.at");
 			fail("There should be a 404 error when a employee that does not exist gets removed!");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (removeEmployee)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 542 (removeEmployee)", 542, e.getResponseBody());
 		}
@@ -246,6 +262,7 @@ public class RestaurantApiTest {
 		try {
 			api.addRestaurant(restaurant1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Something went wrong when adding the restaurant!" + e.getCode());
 		}
 
@@ -259,6 +276,7 @@ public class RestaurantApiTest {
 			api.replaceRestaurant(restaurant1.getNumber(), replaceWith);
 			fail("Replace worked even though no Sollvalue was set");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			// All good
 		}
 
@@ -268,6 +286,7 @@ public class RestaurantApiTest {
 		try {
 			api.replaceRestaurant(restaurant1.getNumber(), replaceWith);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Replace did not work!" + e.getCode());
 		}
 
@@ -275,6 +294,7 @@ public class RestaurantApiTest {
 		try {
 			Restaurant restaurant = (Restaurant) api.getRestaurant(replaceWith.getNumber(), false);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			if (e.getCode() == 404)
 				fail("Replace did not work!");
 			else
@@ -310,6 +330,7 @@ public class RestaurantApiTest {
 			api.addRestaurant(restaurant1);
 			api.addRestaurant(restaurant2);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when adding Restaurants!");
 		}
 
@@ -322,6 +343,7 @@ public class RestaurantApiTest {
 			assertEquals("Restaurant at 1 should be 435" + restaurant1.getNumber(), restaurant1.getNumber(),
 					((LinkedTreeMap<?, ?>) restaurants.get(1)).get("number"));
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting Restaurants with wholedata!");
 		}
 		try {
@@ -332,6 +354,7 @@ public class RestaurantApiTest {
 			assertEquals("Restaurant at 1 should be 435" + restaurant1.getNumber(), restaurant1.getNumber(),
 					((LinkedTreeMap<?, ?>) restaurants.get(1)).get("number"));
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting Restaurants without wholedata!");
 		}
 
@@ -358,6 +381,7 @@ public class RestaurantApiTest {
 		try {
 			api.addRestaurant(restaurant1);
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Could not add restaurant! " + e.getCode());
 		}
 
@@ -365,6 +389,7 @@ public class RestaurantApiTest {
 		try {
 			api.addEmployee(21, "admin@kingrestaurants.at");
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Could not add employee! " + e.getCode());
 		}
 
@@ -375,6 +400,7 @@ public class RestaurantApiTest {
 			assertEquals("There should be a employee named admin@kingrestaurants.at", "admin@kingrestaurants.at",
 					employees.get(0));
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Could when getting employees! " + e.getCode());
 		}
 		
@@ -391,6 +417,7 @@ public class RestaurantApiTest {
 			assertEquals("The name of the employee at 0 should be admin@kingrestaurants.at!", "admin@kingrestaurants.at", employees.get(0));
 			
 		} catch (ApiException e) {
+    System.err.println(e.getResponseBody());
 			fail("Error when getting Restaurants with wholedata!");
 		}
 	}
