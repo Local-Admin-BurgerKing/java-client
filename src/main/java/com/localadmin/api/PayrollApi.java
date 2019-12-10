@@ -26,7 +26,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
-import com.localadmin.model.ErrorResponse;
 import java.time.LocalDate;
 import com.localadmin.model.SalaryChange;
 import com.localadmin.model.SalaryChange1;
@@ -782,8 +781,8 @@ public class PayrollApi {
      * @return List&lt;List&lt;Object&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public List<List<Object>> getChangesByLevelAndDate(String salaryLevel, LocalDate changeDate, Boolean includeEmpty) throws ApiException {
-        ApiResponse<List<List<Object>>> resp = getChangesByLevelAndDateWithHttpInfo(salaryLevel, changeDate, includeEmpty);
+    public List<SalaryChange1> getChangesByLevelAndDate(String salaryLevel, LocalDate changeDate, Boolean includeEmpty) throws ApiException {
+        ApiResponse<List<SalaryChange1>> resp = getChangesByLevelAndDateWithHttpInfo(salaryLevel, changeDate, includeEmpty);
         return resp.getData();
     }
 
@@ -796,9 +795,9 @@ public class PayrollApi {
      * @return ApiResponse&lt;List&lt;List&lt;Object&gt;&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<List<List<Object>>> getChangesByLevelAndDateWithHttpInfo(String salaryLevel, LocalDate changeDate, Boolean includeEmpty) throws ApiException {
+    public ApiResponse<List<SalaryChange1>> getChangesByLevelAndDateWithHttpInfo(String salaryLevel, LocalDate changeDate, Boolean includeEmpty) throws ApiException {
         com.squareup.okhttp.Call call = getChangesByLevelAndDateValidateBeforeCall(salaryLevel, changeDate, includeEmpty, null, null);
-        Type localVarReturnType = new TypeToken<List<List<Object>>>(){}.getType();
+        Type localVarReturnType = new TypeToken<List<SalaryChange1>>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 

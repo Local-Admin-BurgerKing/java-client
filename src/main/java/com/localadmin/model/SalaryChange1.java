@@ -36,6 +36,10 @@ public class SalaryChange1 implements Serializable{
   @SerializedName("value")
   private Integer value = null;
 
+
+  @SerializedName("restaurant")
+  private Integer restaurant = null;
+
   public SalaryChange1 date(LocalDate date) {
     this.date = date;
     return this;
@@ -100,8 +104,17 @@ public class SalaryChange1 implements Serializable{
     
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
+    sb.append("    restaurant: ").append(toIndentedString(restaurant)).append("\n");
     sb.append("}");
     return sb.toString();
+  }
+
+  public Integer getRestaurant() {
+    return restaurant;
+  }
+
+  public void setRestaurant(Integer restaurant) {
+    this.restaurant = restaurant;
   }
 
   /**
@@ -112,7 +125,7 @@ public class SalaryChange1 implements Serializable{
     if (o == null) {
       return "null";
     }
-    return o.toString().replace("\n", "\n    ");
+    return o.toString().replace("\n", "\n\t");
   }
 
 }
