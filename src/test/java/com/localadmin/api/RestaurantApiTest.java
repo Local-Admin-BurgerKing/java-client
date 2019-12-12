@@ -12,6 +12,10 @@
 
 package com.localadmin.api;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.internal.LinkedTreeMap;
 import com.localadmin.ApiClient;
 import com.localadmin.ApiException;
@@ -36,6 +40,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +55,7 @@ public class RestaurantApiTest {
 	private final UserApi userApi = new UserApi();
 	private ApiKeyAuth User_Auth;
 	private String key;
-	private boolean resetRestaurantTableBefore = false; // should it clear the table for each Test so if one fails the
+	private boolean resetRestaurantTableBefore = true; // should it clear the table for each Test so if one fails the
 														// others does not fail
 
 	@Before
@@ -62,7 +67,7 @@ public class RestaurantApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -74,7 +79,7 @@ public class RestaurantApiTest {
 			try {
 				api.deleteAllRestaurants();
 			} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+				System.err.println(e.getResponseBody());
 				fail("Fail when reseting restaurant table! " + e.getCode());
 			}
 		}
@@ -101,7 +106,7 @@ public class RestaurantApiTest {
 		try {
 			api.addRestaurant(restaurant1);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Restaurant!");
 		}
 
@@ -112,17 +117,18 @@ public class RestaurantApiTest {
 		try {
 			api.editRestaurant(0, edits1);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when edit restaurant! " + e.getCode() + e.getMessage());
 		}
 		try {
-			Restaurant1 gettedRestaurant = (Restaurant1) api.getRestaurant(restaurant1.getNumber(), false);
-			assertNotEquals("Number has been changed which should not happen!", gettedRestaurant.getNumber(),
-					restaurant1.getNumber());
+			LinkedTreeMap<?, ?> gettedRestaurant = (LinkedTreeMap<?, ?>) api.getRestaurant(restaurant1.getNumber(),
+					false);
+			assertNotEquals("Number has been changed which should not happen!", edits1.getNumber(),
+					gettedRestaurant.get("number"));
 			assertEquals("Sollvalue did not get got changed even though it has been told to!",
-					gettedRestaurant.getSollvalue(), restaurant1.getSollvalue());
+					new BigDecimal(edits1.getSollvalue()), new BigDecimal((Double) gettedRestaurant.get("sollvalue")));
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting user!");
 		}
 
@@ -131,7 +137,7 @@ public class RestaurantApiTest {
 			api.addRestaurant(restaurant1);
 			fail("Restaurant was already in database but has been put again!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 409, e.getCode());
 		}
 
@@ -139,7 +145,7 @@ public class RestaurantApiTest {
 		try {
 			api.deleteRestaurant(restaurant1.getNumber());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when deleting Restaurant!" + e.getCode());
 		}
 
@@ -158,7 +164,7 @@ public class RestaurantApiTest {
 		try {
 			api.deleteAllRestaurants();
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Something did not work when deleting all restaurants! " + e.getCode());
 		}
 	}
@@ -175,7 +181,7 @@ public class RestaurantApiTest {
 			api.deleteRestaurant(10);
 			fail("There should be a 404 error when a non exisiting restaurant gets deleted!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (delete)", 404, e.getCode());
 		}
 
@@ -183,7 +189,7 @@ public class RestaurantApiTest {
 			api.getRestaurant(10, false);
 			fail("There should be a 404 error when a non exisiting restaurant gets getted without wholedata!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 
@@ -191,57 +197,70 @@ public class RestaurantApiTest {
 			api.getRestaurant(10, true);
 			fail("There should be a 404 error when a non exisiting restaurant gets getted with wholedata!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 
 		try {
-			api.editRestaurant(10, null);
+			api.editRestaurant(10, new Restaurantoptional());
 			fail("There should be a 404 error when a non exisiting restaurant gets edited!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (edit)", 404, e.getCode());
 		}
 
+		Restaurant1 replaceRestaurant = new Restaurant1();
+		replaceRestaurant.setLocation("A Location");
+		replaceRestaurant.setName("New name");
+		replaceRestaurant.setNumber(5);
+		replaceRestaurant.setSollvalue(0.2f);
 		try {
-			api.replaceRestaurant(10, null);
+			api.replaceRestaurant(10, replaceRestaurant);
 			fail("There should be a 404 error when a non exisiting restaurant gets replaced!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (replace)", 404, e.getCode());
 		}
 
-		try {
-			api.addEmployee(69, "admin@kingrestaurants.at");
-			fail("There should be a 404 error when a employee gets added to a non existing restaurant!");
-		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
-			assertEquals("Error-Code should be 404 (addEmployee)", 404, e.getCode());
-		}
-
-		try {
-			api.removeEmployee(69, "admin@kingrestaurants.at");
-			fail("There should be a 404 error when a employee gets removed to a non existing restaurant!");
-		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
-			assertEquals("Error-Code should be 404 (removeEmployee)", 404, e.getCode());
-			assertEquals("Our Error-Code should be 541 (removeEmployee)", 541, e.getResponseBody());
-		}
 		Restaurant restaurant1 = new Restaurant();
 		restaurant1.setNumber(69);
 		restaurant1.setLocation("Straße PLZ Haus Ort Planet");
 		restaurant1.setName("Merkurs Küche");
 		restaurant1.setSollvalue(0.345f);
+		try {
+			api.addRestaurant(restaurant1);
+		} catch (ApiException e) {
+			fail("Error when adding restaurant!");
+		}
 
 		try {
-			api.removeEmployee(69, "admin@kingrestaurants.at");
+			api.addEmployee(909, "kdanzer@student.tgm.ac.at");
+			fail("There should be a 404 error when a employee gets added to a non existing restaurant!");
+		} catch (ApiException e) {
+			System.err.println(e.getResponseBody());
+			assertEquals("Error-Code should be 404 (addEmployee)", 404, e.getCode());
+		}
+
+		try {
+			api.removeEmployee(909, "admin@kingrestaurants.at");
+			fail("There should be a 404 error when a employee gets removed from a non existing restaurant!");
+		} catch (ApiException e) {
+			System.err.println(e.getResponseBody());
+			assertEquals("Error-Code should be 404 (removeEmployee)", 404, e.getCode());
+			assertEquals("Our Error-Code should be 541 (removeEmployee)", 541,
+					Utils.getJsonPart(e.getResponseBody(), "code"));
+		}
+
+		try {
+			api.removeEmployee(69, "tschrottwieser@student.tgm.ac.at");
 			fail("There should be a 404 error when a employee that does not exist gets removed!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (removeEmployee)", 404, e.getCode());
-			assertEquals("Our Error-Code should be 542 (removeEmployee)", 542, e.getResponseBody());
+			assertEquals("Our Error-Code should be 542 (removeEmployee)", 542,
+					Utils.getJsonPart(e.getResponseBody(), "code"));
 		}
-		
+
 	}
 
 	/**
@@ -262,31 +281,31 @@ public class RestaurantApiTest {
 		try {
 			api.addRestaurant(restaurant1);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Something went wrong when adding the restaurant!" + e.getCode());
 		}
 
 		Restaurant1 replaceWith = new Restaurant1();
-		restaurant1.setName("Kalian's Pizza");
-		restaurant1.setLocation("Nowhere, never");
-		restaurant1.setNumber(2);
+		replaceWith.setName("Kalian's Pizza");
+		replaceWith.setLocation("Nowhere, never");
+		replaceWith.setNumber(2);
 
 		// Replace should not change anything because no Sollvalue was set
 		try {
 			api.replaceRestaurant(restaurant1.getNumber(), replaceWith);
 			fail("Replace worked even though no Sollvalue was set");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			// All good
 		}
 
-		restaurant1.setSollvalue(0.05f);
+		replaceWith.setSollvalue(0.05f);
 
 		// Replace should work cause now a group was set
 		try {
 			api.replaceRestaurant(restaurant1.getNumber(), replaceWith);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Replace did not work!" + e.getCode());
 		}
 
@@ -294,9 +313,9 @@ public class RestaurantApiTest {
 		try {
 			Restaurant restaurant = (Restaurant) api.getRestaurant(replaceWith.getNumber(), false);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			if (e.getCode() == 404)
-				fail("Replace did not work!");
+				fail("Replace did not work (Know cause we getted it)!");
 			else
 				fail("Some error which should not be here: " + e.getCode());
 		}
@@ -320,17 +339,17 @@ public class RestaurantApiTest {
 		restaurant1.setSollvalue(0.8f);
 
 		Restaurant restaurant2 = new Restaurant();
-		restaurant1.setName("Grill and Chill");
-		restaurant1.setLocation("Handelskai");
-		restaurant1.setNumber(435);
-		restaurant1.setSollvalue(0.3f);
+		restaurant2.setName("Grill and Chill");
+		restaurant2.setLocation("Handelskai");
+		restaurant2.setNumber(435);
+		restaurant2.setSollvalue(0.3f);
 
 		// Add restaurants
 		try {
 			api.addRestaurant(restaurant1);
 			api.addRestaurant(restaurant2);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Restaurants!");
 		}
 
@@ -338,23 +357,23 @@ public class RestaurantApiTest {
 		try {
 			List<Object> restaurants = api.getAllRestaurants(true);
 			assertEquals("There should be 2 restaurants, but there are: " + restaurants.size(), 2, restaurants.size());
-			assertEquals("Restaurant at 0 should be 42", restaurant1.getNumber(),
-					((LinkedTreeMap<?, ?>) restaurants.get(0)).get("number"));
-			assertEquals("Restaurant at 1 should be 435" + restaurant1.getNumber(), restaurant1.getNumber(),
-					((LinkedTreeMap<?, ?>) restaurants.get(1)).get("number"));
+			assertEquals("Restaurant at 0 should be 42", new BigDecimal(restaurant1.getNumber()),
+					new BigDecimal((Double) Utils.getInTreeMap(restaurants.get(0), "restaurant.number")));
+			assertEquals("Restaurant at 1 should be 435", new BigDecimal(restaurant2.getNumber()),
+					new BigDecimal((Double) Utils.getInTreeMap(restaurants.get(1), "restaurant.number")));
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting Restaurants with wholedata!");
 		}
 		try {
-			List<Object> restaurants = api.getAllRestaurants(true);
+			List<Object> restaurants = api.getAllRestaurants(false);
 			assertEquals("There should be 2 restaurants, but there are: " + restaurants.size(), 2, restaurants.size());
-			assertEquals("Restaurant at 0 should be 42", restaurant1.getNumber(),
-					((LinkedTreeMap<?, ?>) restaurants.get(0)).get("number"));
-			assertEquals("Restaurant at 1 should be 435" + restaurant1.getNumber(), restaurant1.getNumber(),
-					((LinkedTreeMap<?, ?>) restaurants.get(1)).get("number"));
+			assertEquals("Restaurant at 0 should be 42", new BigDecimal(restaurant1.getNumber()),
+					new BigDecimal((Double) restaurants.get(0)));
+			assertEquals("Restaurant at 1 should be 435", new BigDecimal(restaurant2.getNumber()),
+					new BigDecimal((Double) restaurants.get(1)));
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting Restaurants without wholedata!");
 		}
 
@@ -381,7 +400,7 @@ public class RestaurantApiTest {
 		try {
 			api.addRestaurant(restaurant1);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Could not add restaurant! " + e.getCode());
 		}
 
@@ -389,8 +408,19 @@ public class RestaurantApiTest {
 		try {
 			api.addEmployee(21, "admin@kingrestaurants.at");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Could not add employee! " + e.getCode());
+		}
+
+		// Add Employee again which should cause an error
+		try {
+			api.addEmployee(21, "admin@kingrestaurants.at");
+			fail("Added employee even though it was in already!");
+		} catch (ApiException e) {
+			System.err.println(e.getResponseBody());
+			assertEquals("Error-Code should be 409 (addEmployee)", 409, e.getCode());
+			assertEquals("Our Error-Code should be 592 (addEmployee)", 592,
+					Utils.getJsonPart(e.getResponseBody(), "code"));
 		}
 
 		// Test if restaurant has this employee now
@@ -400,25 +430,26 @@ public class RestaurantApiTest {
 			assertEquals("There should be a employee named admin@kingrestaurants.at", "admin@kingrestaurants.at",
 					employees.get(0));
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Could when getting employees! " + e.getCode());
 		}
-		
+
 		// Test if there are employees when restaurant gets called with wholedata
 		try {
 			List<Object> restaurants = api.getAllRestaurants(true);
 			assertEquals("There should be 1 restaurant, but there are: " + restaurants.size(), 1, restaurants.size());
-			assertEquals("Restaurant at 0 should be 21", restaurant1.getNumber(),
-					((LinkedTreeMap<?, ?>) restaurants.get(0)).get("number"));
+			assertEquals("Restaurant at 0 should be 21", new BigDecimal(restaurant1.getNumber()),
+					new BigDecimal((Double)Utils.getInTreeMap(restaurants.get(0), "restaurant.number")));
 			LinkedTreeMap<?, ?> restaurant = (LinkedTreeMap<?, ?>) restaurants.get(0);
-			//TODO: maybe not LinkedTreeMap??? Wrong Path???
 			@SuppressWarnings("unchecked")
 			List<Object> employees = (List<Object>) restaurant.get("employees");
-			assertEquals("The name of the employee at 0 should be admin@kingrestaurants.at!", "admin@kingrestaurants.at", employees.get(0));
-			
+			assertEquals("The name of the employee at 0 should be admin@kingrestaurants.at!",
+					"admin@kingrestaurants.at", employees.get(0));
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting Restaurants with wholedata!");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
