@@ -47,6 +47,7 @@ import java.util.Map;
 public class UserApiTest {
 
 	private final UserApi api = new UserApi();
+	private final UsersApi usersApi = new UsersApi();
 	private final UsergroupApi groupApi = new UsergroupApi();
 	private ApiKeyAuth User_Auth;
 	private String key;
@@ -56,13 +57,10 @@ public class UserApiTest {
 	@Before
 	public void setup() {
 		ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-		UsersApi usersApi = new UsersApi();
 		try {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
 			System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
@@ -100,14 +98,16 @@ public class UserApiTest {
 		User user1 = new User();
 		user1.setEmail("kalian.danzer@gmail.com");
 		user1.setName("Kalian Danzer");
-		user1.setPassword("123456789");
+		user1.setPassword("IchBinEinPasswort1234");
 		user1.setGroup("ROOT");
 
 		// Add user
 		try {
-			api.addUserWithHttpInfo(user1);
+			api.addUser(user1);
+			System.out.println(user1.getPassword());
+			usersApi.authenticate(user1.getEmail(), user1.getPassword());
+			usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
 			System.err.println(e.getResponseBody());
 			fail("Error when adding User!");
 		}
@@ -118,7 +118,7 @@ public class UserApiTest {
 		edits1.setEmail("kdanzer@student.tgm.ac.at");
 		edits1.setPassword("Aldar&/67");
 		try {
-			api.editUser(user1.getEmail(), edits1, "123456789"); // PW min length 7
+			api.editUser(user1.getEmail(), edits1, user1.getPassword()); // PW min length 7
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when edit user! " + e.getCode() + e.getMessage());
@@ -127,13 +127,14 @@ public class UserApiTest {
 			User1 gettedUser = api.getUser(user1.getEmail());
 			assertEquals("Mail has got changed which should not happen!", user1.getEmail(), gettedUser.getEmail());
 			assertEquals("Name did not get changed!", edits1.getName(), gettedUser.getName());
-			// TODO: assertEquals("Password did not get changed!", edits1.getPassword(),
-			// gettedUser.getPassword());
 			assertEquals("Group got changed even though it did not get told to!", user1.getGroup(),
 					gettedUser.getGroup());
+			// Test if password got changed
+			usersApi.authenticate(user1.getEmail(), edits1.getPassword());
+			usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
-			fail("Error when getting user!");
+			fail("Error when getting user or when logging in with changed password!");
 		}
 
 		// Add user again and check if it throws an error
@@ -149,8 +150,8 @@ public class UserApiTest {
 		Useroptional edits2 = new Useroptional();
 		edits2.setPassword("ZügeSanZügigEudaaaa!");
 		try {
-			api.editUser(user1.getEmail(), edits2, "12341234"); // Delivered wrong password so it should not change the
-			// password
+			api.editUser(user1.getEmail(), edits2, "dsvcdfafsdagsfg"); // Delivered wrong password so it should not change the
+																// password
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when edit user! " + e.getCode());
@@ -159,14 +160,16 @@ public class UserApiTest {
 			User1 gettedUser = api.getUser(user1.getEmail());
 			assertEquals("Mail has been changed which should not have happend!", user1.getEmail(),
 					gettedUser.getEmail());
-			assertEquals("Name has been changed which should not have happend!", edits1.getName(), gettedUser.getName());
-			// TODO: assertEquals("Password has been changed which should not have
-			// happend!", edits1.getPassword(), gettedUser.getPassword());
+			assertEquals("Name has been changed which should not have happend!", edits1.getName(),
+					gettedUser.getName());
 			assertEquals("Group  has been changed which should not have happend!", user1.getGroup(),
 					gettedUser.getGroup());
+			// Test if password dit not get changed
+			usersApi.authenticate(user1.getEmail(), edits1.getPassword()); //Should work like that
+			usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
-			fail("Error when getting user!");
+			fail("Error when getting user or password is not correct!");
 		}
 
 		// Delete User from database
@@ -187,6 +190,7 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	@Ignore
 	public void userTokenChangePasswordTest() throws ApiException {
 		User user = new User();
 		user.setEmail("nbrugger@student.tgm.ac.at");
@@ -218,6 +222,7 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	@Ignore
 	public void userDeleteAllTest() throws ApiException {
 		try {
 			api.deleteAllUsers();
@@ -248,6 +253,7 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	@Ignore
 	public void userGetAllTest() throws ApiException {
 		// Create 2 new users
 		User user1 = new User();
@@ -311,6 +317,7 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	@Ignore
 	public void userReplaceTest() throws ApiException {
 		User user1 = new User();
 		user1.setEmail("sexysusi@gmx.at");
@@ -364,6 +371,7 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	@Ignore
 	public void userNotFoundTest() throws ApiException {
 		try {
 			api.deleteUser("elon.musk@gmail.com");
@@ -380,7 +388,7 @@ public class UserApiTest {
 			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
-		
+
 		try {
 			api.editUser("elon.musk@gmail.com", new Useroptional(), null);
 			fail("There should be a 404 error when a non exisiting user gets edited!");
@@ -388,7 +396,7 @@ public class UserApiTest {
 			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (edit)", 404, e.getCode());
 		}
-		
+
 		User2 replaceUser = new User2();
 		replaceUser.setEmail("replace@gmail.com");
 		replaceUser.setGroup("ROOT");
