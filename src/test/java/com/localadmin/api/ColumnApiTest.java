@@ -51,7 +51,7 @@ public class ColumnApiTest {
 	private final PayrollApi payrollApi = new PayrollApi();
 	private ApiKeyAuth User_Auth;
 	private String key;
-	private boolean resetColumnTableBefore = false; // should it clear the table for each Test so if one fails the
+	private boolean resetColumnTableBefore = true; // should it clear the table for each Test so if one fails the
 													// others does not fail
 
 	@Before
@@ -73,10 +73,11 @@ public class ColumnApiTest {
 
 		if (resetColumnTableBefore) {
 			try {
-				dailycolumnApi.deleteAllDailycolumns();
 				formulaApi.deleteAllDailyformulas();
+				dailycolumnApi.deleteAllDailycolumns();
 			} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+				e.printStackTrace();
+                System.err.println(e.getResponseBody());
 				fail("Fail when reseting column table! " + e.getCode());
 			}
 		}
