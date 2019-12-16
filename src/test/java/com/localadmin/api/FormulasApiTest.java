@@ -43,7 +43,7 @@ public class FormulasApiTest {
 	private final FormulasApi api = new FormulasApi();
 	private ApiKeyAuth User_Auth;
 	private String key;
-	private boolean resetFormulaTableBefore = false; // should it clear the table for each Test so if one fails the
+	private boolean resetFormulaTableBefore = true; // should it clear the table for each Test so if one fails the
 														// others does not fail
 
 	@Before
@@ -55,7 +55,7 @@ public class FormulasApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -67,7 +67,7 @@ public class FormulasApiTest {
 			try {
 				api.deleteAllDailyformulas();
 			} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+				System.err.println(e.getResponseBody());
 				fail("Fail when reseting formula table! " + e.getCode());
 			}
 		}
@@ -100,7 +100,7 @@ public class FormulasApiTest {
 			api.addDailyformula(formula1);
 			fail("Was able to add Dailyformula even tough its not setup with all values yet!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 		}
 
 		formula1.setValue1("42");
@@ -110,7 +110,7 @@ public class FormulasApiTest {
 		try {
 			api.addDailyformula(formula1);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding DailyFormula!");
 		}
 
@@ -119,7 +119,7 @@ public class FormulasApiTest {
 			api.addDailyformula(formula1);
 			fail("It should not be possible to add the same DailyFormula again!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 409, e.getCode());
 		}
 
@@ -129,7 +129,7 @@ public class FormulasApiTest {
 			// error should not be reachable would rather throw an error when getting
 			assertEquals("DailyFormula seems to not have been added!", formula1.getName(), formula.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting DailyFormula!");
 		}
 
@@ -137,7 +137,7 @@ public class FormulasApiTest {
 		try {
 			api.editDailyformula(formula1.getName(), formula2);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when editing DailyFormula!");
 		}
 
@@ -154,7 +154,7 @@ public class FormulasApiTest {
 			assertEquals("Percent has not been updated!", formula2.isPercent(), formula.isPercent());
 			assertEquals("Description has not been updated!", formula2.getDescription(), formula.getDescription());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting Dailycolumn!");
 		}
 
@@ -162,7 +162,7 @@ public class FormulasApiTest {
 		try {
 			api.deleteDailyformula(formula1.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when deleting Dailycolumns!");
 		}
 
@@ -199,7 +199,7 @@ public class FormulasApiTest {
 			api.addDailyformula(formula1);
 			api.addDailyformula(formula2);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Dailyformulas!");
 		}
 
@@ -210,7 +210,7 @@ public class FormulasApiTest {
 			assertEquals("Wrong Dailyformula at 0!", formula1.getName(), dailyformulas.get(0));
 			assertEquals("Wrong Dailyformula at 1!", formula2.getName(), dailyformulas.get(1));
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting all Dailyformulas without wholedata! " + e.getCode());
 		}
 		try {
@@ -243,7 +243,7 @@ public class FormulasApiTest {
 			assertEquals("Wrong Dailyformula description at 1!", formula2.getDescription(),
 					((DailyFormulas) dailyformulas.get(1)).getDescription());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting all Dailycolumns with wholedata! " + e.getCode());
 		}
 
@@ -251,7 +251,7 @@ public class FormulasApiTest {
 		try {
 			api.deleteAllDailyformulas();
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when deleting all Dailycolumns! " + e.getCode());
 		}
 
@@ -260,7 +260,7 @@ public class FormulasApiTest {
 			List<Object> formulas = api.getAllDailyformulas(false);
 			assertEquals("There are still formulas inside the database", 0, formulas.size());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting all Dailyformulas without wholedata! " + e.getCode());
 		}
 
@@ -295,7 +295,7 @@ public class FormulasApiTest {
 		try {
 			api.addDailyformula(toReplace);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Dailyformula");
 		}
 
@@ -304,7 +304,7 @@ public class FormulasApiTest {
 			api.replaceDailyformula(toReplace.getName(), replaceWith);
 			fail("Replacing should not be possible!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 		}
 
 		replaceWith.setValue2("22");
@@ -313,7 +313,7 @@ public class FormulasApiTest {
 		try {
 			api.replaceDailyformula(toReplace.getName(), replaceWith);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when replacing Dailyformula");
 		}
 
@@ -331,7 +331,7 @@ public class FormulasApiTest {
 			assertEquals("Description did not get replaced or replaced wrong", replaceWith.getDescription(),
 					formula.getDescription());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting formula (maybe replace failure)");
 		}
 
@@ -339,7 +339,7 @@ public class FormulasApiTest {
 		try {
 			api.deleteDailyformula(replaceWith.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when deleting Dailyformula");
 		}
 	}
@@ -356,35 +356,48 @@ public class FormulasApiTest {
 			api.getDailyformula("Why are we still here, I mean ... I am not", false);
 			fail("There should be a 404 error when a non existing formula gets requested!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 		try {
 			api.getDailyformula("Why are we still here, I mean ... I am not", true);
 			fail("There should be a 404 error when a non existing formula gets requested!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 		try {
 			api.deleteDailyformula("Nowhere");
 			fail("There should be a 404 error when a non existing formula gets deleted!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (delete)", 404, e.getCode());
 		}
+		
+		DailyFormulas replaceWith = new DailyFormulas();
+		replaceWith.setName("formula10");
+		replaceWith.setOperator(Dailyoperators.MINUS);
+		replaceWith.setPercent(false);
+		replaceWith.setValue1("2");
+		replaceWith.setValue2("10");
+		replaceWith.setDescription("Another Description");
 		try {
-			api.replaceDailyformula("Nowhere", null);
+			api.replaceDailyformula("Nowhere", replaceWith);
 			fail("There should be a 404 error when a non existing formula gets replaced!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (replace)", 404, e.getCode());
 		}
+
+		DailyFormulas editFormula = new DailyFormulas();
+		editFormula.setName("formula10");
+		editFormula.setOperator(Dailyoperators.ADD);
+		editFormula.setDescription("Wrong Description");
 		try {
-			api.editDailyformula("Nowhere", null);
+			api.editDailyformula("Nowhere", editFormula);
 			fail("There should be a 404 error when a non existing formula gets edited!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (edit)", 404, e.getCode());
 		}
 
@@ -398,7 +411,7 @@ public class FormulasApiTest {
 		try {
 			api.addDailyformula(existing);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Dailyformula!");
 		}
 
@@ -407,7 +420,7 @@ public class FormulasApiTest {
 			api.addOther("NonExisting", "Existing");
 			fail("There should be a 404 error when a other gets added to a non existing Dailyformula!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (getOther)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340", 340, e.getResponseBody());
 		}
@@ -417,7 +430,7 @@ public class FormulasApiTest {
 			api.addOther("Existing", "NonExisting");
 			fail("There should be a 404 error when a non existing other gets added to a Dailyformula!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (getOther)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 341", 341, e.getResponseBody());
 		}
@@ -427,7 +440,7 @@ public class FormulasApiTest {
 			api.getAllOthers("NonExisting");
 			fail("There should be a 404 error when all others are getted from a non existing Dailyformula!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (removeOther)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340", 340, e.getResponseBody());
 		}
@@ -437,7 +450,7 @@ public class FormulasApiTest {
 			api.removeOther("NonExisting", "Existing");
 			fail("There should be a 404 error when a other gets removed from a non existing Dailyformula!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (removeOther)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 340", 340, e.getResponseBody());
 		}
@@ -447,7 +460,7 @@ public class FormulasApiTest {
 			api.removeOther("Existing", "NonExisting");
 			fail("There should be a 404 error when a non existing other gets removed from a Dailyformula!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (removeOther)", 404, e.getCode());
 			assertEquals("Our Error-Code should be 341", 341, e.getResponseBody());
 		}
@@ -481,14 +494,14 @@ public class FormulasApiTest {
 			api.addDailyformula(formula1);
 			api.addDailyformula(formula2);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Dailyformulas!");
 		}
 
 		try {
 			api.addOther(formula2.getName(), formula1.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Other!");
 		}
 
@@ -496,7 +509,7 @@ public class FormulasApiTest {
 			DailyFormulas1 wholeDataFormula = (DailyFormulas1) api.getDailyformula(formula1.getName(), true);
 			assertEquals("There should be 0 others!", 0, wholeDataFormula.getOthers().size());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting!");
 		}
 
@@ -505,7 +518,7 @@ public class FormulasApiTest {
 			assertEquals("There should be 1 other!", 1, wholeDataFormula.getOthers().size());
 			assertEquals("Other name is wrong!", formula1.getName(), wholeDataFormula.getOthers().get(0));
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting!");
 		}
 	}
@@ -541,21 +554,21 @@ public class FormulasApiTest {
 			api.addDailyformula(formula1);
 			api.addDailyformula(formula2);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Dailyformulas!");
 		}
 
 		try {
 			api.addOther(formula1.getName(), formula1.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Other!");
 		}
 
 		try {
 			api.addOther(formula1.getName(), formula2.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Other!");
 		}
 
@@ -564,7 +577,7 @@ public class FormulasApiTest {
 			api.addOther(formula1.getName(), formula2.getName());
 			fail("Got added again!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 409, e.getCode());
 		}
 
@@ -575,7 +588,7 @@ public class FormulasApiTest {
 			assertEquals("Expected something else at 0", formula1.getName(), others.get(0));
 			assertEquals("Expected something else at 1", formula2.getName(), others.get(1));
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting Others!");
 		}
 
@@ -583,7 +596,7 @@ public class FormulasApiTest {
 		try {
 			api.removeOther(formula1.getName(), formula1.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when removing Other!");
 		}
 
@@ -592,7 +605,7 @@ public class FormulasApiTest {
 			assertEquals("Seems like remove did not work, cause length of getted is wrong!", 1,
 					api.getAllOthers(formula1.getName()).size());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting Othess!");
 		}
 
@@ -600,7 +613,7 @@ public class FormulasApiTest {
 		try {
 			api.removeAllOthers(formula1.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when removing all Others!");
 		}
 
@@ -609,7 +622,7 @@ public class FormulasApiTest {
 			assertEquals("Seems like remove did not work, cause length of getted is wrong!", 0,
 					api.getAllOthers(formula1.getName()).size());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting Othess!");
 		}
 
@@ -617,7 +630,7 @@ public class FormulasApiTest {
 		try {
 			api.addOther(formula1.getName(), formula2.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding Other!");
 		}
 
@@ -626,7 +639,7 @@ public class FormulasApiTest {
 			api.deleteDailyformula(formula2.getName());
 			fail("Should not be possible to remove because it is in use");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 409, e.getCode());
 		}
 
@@ -634,7 +647,7 @@ public class FormulasApiTest {
 		try {
 			api.deleteDailyformula(formula1.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Delete should work cause it does not get used");
 		}
 
@@ -643,7 +656,7 @@ public class FormulasApiTest {
 			api.getAllOthers(formula1.getName());
 			fail("Should throw an Error because formula1 is gone!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code is wrong!", 404, e.getCode());
 		}
 
@@ -651,7 +664,7 @@ public class FormulasApiTest {
 		try {
 			api.deleteDailyformula(formula2.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Delete went wrong!");
 		}
 
