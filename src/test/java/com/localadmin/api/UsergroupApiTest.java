@@ -12,28 +12,23 @@
 
 package com.localadmin.api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.google.gson.internal.LinkedTreeMap;
 import com.localadmin.ApiClient;
 import com.localadmin.ApiException;
 import com.localadmin.Configuration;
 import com.localadmin.auth.ApiKeyAuth;
 import com.localadmin.model.Apikeywrapper;
-import com.localadmin.model.ErrorResponse;
 import com.localadmin.model.Group;
 import com.localadmin.model.Permission;
-import com.localadmin.model.User;
-
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.Ignore;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * API tests for UsergroupApi
@@ -58,7 +53,7 @@ public class UsergroupApiTest {
 			Apikeywrapper wrapper = usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 			key = wrapper.getKey();
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Login failed from Admin");
 		}
 
@@ -74,7 +69,7 @@ public class UsergroupApiTest {
 						api.removeGroup(groups.get(i).toString());
 				}
 			} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+				System.err.println(e.getResponseBody());
 				fail("Fail when reseting group table!");
 			}
 		}
@@ -86,8 +81,7 @@ public class UsergroupApiTest {
 	 *
 	 * Tests 4 operations from Group
 	 *
-	 * @throws ApiException
-	 *             if the Api call fails
+	 * @throws ApiException if the Api call fails
 	 */
 	@Test
 	public void groupCreateEditGetDeleteTest() throws ApiException {
@@ -101,18 +95,24 @@ public class UsergroupApiTest {
 		try {
 			api.createGroup(group);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when creating group: " + e.getCode());
 		}
 
 		// Did it realy get added ?
 		try {
+			boolean found = false;
 			List<Object> groupNames = api.getAllGroups(false);
-			if (!groupNames.contains("Admin")) {
-				fail("Group does seem to not have been added");
+			for(Object curr_group : groupNames) {
+				LinkedTreeMap<String, Object> cgroup = (LinkedTreeMap<String, Object>) curr_group;
+				if(((String) cgroup.get("name")).equals(group.getName())) {
+					found = true;
+					break;
+				}
 			}
+			assertEquals("Group was not found, might be not added.", true, found);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting groups: " + e.getCode());
 		}
 
@@ -120,7 +120,7 @@ public class UsergroupApiTest {
 		try {
 			api.updateGroupName(group.getName(), "Supporter");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when updating group name: " + e.getCode());
 		}
 
@@ -131,15 +131,15 @@ public class UsergroupApiTest {
 				fail("Group name does seem to not have been updated");
 			}
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting groups: " + e.getCode());
 		}
 
 		// Test delete
 		try {
-			api.removeGroup("Supporter");
+			api.removeGroup("Admin");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when deleting group: " + e.getCode());
 		}
 	}
@@ -149,8 +149,7 @@ public class UsergroupApiTest {
 	 *
 	 * Tests the permission methods
 	 *
-	 * @throws ApiException
-	 *             if the Api call fails
+	 * @throws ApiException if the Api call fails
 	 */
 	@Test
 	public void groupAddRemoveGetPermissionTest() throws ApiException {
@@ -173,7 +172,7 @@ public class UsergroupApiTest {
 		try {
 			api.createGroup(group);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when creating group: " + e.getCode());
 		}
 
@@ -182,7 +181,7 @@ public class UsergroupApiTest {
 			api.createGroup(group);
 			fail("Group got added again which should not be!");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error should be 409 if same group gets added 2 times", 409, e.getCode());
 		}
 
@@ -190,7 +189,7 @@ public class UsergroupApiTest {
 		try {
 			api.addGroupPermission(group.getName(), permissionName);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when adding permission: " + e.getCode());
 		}
 
@@ -200,9 +199,9 @@ public class UsergroupApiTest {
 			api.addGroupPermission(group.getName(), permissionName);
 			fail("Added permission again even tough it was already inside");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Error should be 409 because there was already the same permission in this group!" + 409,
-					e.getCode());
+					409, e.getCode());
 		}
 
 		// Tests if group has got the permission
@@ -216,7 +215,7 @@ public class UsergroupApiTest {
 				}
 			}
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting permissions: " + e.getCode());
 		}
 
@@ -224,7 +223,7 @@ public class UsergroupApiTest {
 		try {
 			api.removeGroupPermission(group.getName(), permissionName);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when removeing permission: " + e.getCode());
 		}
 	}
@@ -234,8 +233,7 @@ public class UsergroupApiTest {
 	 *
 	 * The list of usergroups.
 	 *
-	 * @throws ApiException
-	 *             if the Api call fails
+	 * @throws ApiException if the Api call fails
 	 */
 	@Test
 	public void groupsGetAllTest() throws ApiException {
@@ -255,7 +253,7 @@ public class UsergroupApiTest {
 			api.createGroup(group1);
 			api.createGroup(group2);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when creating Groups!" + e.getCode());
 		}
 
@@ -263,23 +261,55 @@ public class UsergroupApiTest {
 		try {
 			List<Object> groups = api.getAllGroups(true);
 			assertEquals("There should be 3 groups, but there are: " + groups.size(), 3, groups.size());
-			assertEquals("Group at 0 should be ROOT", "ROOT", ((Group) groups.get(0)).getName());
-			assertEquals("Group at 1 should be " + group1.getName(), group1.getName(),
-					((Group) groups.get(1)).getName());
-			assertEquals("Group at 2 should be " + group2.getName(), group2.getName(),
-					((Group) groups.get(2)).getName());
+			
+			LinkedTreeMap<String, Object> gp1 = (LinkedTreeMap<String, Object>) groups.get(0);
+			LinkedTreeMap<String, Object> gp2 = (LinkedTreeMap<String, Object>) groups.get(1);
+			LinkedTreeMap<String, Object> gp3 = (LinkedTreeMap<String, Object>) groups.get(2);
+			
+			if(!"ROOT".equals(gp1.get("name")) && 
+					!group1.getName().equals(gp1.get("name")) &&
+					!group2.getName().equals(gp1.get("name"))) {
+				fail("All Groups List should contain " + gp1.get("name"));
+			}
+			if(!"ROOT".equals(gp2.get("name")) && 
+					!group1.getName().equals(gp2.get("name")) &&
+					!group2.getName().equals(gp2.get("name"))) {
+				fail("All Groups List should contain " + gp2.get("name"));
+			}
+			if(!"ROOT".equals(gp3.get("name")) && 
+					!group1.getName().equals(gp3.get("name")) &&
+					!group2.getName().equals(gp3.get("name"))) {
+				fail("All Groups List should contain " + gp3.get("name"));
+			}
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting groups with wholedata!");
 		}
 		try {
 			List<Object> groups = api.getAllGroups(true);
 			assertEquals("There should be 3 groups, but there are: " + groups.size(), 3, groups.size());
-			assertEquals("Group at 0 should be ROOT", "ROOT", groups.get(0));
-			assertEquals("Group at 1 should be " + group1.getName(), group1.getName(), groups.get(1));
-			assertEquals("Group at 2 should be " + group2.getName(), group2.getName(), groups.get(2));
+			
+			LinkedTreeMap<String, Object> gp1 = (LinkedTreeMap<String, Object>) groups.get(0);
+			LinkedTreeMap<String, Object> gp2 = (LinkedTreeMap<String, Object>) groups.get(1);
+			LinkedTreeMap<String, Object> gp3 = (LinkedTreeMap<String, Object>) groups.get(2);
+			
+			if(!"ROOT".equals(gp1.get("name")) && 
+					!group1.getName().equals(gp1.get("name")) &&
+					!group2.getName().equals(gp1.get("name"))) {
+				fail("All Groups List should contain " + gp1.get("name"));
+			}
+			if(!"ROOT".equals(gp2.get("name")) && 
+					!group1.getName().equals(gp2.get("name")) &&
+					!group2.getName().equals(gp2.get("name"))) {
+				fail("All Groups List should contain " + gp2.get("name"));
+			}
+			if(!"ROOT".equals(gp3.get("name")) && 
+					!group1.getName().equals(gp3.get("name")) &&
+					!group2.getName().equals(gp3.get("name"))) {
+				fail("All Groups List should contain " + gp3.get("name"));
+			}
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting groups without wholedata!");
 		}
 
@@ -292,17 +322,21 @@ public class UsergroupApiTest {
 	 *
 	 * Remove all available groups. (Can not work cause admin uses ROOT)
 	 *
-	 * @throws ApiException
-	 *             if the Api call fails
+	 * @throws ApiException if the Api call fails
 	 */
 	@Test
 	public void groupsRemoveAllTest() throws ApiException {
 
 		try {
 			api.removeAllGroups();
-			fail("Groups got removed even though ROOT is used by admin");
+			List<Object> groups = api.getAllGroups(false);
+			if((groups = api.getAllGroups(false)) == null) {
+				fail("Groups got removed even though ROOT is used by admin");
+			}else if(groups.size() == 0) {
+				fail("Groups got removed even though ROOT is used by admin");
+			}
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 		}
 
 	}
@@ -312,8 +346,7 @@ public class UsergroupApiTest {
 	 *
 	 * Trys to remove ROOT (Which cant be done when admin is useing it)
 	 *
-	 * @throws ApiException
-	 *             if the Api call fails
+	 * @throws ApiException if the Api call fails
 	 */
 	@Test
 	public void groupsRemoveRootTest() throws ApiException {
@@ -321,7 +354,7 @@ public class UsergroupApiTest {
 			api.removeGroup("ROOT");
 			fail("Group ROOT got removed but was used");
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			assertEquals("Errorcode should be 409 which means that the group is in use!", 409, e.getCode());
 		}
 
@@ -332,19 +365,19 @@ public class UsergroupApiTest {
 	 *
 	 * Remove all permission from a group
 	 *
-	 * @throws ApiException
-	 *             if the Api call fails
+	 * @throws ApiException if the Api call fails
 	 */
 	@Test
 	public void removeAllPermissionsTest() throws ApiException {
 		Group group1 = new Group();
 		group1.setName("Hausmeister");
-		group1.setPermissions(permissionsApi.getAllPermissions());
+		List<Permission> perms = permissionsApi.getAllPermissions();
+		group1.setPermissions(perms);
 
 		try {
 			api.createGroup(group1);
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when creating Group!" + e.getCode());
 		}
 
@@ -352,17 +385,18 @@ public class UsergroupApiTest {
 		try {
 			api.removeAllPermissions(group1.getName());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when removeing permissions from group" + e.getCode());
 		}
 
 		// Test if permission got removed
 		try {
 			List<Permission> permissionsFromGroup = api.getGroupPermissions(group1.getName());
+			permissionsFromGroup = permissionsFromGroup == null ? new ArrayList<>() : permissionsFromGroup;
 			assertEquals("There should be no permissions anymore but there are " + permissionsFromGroup.size(), 0,
 					permissionsFromGroup.size());
 		} catch (ApiException e) {
-    System.err.println(e.getResponseBody());
+			System.err.println(e.getResponseBody());
 			fail("Error when getting permissions: " + e.getCode());
 		}
 
