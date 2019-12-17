@@ -104,7 +104,6 @@ public class UserApiTest {
 		// Add user
 		try {
 			api.addUser(user1);
-			System.out.println(user1.getPassword());
 			usersApi.authenticate(user1.getEmail(), user1.getPassword());
 			usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 		} catch (ApiException e) {
@@ -221,9 +220,9 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	
 	public void userDeleteAllTest() throws ApiException {
 		try {
-			System.out.println(((com.localadmin.auth.ApiKeyAuth) api.getApiClient().getAuthentication("User_Auth")).getApiKey());
 			api.deleteAllUsers();
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
@@ -246,7 +245,7 @@ public class UserApiTest {
 		User user1 = new User();
 		user1.setEmail("nils.brugger@gmail.com");
 		user1.setName("Nils Bruger");
-		user1.setPassword("TestCasesBisSonntagSonstAUA!TestCasesBisSonntagSonstAUA!");
+		user1.setPassword("TestCasesBisSonntagSonstAUA!");
 		user1.setGroup("ROOT");
 
 		User user2 = new User();
@@ -322,7 +321,7 @@ public class UserApiTest {
 			api.replaceUser("sexysusi@gmx.at", replaceWith);
 			fail("Replace worked even though no Group was set");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			// All good
 		}
 
@@ -340,7 +339,7 @@ public class UserApiTest {
 		try {
 			api.getUser(replaceWith.getEmail());
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			if (e.getCode() == 404)
 				fail("Replace did not work (Getted it)!");
 			else
@@ -362,7 +361,7 @@ public class UserApiTest {
 			api.deleteUser("elon.musk@gmail.com");
 			fail("There should be a 404 error when a non exisiting user gets deleted!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (delete)", 404, e.getCode());
 		}
 
@@ -370,7 +369,7 @@ public class UserApiTest {
 			api.getUser("elon.musk@gmail.com");
 			fail("There should be a 404 error when a non exisiting user gets getted!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 
@@ -378,7 +377,7 @@ public class UserApiTest {
 			api.editUser("elon.musk@gmail.com", new Useroptional(), null);
 			fail("There should be a 404 error when a non exisiting user gets edited!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (edit)", 404, e.getCode());
 		}
 
@@ -386,12 +385,11 @@ public class UserApiTest {
 		replaceUser.setEmail("replace@gmail.com");
 		replaceUser.setGroup("ROOT");
 		replaceUser.setName("Replace");
-		replaceUser.setPassword(null);
 		try {
 			api.replaceUser("elon.musk@gmail.com", replaceUser);
 			fail("There should be a 404 error when a non exisiting user gets replaced!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (replace)", 404, e.getCode());
 			// Error because there should be a pw with a min length of 7, but it would not
 			// get used so null makes more sense
