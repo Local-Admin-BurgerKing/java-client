@@ -15,6 +15,7 @@ package com.localadmin.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,7 @@ public class TablesApiTest {
 		}
 	}
 
-//	@After
+	@After
 	public void clean() {
 		try {
 			restaurantApi.deleteAllRestaurants();
@@ -185,7 +186,6 @@ public class TablesApiTest {
 		try {
 			List<DataEntry> entrysToAdd = new ArrayList<DataEntry>();
 			entrysToAdd.add(new DataEntry().column("c1").value(5));
-			entrysToAdd.add(new DataEntry().column("c2").value(5));
 			List<DataEntry> entrysGetted = api.replaceDailyReport(0, report1.getDate(), entrysToAdd, true);
 			assertEquals("The entry list does not have the correct size!", 1, entrysGetted.size());
 		} catch (ApiException e) {
@@ -210,7 +210,7 @@ public class TablesApiTest {
 	 *
 	 * @throws ApiException if the Api call fails
 	 */
-//	@Test
+	@Test
 	public void reportsGetAllGetAtDateTest() throws ApiException {
 		Report report1 = new Report();
 		report1.setData(new ArrayList<DataEntry>());
@@ -222,8 +222,9 @@ public class TablesApiTest {
 		DataEntry entry1 = new DataEntry();
 		entry1.setColumn("c1");
 		entry1.setValue(-4);
+		entrys.add(entry1);
 		report2.setData(entrys);
-		report2.setDate(LocalDate.of(2019, 11, 15));
+		report2.setDate(LocalDate.of(2019, 11, 30));
 		report2.setComment("Another comment");
 
 		// Add DailyReports
@@ -358,8 +359,8 @@ public class TablesApiTest {
 
 		// Remove
 		try {
-			api.removeReport(0, report1.getDate());
 			api.removeReport(1, report2.getDate());
+			api.removeReport(0, report1.getDate());
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when removing DailyReport!");
@@ -374,7 +375,7 @@ public class TablesApiTest {
 	 *
 	 * @throws ApiException if the Api call fails
 	 */
-//	@Test
+	@Test
 	public void updateReportColumnTest() throws ApiException {
 		Report report1 = new Report();
 		List<DataEntry> entrys = new ArrayList<DataEntry>();
@@ -382,7 +383,7 @@ public class TablesApiTest {
 		entry1.setColumn("c1");
 		entry1.setValue(-4);
 		report1.setData(entrys);
-		report1.setDate(LocalDate.of(2019, 10, 15));
+		report1.setDate(LocalDate.of(2019, 11, 18));
 		report1.setComment("Another comment");
 		entrys.add(entry1);
 		
@@ -396,7 +397,7 @@ public class TablesApiTest {
 
 		// Update DailyReport
 		try {
-			api.updateReportColumn(0, report1.getDate().minusDays(1L), "c1", 2);
+			api.updateReportColumn(0, report1.getDate(), "c1", 2);
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when updating Column in Report!");
@@ -427,7 +428,7 @@ public class TablesApiTest {
 	 *
 	 * @throws ApiException if the Api call fails
 	 */
-//	@Test
+	@Test
 	public void tablesNotFoundTest() throws ApiException {
 		Report report1 = new Report();
 		List<DataEntry> entrys = new ArrayList<DataEntry>();
