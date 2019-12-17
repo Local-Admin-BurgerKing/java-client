@@ -4,7 +4,7 @@ public class Dailycolumn {
 
 	private String name;
 	private String description;
-	private Boolean hide = false;
+	private Boolean hide;
 
 	public Dailycolumn name(String name) {
 		this.name = name;
