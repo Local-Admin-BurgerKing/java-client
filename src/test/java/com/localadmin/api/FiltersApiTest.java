@@ -92,13 +92,6 @@ public class FiltersApiTest {
 		filter2.setWhitelist(whitelist1);
 	}
 	
-	private class FilterRef {
-		public String name;
-		public FilterRef(String name) {
-			this.name = name;
-		}
-	}
-	
 	/**
 	 * Create filter, Get filter, Get all filters, Remove filter, Remove all filters
 	 *
@@ -309,19 +302,21 @@ public class FiltersApiTest {
 		}
 
 		try {
-			api.replaceFilterColumns(filter1.getName(), new ArrayList<>(), false);
-			List<String> ret_wl = api.getFilterColumns(filter1.getName());
+			List<String> new_cols = new ArrayList<>();
+			new_cols.add("c2");
+			filter1.setWhitelist(new_cols);
+			List<String> ret_wl = api.replaceFilterColumns(filter1.getName(), filter1.getWhitelist(), true);
 			
-			assertEquals("Filter column whitelist length not matching.", ret_wl.size(), filter1.getWhitelist().size());
+			ret_wl = ret_wl == null ? new ArrayList<>() : ret_wl;
+			
+			assertEquals("Filter column whitelist length not matching.", filter1.getWhitelist().size(), ret_wl.size());
 			for (String curr_col : ret_wl) {
-				if (!whitelist.contains(curr_col)) {
+				if (!filter1.getWhitelist().contains(curr_col)) {
 					fail("Filter whitelist column not updated.");
 				}
 			}
 		} catch (ApiException e) {
 			fail("Error while replacing/getting filter columns: " + e.getCode());
-		} catch(NullPointerException e) {
-			fail("Filter column whitelist should not be empty (aka null)");
 		}
 	}
 }

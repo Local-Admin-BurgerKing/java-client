@@ -41,7 +41,7 @@ public class UsergroupApiTest {
 	private final PermissionsApi permissionsApi = new PermissionsApi();
 	private ApiKeyAuth User_Auth;
 	private String key;
-	private boolean resetGroupTableBefore = false; // should it clear the table for each Test so if one fails the
+	private boolean resetGroupTableBefore = true; // should it clear the table for each Test so if one fails the
 													// others does not fail
 
 	@Before
@@ -65,12 +65,13 @@ public class UsergroupApiTest {
 			try {
 				List<Object> groups = api.getAllGroups(false);
 				for (int i = 0; i < groups.size(); i++) {
-					if (!groups.get(i).equals("ROOT"))
-						api.removeGroup(groups.get(i).toString());
+					LinkedTreeMap<String, Object> curr = (LinkedTreeMap<String, Object>) groups.get(0);
+					if (!curr.get("name").toString().equals("ROOT"))
+						api.removeGroup(curr.get("name").toString());
 				}
 			} catch (ApiException e) {
 				System.err.println(e.getResponseBody());
-				fail("Fail when reseting group table!");
+//				fail("Fail when reseting group table!");
 			}
 		}
 
@@ -119,17 +120,26 @@ public class UsergroupApiTest {
 		// Edit group name
 		try {
 			api.updateGroupName(group.getName(), "Supporter");
+			group.setName("Supporter");
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when updating group name: " + e.getCode());
 		}
 
-		// Test if group has been updated
+		// Test if group has been updated 
 		try {
+			boolean found = false;
 			List<Object> groupNames = api.getAllGroups(false);
-			if (!groupNames.contains("Supporter")) {
-				fail("Group name does seem to not have been updated");
+			for(Object o : groupNames) {
+				LinkedTreeMap<String, Object> curr = (LinkedTreeMap<String, Object>) o;
+				if (curr.get("name").equals("Supporter")) {
+					found = true;
+				}
 			}
+			if(!found) {
+				fail("Group name does seem to have been updated");
+			}
+			
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when getting groups: " + e.getCode());
@@ -137,7 +147,7 @@ public class UsergroupApiTest {
 
 		// Test delete
 		try {
-			api.removeGroup("Admin");
+			api.removeGroup(group.getName());
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when deleting group: " + e.getCode());
