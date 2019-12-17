@@ -68,6 +68,7 @@ public class UserApiTest {
 		// Configure API key authorization: User_Auth
 		User_Auth = (ApiKeyAuth) defaultClient.getAuthentication("User_Auth");
 		User_Auth.setApiKey(key);
+		defaultClient.setApiKey(key);
 
 		if (resetUserTableBefore) {
 			try {
@@ -77,7 +78,6 @@ public class UserApiTest {
 						api.deleteUser(users.get(i).toString());
 				}
 			} catch (ApiException e) {
-				System.err.println(e.getResponseBody());
 				System.err.println(e.getResponseBody());
 				fail("Fail when reseting user table!");
 			}
@@ -150,8 +150,8 @@ public class UserApiTest {
 		Useroptional edits2 = new Useroptional();
 		edits2.setPassword("ZügeSanZügigEudaaaa!");
 		try {
-			api.editUser(user1.getEmail(), edits2, "dsvcdfafsdagsfg"); // Delivered wrong password so it should not change the
-																// password
+			api.editUser(user1.getEmail(), edits2, "fvdsgsvfv"); // Delivered wrong password so it should not change the
+																	// password. When deliverd password is null it works
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when edit user! " + e.getCode());
@@ -165,7 +165,7 @@ public class UserApiTest {
 			assertEquals("Group  has been changed which should not have happend!", user1.getGroup(),
 					gettedUser.getGroup());
 			// Test if password dit not get changed
-			usersApi.authenticate(user1.getEmail(), edits1.getPassword()); //Should work like that
+			usersApi.authenticate(user1.getEmail(), edits1.getPassword()); // Should work like that
 			usersApi.authenticate("admin@kingrestaurants.at", "12345678");
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
@@ -190,7 +190,6 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
-	@Ignore
 	public void userTokenChangePasswordTest() throws ApiException {
 		User user = new User();
 		user.setEmail("nbrugger@student.tgm.ac.at");
@@ -222,25 +221,14 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
-	@Ignore
 	public void userDeleteAllTest() throws ApiException {
 		try {
+			System.out.println(((com.localadmin.auth.ApiKeyAuth) api.getApiClient().getAuthentication("User_Auth")).getApiKey());
 			api.deleteAllUsers();
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			System.out.println("Can not delete all users because you would also delete the admin!");
 			fail("Something did not work when deleting all users! " + e.getCode());
-		}
-		User user1 = new User();
-		user1.setEmail("admin@kingrestaurants.at");
-		user1.setName("admin");
-		user1.setPassword("12345678");
-		user1.setGroup("ROOT");
-		try {
-			api.addUser(user1);
-		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
-			fail("Was not able to add Admin!");
 		}
 	}
 
@@ -253,25 +241,24 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
-	@Ignore
 	public void userGetAllTest() throws ApiException {
 		// Create 2 new users
 		User user1 = new User();
 		user1.setEmail("nils.brugger@gmail.com");
 		user1.setName("Nils Bruger");
-		user1.setPassword("TestCasesBisSonntagSonstAUA!");
+		user1.setPassword("TestCasesBisSonntagSonstAUA!TestCasesBisSonntagSonstAUA!");
 		user1.setGroup("ROOT");
 
 		User user2 = new User();
 		user2.setEmail("tschrottwieser@student.tgm.ac.at");
 		user2.setName("Tobias Schrottinger");
-		user2.setPassword("IchBinEinPasswort...NeE1gent7ichN1cht!");
+		user2.setPassword("EinPasswort...NeE1gent7ichN1cht!");
 		user2.setGroup("ROOT");
 
 		// Add users
 		try {
-			api.addUserWithHttpInfo(user1);
-			api.addUserWithHttpInfo(user2);
+			api.addUser(user1);
+			api.addUser(user2);
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when adding User!");
@@ -317,7 +304,6 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
-	@Ignore
 	public void userReplaceTest() throws ApiException {
 		User user1 = new User();
 		user1.setEmail("sexysusi@gmx.at");
@@ -329,7 +315,7 @@ public class UserApiTest {
 		User2 replaceWith = new User2();
 		replaceWith.setEmail("Herbert1973@gmail.com");
 		replaceWith.setName("Herbert");
-		replaceWith.setPassword(user1.getPassword());
+		replaceWith.setPassword("fdsvafdja hj");
 
 		// Replace should not change anything because no group was set
 		try {
@@ -371,7 +357,6 @@ public class UserApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
-	@Ignore
 	public void userNotFoundTest() throws ApiException {
 		try {
 			api.deleteUser("elon.musk@gmail.com");
@@ -401,13 +386,15 @@ public class UserApiTest {
 		replaceUser.setEmail("replace@gmail.com");
 		replaceUser.setGroup("ROOT");
 		replaceUser.setName("Replace");
-		replaceUser.setPassword("");
+		replaceUser.setPassword(null);
 		try {
 			api.replaceUser("elon.musk@gmail.com", replaceUser);
 			fail("There should be a 404 error when a non exisiting user gets replaced!");
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			assertEquals("Error-Code should be 404 (replace)", 404, e.getCode());
+			// Error because there should be a pw with a min length of 7, but it would not
+			// get used so null makes more sense
 		}
 	}
 }
