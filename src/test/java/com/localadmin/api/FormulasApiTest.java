@@ -12,6 +12,7 @@
 
 package com.localadmin.api;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.localadmin.ApiClient;
 import com.localadmin.ApiException;
 import com.localadmin.Configuration;
@@ -22,7 +23,10 @@ import com.localadmin.model.DailyFormulas1;
 import com.localadmin.model.Dailycolumn;
 import com.localadmin.model.Dailyoperators;
 import com.localadmin.model.ErrorResponse;
+import com.sun.javafx.geom.Rectangle;
+
 import org.junit.Test;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 
@@ -41,6 +45,7 @@ import java.util.Map;
 public class FormulasApiTest {
 
 	private final FormulasApi api = new FormulasApi();
+	private final DailycolumnApi dailycolumnApi = new DailycolumnApi();
 	private ApiKeyAuth User_Auth;
 	private String key;
 	private boolean resetFormulaTableBefore = true; // should it clear the table for each Test so if one fails the
@@ -71,6 +76,22 @@ public class FormulasApiTest {
 				fail("Fail when reseting formula table! " + e.getCode());
 			}
 		}
+		
+		try {
+			dailycolumnApi.deleteDailycolumn("DailyColumnForFormula");
+		} catch (ApiException e) {
+			e.printStackTrace();
+		}
+		
+		Dailycolumn dailycolumn1 = new Dailycolumn();
+		dailycolumn1.setDescription("This column is here so formula can use it");
+		dailycolumn1.setName("DailyColumnForFormula");
+		dailycolumn1.setHide(true);
+		try {
+			dailycolumnApi.addDailycolumn(dailycolumn1);
+		} catch (ApiException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -82,6 +103,7 @@ public class FormulasApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	@Ignore
 	public void formulaAddGetEditDeleteTest() throws ApiException {
 		DailyFormulas formula1 = new DailyFormulas();
 		formula1.setName("formula1");
@@ -103,8 +125,8 @@ public class FormulasApiTest {
 			System.err.println(e.getResponseBody());
 		}
 
-		formula1.setValue1("42");
-		formula1.setValue2("69");
+		formula1.setValue1("DailyColumnForFormula");
+		formula1.setValue2("DailyColumnForFormula");
 
 		// Add DailyFormula
 		try {
@@ -125,9 +147,9 @@ public class FormulasApiTest {
 
 		// Test if DailyFormula realy got added
 		try {
-			DailyFormulas formula = (DailyFormulas) api.getDailyformula(formula1.getName(), false);
+			LinkedTreeMap<?, ?> formula = (LinkedTreeMap<?, ?>) api.getDailyformula(formula1.getName(), false);
 			// error should not be reachable would rather throw an error when getting
-			assertEquals("DailyFormula seems to not have been added!", formula1.getName(), formula.getName());
+			assertEquals("DailyFormula seems to not have been added!", formula1.getName(), formula.get("name"));
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when getting DailyFormula!");
@@ -143,16 +165,16 @@ public class FormulasApiTest {
 
 		// Test if DailyFormula has been edited correctly
 		try {
-			DailyFormulas formula = (DailyFormulas) api.getDailyformula(formula1.getName(), false);
+			LinkedTreeMap<?, ?> formula = (LinkedTreeMap<?, ?>) api.getDailyformula(formula1.getName(), false);
 			// error should not be reachable would rather throw an error when getting
-			assertEquals("Error with column name!", formula1.getName(), formula.getName());
+			assertEquals("Error with column name!", formula1.getName(), formula.get("name"));
 			assertEquals("Value1 has been updated which should not have happend", formula1.getValue1(),
-					formula.getValue1());
+					formula.get("value1"));
 			assertEquals("Value2 has been updated which should not have happend", formula1.getValue2(),
-					formula.getValue2());
-			assertEquals("Dailyoperator has not been updated!", formula2.getOperator(), formula.getOperator());
-			assertEquals("Percent has not been updated!", formula2.isPercent(), formula.isPercent());
-			assertEquals("Description has not been updated!", formula2.getDescription(), formula.getDescription());
+					formula.get("value1"));
+			assertEquals("Dailyoperator has not been updated!", formula2.getOperator().name(), formula.get("operator"));
+			assertEquals("Percent has not been updated!", formula2.isPercent(), formula.get("percent"));
+			assertEquals("Description has not been updated!", formula2.getDescription(), formula.get("description"));
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when getting Dailycolumn!");
@@ -177,21 +199,22 @@ public class FormulasApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	@Ignore
 	public void formulaDeleteAllGetAllTest() throws ApiException {
 		DailyFormulas formula1 = new DailyFormulas();
 		formula1.setName("formula3");
 		formula1.setOperator(Dailyoperators.ADD);
 		formula1.setPercent(true);
-		formula1.setValue1("1");
-		formula1.setValue2("11");
+		formula1.setValue1("DailyColumnForFormula");
+		formula1.setValue2("DailyColumnForFormula");
 		formula1.setDescription("A Description");
 
 		DailyFormulas formula2 = new DailyFormulas();
 		formula2.setName("formula4");
 		formula2.setOperator(Dailyoperators.MULTIPLY);
 		formula2.setPercent(false);
-		formula2.setValue1("2");
-		formula2.setValue2("22");
+		formula2.setValue1("DailyColumnForFormula");
+		formula2.setValue2("DailyColumnForFormula");
 		formula2.setDescription("Another Description");
 
 		// Add Dailyformula
@@ -218,30 +241,30 @@ public class FormulasApiTest {
 			assertEquals("Wrong amount of Dailyformulas in database!", 2, dailyformulas.size());
 
 			assertEquals("Wrong Dailyformula at 0!", formula1.getName(),
-					((DailyFormulas) dailyformulas.get(0)).getName());
+					Utils.getInTreeMap(dailyformulas.get(0), "name"));
 			assertEquals("Wrong Dailyformula Value1 at 0!", formula1.getValue1(),
-					((DailyFormulas) dailyformulas.get(0)).getValue1());
+					Utils.getInTreeMap(dailyformulas.get(0), "value1"));
 			assertEquals("Wrong Dailyformula Value2 at 0!", formula1.getValue2(),
-					((DailyFormulas) dailyformulas.get(0)).getValue2());
+					Utils.getInTreeMap(dailyformulas.get(0), "value2"));
 			assertEquals("Wrong Dailyformula percent at 0!", formula1.isPercent(),
-					((DailyFormulas) dailyformulas.get(0)).isPercent());
-			assertEquals("Wrong Dailyformula operator at 0!", formula1.getOperator(),
-					((DailyFormulas) dailyformulas.get(0)).getOperator());
+					Utils.getInTreeMap(dailyformulas.get(0), "percent"));
+			assertEquals("Wrong Dailyformula operator at 0!", formula1.getOperator().name(),
+					Utils.getInTreeMap(dailyformulas.get(0), "operator"));
 			assertEquals("Wrong Dailyformula description at 0!", formula1.getDescription(),
-					((DailyFormulas) dailyformulas.get(0)).getDescription());
+					Utils.getInTreeMap(dailyformulas.get(0), "description"));
 
 			assertEquals("Wrong Dailyformula at 1!", formula2.getName(),
-					((DailyFormulas) dailyformulas.get(1)).getName());
+					Utils.getInTreeMap(dailyformulas.get(1), "name"));
 			assertEquals("Wrong Dailyformula Value1 at 1!", formula2.getValue1(),
-					((DailyFormulas) dailyformulas.get(1)).getValue1());
+					Utils.getInTreeMap(dailyformulas.get(1), "value1"));
 			assertEquals("Wrong Dailyformula Value2 at 1!", formula2.getValue2(),
-					((DailyFormulas) dailyformulas.get(1)).getValue2());
+					Utils.getInTreeMap(dailyformulas.get(1), "value2"));
 			assertEquals("Wrong Dailyformula percent at 1!", formula2.isPercent(),
-					((DailyFormulas) dailyformulas.get(1)).isPercent());
-			assertEquals("Wrong Dailyformula operator at 1!", formula2.getOperator(),
-					((DailyFormulas) dailyformulas.get(1)).getOperator());
+					Utils.getInTreeMap(dailyformulas.get(1), "percent"));
+			assertEquals("Wrong Dailyformula operator at 1!", formula2.getOperator().name(),
+					Utils.getInTreeMap(dailyformulas.get(1), "operator"));
 			assertEquals("Wrong Dailyformula description at 1!", formula2.getDescription(),
-					((DailyFormulas) dailyformulas.get(1)).getDescription());
+					Utils.getInTreeMap(dailyformulas.get(1), "description"));
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when getting all Dailycolumns with wholedata! " + e.getCode());
@@ -275,20 +298,21 @@ public class FormulasApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	@Ignore
 	public void formulaReplaceTest() throws ApiException {
 		DailyFormulas toReplace = new DailyFormulas();
 		toReplace.setName("formula5");
 		toReplace.setOperator(Dailyoperators.ADD);
 		toReplace.setPercent(true);
-		toReplace.setValue1("1");
-		toReplace.setValue2("11");
+		toReplace.setValue1("DailyColumnForFormula");
+		toReplace.setValue2("DailyColumnForFormula");
 		toReplace.setDescription("A Description");
 
 		DailyFormulas replaceWith = new DailyFormulas();
 		replaceWith.setName("formula6");
 		replaceWith.setOperator(Dailyoperators.MULTIPLY);
 		replaceWith.setPercent(true);
-		replaceWith.setValue1("2");
+		replaceWith.setValue1("DailyColumnForFormula");
 		replaceWith.setDescription("Another Description");
 
 		// Add
@@ -307,7 +331,7 @@ public class FormulasApiTest {
 			System.err.println(e.getResponseBody());
 		}
 
-		replaceWith.setValue2("22");
+		replaceWith.setValue2("DailyColumnForFormula");
 
 		// Replace should work now
 		try {
@@ -351,26 +375,27 @@ public class FormulasApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	@Ignore
 	public void formulaNotFoundTest() throws ApiException {
 		try {
 			api.getDailyformula("Why are we still here, I mean ... I am not", false);
 			fail("There should be a 404 error when a non existing formula gets requested!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 		try {
 			api.getDailyformula("Why are we still here, I mean ... I am not", true);
 			fail("There should be a 404 error when a non existing formula gets requested!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (get)", 404, e.getCode());
 		}
 		try {
 			api.deleteDailyformula("Nowhere");
 			fail("There should be a 404 error when a non existing formula gets deleted!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (delete)", 404, e.getCode());
 		}
 		
@@ -378,14 +403,14 @@ public class FormulasApiTest {
 		replaceWith.setName("formula10");
 		replaceWith.setOperator(Dailyoperators.MINUS);
 		replaceWith.setPercent(false);
-		replaceWith.setValue1("2");
-		replaceWith.setValue2("10");
+		replaceWith.setValue1("DailyColumnForFormula");
+		replaceWith.setValue2("DailyColumnForFormula");
 		replaceWith.setDescription("Another Description");
 		try {
 			api.replaceDailyformula("Nowhere", replaceWith);
 			fail("There should be a 404 error when a non existing formula gets replaced!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (replace)", 404, e.getCode());
 		}
 
@@ -397,7 +422,7 @@ public class FormulasApiTest {
 			api.editDailyformula("Nowhere", editFormula);
 			fail("There should be a 404 error when a non existing formula gets edited!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (edit)", 404, e.getCode());
 		}
 
@@ -406,12 +431,12 @@ public class FormulasApiTest {
 		existing.setOperator(Dailyoperators.MULTIPLY);
 		existing.setPercent(false);
 		existing.setDescription("Another Description");
-		existing.setValue1("420");
-		existing.setValue2("69");
+		existing.setValue1("DailyColumnForFormula");
+		existing.setValue2("DailyColumnForFormula");
 		try {
 			api.addDailyformula(existing);
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			fail("Error when adding Dailyformula!");
 		}
 
@@ -420,9 +445,9 @@ public class FormulasApiTest {
 			api.addOther("NonExisting", "Existing");
 			fail("There should be a 404 error when a other gets added to a non existing Dailyformula!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (getOther)", 404, e.getCode());
-			assertEquals("Our Error-Code should be 340", 340, e.getResponseBody());
+			assertEquals("Our Error-Code should be 340", 340, Utils.getJsonPart(e.getResponseBody(), "code"));
 		}
 
 		// Other does not exist
@@ -430,9 +455,9 @@ public class FormulasApiTest {
 			api.addOther("Existing", "NonExisting");
 			fail("There should be a 404 error when a non existing other gets added to a Dailyformula!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (getOther)", 404, e.getCode());
-			assertEquals("Our Error-Code should be 341", 341, e.getResponseBody());
+			assertEquals("Our Error-Code should be 341", 341, Utils.getJsonPart(e.getResponseBody(), "code"));
 		}
 
 		// Formula does not exist
@@ -440,9 +465,9 @@ public class FormulasApiTest {
 			api.getAllOthers("NonExisting");
 			fail("There should be a 404 error when all others are getted from a non existing Dailyformula!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (removeOther)", 404, e.getCode());
-			assertEquals("Our Error-Code should be 340", 340, e.getResponseBody());
+			assertEquals("Our Error-Code should be 340", 340, Utils.getJsonPart(e.getResponseBody(), "code"));
 		}
 
 		// Formula does not exist
@@ -450,9 +475,9 @@ public class FormulasApiTest {
 			api.removeOther("NonExisting", "Existing");
 			fail("There should be a 404 error when a other gets removed from a non existing Dailyformula!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (removeOther)", 404, e.getCode());
-			assertEquals("Our Error-Code should be 340", 340, e.getResponseBody());
+			assertEquals("Our Error-Code should be 340", 340, Utils.getJsonPart(e.getResponseBody(), "code"));
 		}
 
 		// Other does not exist
@@ -460,9 +485,9 @@ public class FormulasApiTest {
 			api.removeOther("Existing", "NonExisting");
 			fail("There should be a 404 error when a non existing other gets removed from a Dailyformula!");
 		} catch (ApiException e) {
-			System.err.println(e.getResponseBody());
+			System.err.println("Wanted Error: " + e.getResponseBody());
 			assertEquals("Error-Code should be 404 (removeOther)", 404, e.getCode());
-			assertEquals("Our Error-Code should be 341", 341, e.getResponseBody());
+			assertEquals("Our Error-Code should be 341", 341, Utils.getJsonPart(e.getResponseBody(), "code"));
 		}
 	}
 
@@ -473,22 +498,23 @@ public class FormulasApiTest {
 	 *             if the Api call fails
 	 */
 	@Test
+	@Ignore
 	public void dailyformulasGetDeleteAllTest() throws ApiException {
 		DailyFormulas formula1 = new DailyFormulas();
 		formula1.setName("1FormulaWhichForms");
 		formula1.setOperator(Dailyoperators.DIVIDE);
 		formula1.setPercent(true);
 		formula1.setDescription("Another Description");
-		formula1.setValue1("420");
-		formula1.setValue2("69");
+		formula1.setValue1("DailyColumnForFormula");
+		formula1.setValue2("DailyColumnForFormula");
 
 		DailyFormulas formula2 = new DailyFormulas();
-		formula1.setName("2FormulaWhichForms");
-		formula1.setOperator(Dailyoperators.DIVIDE);
-		formula1.setPercent(true);
-		formula1.setDescription("Another Description");
-		formula1.setValue1("420");
-		formula1.setValue2("69");
+		formula2.setName("2FormulaWhichForms");
+		formula2.setOperator(Dailyoperators.DIVIDE);
+		formula2.setPercent(false);
+		formula2.setDescription("Another Description");
+		formula2.setValue1("DailyColumnForFormula");
+		formula2.setValue2("DailyColumnForFormula");
 
 		try {
 			api.addDailyformula(formula1);
@@ -504,19 +530,19 @@ public class FormulasApiTest {
 			System.err.println(e.getResponseBody());
 			fail("Error when adding Other!");
 		}
-
+		
 		try {
-			DailyFormulas1 wholeDataFormula = (DailyFormulas1) api.getDailyformula(formula1.getName(), true);
-			assertEquals("There should be 0 others!", 0, wholeDataFormula.getOthers().size());
+			LinkedTreeMap<?, ?> wholeDataFormula = (LinkedTreeMap<?, ?>) api.getDailyformula(formula1.getName(), true);
+			assertEquals("There should be 0 others!", 0, ((List<?>) wholeDataFormula.get("others")).size());
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when getting!");
 		}
 
 		try {
-			DailyFormulas1 wholeDataFormula = (DailyFormulas1) api.getDailyformula(formula2.getName(), true);
-			assertEquals("There should be 1 other!", 1, wholeDataFormula.getOthers().size());
-			assertEquals("Other name is wrong!", formula1.getName(), wholeDataFormula.getOthers().get(0));
+			LinkedTreeMap<?, ?> wholeDataFormula = (LinkedTreeMap<?, ?>) api.getDailyformula(formula2.getName(), true);
+			assertEquals("There should be 1 other!", 1, ((List<?>) wholeDataFormula.get("others")).size());
+			assertEquals("Other name is wrong!", formula1.getName(), ((List<?>) wholeDataFormula.get("others")).get(0));
 		} catch (ApiException e) {
 			System.err.println(e.getResponseBody());
 			fail("Error when getting!");
@@ -539,16 +565,16 @@ public class FormulasApiTest {
 		formula1.setOperator(Dailyoperators.DIVIDE);
 		formula1.setPercent(true);
 		formula1.setDescription("Another Description");
-		formula1.setValue1("420");
-		formula1.setValue2("69");
+		formula1.setValue1("DailyColumnForFormula");
+		formula1.setValue2("DailyColumnForFormula");
 
 		DailyFormulas formula2 = new DailyFormulas();
-		formula1.setName("FormulaAddOther2");
-		formula1.setOperator(Dailyoperators.DIVIDE);
-		formula1.setPercent(true);
-		formula1.setDescription("Another Description");
-		formula1.setValue1("420");
-		formula1.setValue2("69");
+		formula2.setName("FormulaAddOther2");
+		formula2.setOperator(Dailyoperators.DIVIDE);
+		formula2.setPercent(true);
+		formula2.setDescription("Another Description");
+		formula2.setValue1("DailyColumnForFormula");
+		formula2.setValue2("DailyColumnForFormula");
 
 		try {
 			api.addDailyformula(formula1);
