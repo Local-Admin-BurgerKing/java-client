@@ -179,13 +179,14 @@ public class FormulasApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call addOtherCall(String name, String body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        Object localVarPostBody = body;
+        Object localVarPostBody = null;
         
         // create path and map variables
         String localVarPath = "/dailyformula/{name}/others"
             .replaceAll("\\{" + "name" + "\\}", apiClient.escapeString(name.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        localVarQueryParams.add(new Pair("other", body));
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
 
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -216,7 +217,7 @@ public class FormulasApi {
             });
         }
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "User_Auth" };
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     

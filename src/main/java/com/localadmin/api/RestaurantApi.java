@@ -67,13 +67,14 @@ public class RestaurantApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call addEmployeeCall(Integer number, String body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        Object localVarPostBody = body;
+        Object localVarPostBody = null;
         
         // create path and map variables
         String localVarPath = "/restaurant/{number}/employees"
             .replaceAll("\\{" + "number" + "\\}", apiClient.escapeString(number.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        localVarQueryParams.add(new Pair("employee", body));
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
 
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
